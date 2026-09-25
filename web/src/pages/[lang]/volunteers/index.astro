@@ -1,0 +1,93 @@
+---
+import { LANGS, useT, type Lang } from '../../../i18n';
+import { UDL_DISCOUNT } from '../../../data/event';
+import { PHOTOS } from '../../../data/photos';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import Photo from '../../../components/Photo.astro';
+export const getStaticPaths = () => LANGS.map((lang) => ({ params: { lang } }));
+const lang = Astro.params.lang as Lang;
+const t = useT(lang), v = t.volunteers, f = v.form;
+const site = Astro.site!.href.replace(/\/$/, '');
+const jsonld = [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: t.breadcrumb.home, item: `${site}/${lang}/` },
+  { '@type': 'ListItem', position: 2, name: v.title, item: `${site}/${lang}/volunteers/` }] }];
+const cls = 'field w-full rounded-2xl px-4 py-3.5 text-base min-h-[52px]';
+const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+---
+<Base lang={lang} path="volunteers/" title={`${v.title} · MM Igualada`} description={v.metaDesc} jsonld={jsonld}>
+  <div class="mx-auto max-w-6xl px-5 pb-10 pt-32 sm:px-8 md:pt-40">
+    <Breadcrumb lang={lang} current={v.title} />
+    <h1 class="mt-6 text-4xl font-extrabold sm:text-6xl">{v.title}</h1>
+    <p class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{v.lead}</p>
+
+    <!-- Aliança UdL -->
+    <section class="relative mt-10 grid overflow-hidden rounded-[2.5rem] lg:grid-cols-[.9fr_1.1fr]" style="background:var(--bg-2)">
+      <div class="relative min-h-56">
+        <Photo name="campus-udl" alt={PHOTOS['campus-udl'].cap[lang]} eager class="absolute inset-0 h-full w-full object-cover" sizes="(min-width:1024px) 45vw, 100vw" />
+        <div class="absolute inset-0" style="background:linear-gradient(135deg,rgb(11 92 173/.55),rgb(26 122 80/.35))"></div>
+        <span class="clay absolute left-5 top-5 px-4 py-2 text-sm font-extrabold">{t.udl.badge}</span>
+      </div>
+      <div class="p-8 sm:p-10">
+        <p class="text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">{t.udl.kicker}</p>
+        <h2 class="mt-2 text-2xl font-extrabold sm:text-4xl">{t.udl.title}</h2>
+        <div class="mt-6 grid gap-3 sm:grid-cols-3">
+          {t.udl.perks.map((p) => (
+            <div class="glass rounded-2xl p-4"><div class="font-display text-3xl font-extrabold" style="color:var(--accent)">{p.big.replace('{n}', String(UDL_DISCOUNT))}</div><div class="font-bold">{p.label}</div><p class="mt-1 text-sm" style="color:var(--muted)">{p.text}</p></div>
+          ))}
+        </div>
+        <p class="mt-4 text-xs" style="color:var(--muted)">{t.udl.note}</p>
+      </div>
+    </section>
+
+    <h2 class="mt-16 text-3xl font-extrabold sm:text-4xl">{v.rolesTitle}</h2>
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {v.roles.map((r, i) => (
+        <li class:list={['card-hover rounded-[1.75rem] p-6', i % 3 === 1 ? 'neo' : 'glass']}><h3 class="font-display text-xl font-bold">{r.t}</h3><p class="mt-1" style="color:var(--muted)">{r.d}</p></li>
+      ))}
+    </ul>
+
+    <form id="volunteer-form" data-form class="glass mt-16 grid gap-5 rounded-[2rem] p-6 sm:p-10" novalidate
+          data-msgs={JSON.stringify({ ...f.errors, sending: f.sending, send: f.send, ok: `${f.success} ${f.successNote}` })}>
+      <h2 class="text-3xl font-extrabold">{f.title}</h2>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div><label for="v-name" class="mb-1.5 block text-sm font-bold">{f.name}</label><input id="v-name" name="name" type="text" autocomplete="name" data-rule="required" class={cls} /><p id="v-name-e" class="err" role="alert"></p></div>
+        <div><label for="v-email" class="mb-1.5 block text-sm font-bold">{f.email}</label><input id="v-email" name="email" type="email" autocomplete="email" data-rule="email" class={cls} /><p id="v-email-e" class="err" role="alert"></p></div>
+        <div><label for="v-phone" class="mb-1.5 block text-sm font-bold">{f.phone}</label><input id="v-phone" name="phone" type="tel" autocomplete="tel" data-rule="required" class={cls} /><p id="v-phone-e" class="err" role="alert"></p></div>
+        <div><label for="v-age" class="mb-1.5 block text-sm font-bold">{f.age}</label><input id="v-age" name="age" type="number" inputmode="numeric" min="16" max="99" data-rule="age" class={cls} /><p id="v-age-e" class="err" role="alert"></p></div>
+        <div><label for="v-student" class="mb-1.5 block text-sm font-bold">{f.student}</label><select id="v-student" name="student" class={cls}>{f.studentOpts.map((o) => <option>{o}</option>)}</select></div>
+        <div><label for="v-studies" class="mb-1.5 block text-sm font-bold">{f.studies}</label><input id="v-studies" name="studies" type="text" class={cls} /></div>
+        <div><label for="v-when" class="mb-1.5 block text-sm font-bold">{f.when}</label><select id="v-when" name="when" class={cls}>{f.whenOpts.map((o) => <option>{o}</option>)}</select></div>
+        <div><label for="v-size" class="mb-1.5 block text-sm font-bold">{f.size}</label><select id="v-size" name="size" class={cls}>{sizes.map((o) => <option>{o}</option>)}</select></div>
+      </div>
+      <fieldset id="v-roles" data-rule="group" class="grid gap-2">
+        <legend class="mb-2 text-sm font-bold">{f.roles}</legend>
+        <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {v.roles.map((r) => (
+            <label class="chk glass flex min-h-12 cursor-pointer items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold"><input type="checkbox" name="roles" value={r.t} class="h-5 w-5 accent-[var(--accent)]" />{r.t}</label>
+          ))}
+        </div>
+        <p id="v-roles-e" class="err" role="alert"></p>
+      </fieldset>
+      <div><label for="v-msg" class="mb-1.5 block text-sm font-bold">{f.message}</label><textarea id="v-msg" name="message" rows="4" class={cls}></textarea></div>
+      <div aria-hidden="true" style="position:absolute;left:-9999px"><label>Web<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+      <div>
+        <label class="flex items-start gap-3 text-sm"><input id="v-consent" name="consent" type="checkbox" data-rule="checked" class="mt-1 h-5 w-5 shrink-0 accent-[var(--accent)]" /><span>{f.consent}</span></label>
+        <p id="v-consent-e" class="err" role="alert"></p>
+      </div>
+      <button type="submit" class="btn btn-primary justify-self-start">{f.send}</button>
+      <p data-status class="min-h-6 font-semibold" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</Base>
+<style>
+  .field { background: var(--bg); border: 1.5px solid var(--line); color: var(--fg); transition: border-color .2s, box-shadow .2s; box-shadow: inset 2px 2px 6px rgb(0 0 0 / .06); }
+  .field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent); }
+  .field[aria-invalid='true'] { border-color: #dc2626; }
+  .err { color: #c81e1e; font-size: .85rem; margin-top: .35rem; }
+  :global([data-theme='dark']) .err { color: #ff8a8a; }
+  .chk:has(input:checked) { background: color-mix(in srgb, var(--accent) 16%, var(--glass)); border-color: var(--accent); }
+  @keyframes shake { 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
+  :global(.shake) { animation: shake .4s var(--ease-out-strong); }
+</style>
+<script>import '../../../scripts/forms';</script>

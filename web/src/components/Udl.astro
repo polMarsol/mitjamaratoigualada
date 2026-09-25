@@ -1,0 +1,34 @@
+---
+import { useT, type Lang } from '../i18n';
+import { UDL_DISCOUNT } from '../data/event';
+import { PHOTOS } from '../data/photos';
+import Photo from './Photo.astro';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+---
+<section id="udl" class="px-5 py-24 sm:px-8">
+  <div class="relative mx-auto grid max-w-6xl overflow-hidden rounded-[2.5rem] lg:grid-cols-[1fr_1.1fr]" style="background:var(--bg-2)">
+    <div class="relative min-h-64">
+      <Photo name="campus-udl" alt={PHOTOS['campus-udl'].cap[lang]} class="absolute inset-0 h-full w-full object-cover" sizes="(min-width:1024px) 45vw, 100vw" />
+      <div class="absolute inset-0" style="background:linear-gradient(135deg,rgb(11 92 173/.55),rgb(26 122 80/.35))"></div>
+      <span class="clay absolute left-5 top-5 px-4 py-2 text-sm font-extrabold">{t.udl.badge}</span>
+      <a href={PHOTOS['campus-udl'].page} target="_blank" rel="noopener noreferrer" class="absolute bottom-3 left-4 text-xs text-white/90 underline underline-offset-2">{t.photo.credit}: {PHOTOS['campus-udl'].author} · {PHOTOS['campus-udl'].license}</a>
+    </div>
+    <div class="p-8 sm:p-12">
+      <p data-reveal class="text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">{t.udl.kicker}</p>
+      <h2 data-reveal class="mt-2 text-3xl font-extrabold sm:text-5xl">{t.udl.title}</h2>
+      <p data-reveal class="mt-4 text-lg" style="color:var(--muted)">{t.udl.lead}</p>
+      <div class="mt-8 grid gap-3 sm:grid-cols-3">
+        {t.udl.perks.map((p) => (
+          <div data-reveal class="glass rounded-2xl p-4">
+            <div class="font-display text-4xl font-extrabold" style="color:var(--accent)">{p.big.replace('{n}', String(UDL_DISCOUNT))}</div>
+            <div class="font-bold">{p.label}</div>
+            <p class="mt-1 text-sm" style="color:var(--muted)">{p.text}</p>
+          </div>
+        ))}
+      </div>
+      <p data-reveal class="mt-4 text-xs" style="color:var(--muted)">{t.udl.note}</p>
+      <a data-reveal href={`/${lang}/volunteers/`} class="btn btn-primary mt-6">{t.udl.cta} <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,10 @@
+# dependències i builds
+node_modules/
+web/dist/
+web/.astro/
+# skills instal·lades (reproduïbles amb skills-lock.json)
+.agents/
+.claude/skills/
+# temporals
+*.log
+.DS_Store

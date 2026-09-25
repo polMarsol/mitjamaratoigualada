@@ -1,0 +1,8 @@
+---
+import { PHOTOS } from '../data/photos';
+interface Props { name: string; alt: string; sizes?: string; class?: string; eager?: boolean; parallax?: boolean }
+const { name, alt, sizes = '(min-width:1024px) 40vw, 100vw', eager = false, parallax = false, class: cls = '' } = Astro.props;
+const p = PHOTOS[name];
+---
+<img src={`/img/${name}-640.webp`} srcset={`/img/${name}-640.webp 640w, /img/${name}-1400.webp ${p.w}w`} sizes={sizes}
+     width={p.w} height={p.h} alt={alt} class={cls} loading={eager ? 'eager' : 'lazy'} decoding="async" data-photo-parallax={parallax ? '' : undefined} />

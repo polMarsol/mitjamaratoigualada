@@ -1,0 +1,29 @@
+{
+  "name": "mm-igualada-web",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "gpx": "node scripts/build-routes.mjs",
+    "dev": "npm run gpx && astro dev",
+    "build": "npm run gpx && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/caveat": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/leaflet": "^1.9.22",
+    "astro": "^7.3.5",
+    "delaunator": "^5.1.0",
+    "gsap": "^3.15.0",
+    "leaflet": "^1.9.4",
+    "tailwindcss": "^4.3.3",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.186.0"
+  }
+}

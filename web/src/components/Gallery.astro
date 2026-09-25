@@ -1,0 +1,45 @@
+---
+import { useT, type Lang } from '../i18n';
+import { PHOTOS } from '../data/photos';
+import Photo from './Photo.astro';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+const keys = ['parc-central', 'campus-udl', 'passeig-2', 'rambla-festa'];
+const layout = ['md:row-span-2', '', '', 'md:col-span-2'];
+---
+<section id="galeria" class="px-5 py-24 sm:px-8">
+  <div class="mx-auto max-w-6xl">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h2 data-reveal class="text-4xl font-extrabold sm:text-6xl">{t.gallery.title}</h2>
+        <p data-reveal class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{t.gallery.lead}</p>
+      </div>
+      <a data-reveal href={`/${lang}/gallery/`} class="btn btn-ghost">{t.galleryPage.more} <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+
+    <div class="mt-12 grid auto-rows-[15rem] gap-4 md:grid-cols-3 md:auto-rows-[17rem]">
+      {keys.map((k, i) => (
+        <figure data-reveal class:list={['shot group relative m-0 overflow-hidden rounded-[1.75rem]', layout[i]]}>
+          <Photo name={k} alt={PHOTOS[k].cap[lang]} class="shot-img h-full w-full object-cover" sizes="(min-width:768px) 40vw, 100vw" />
+          <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(transparent 55%,rgb(0 0 0/.65))"></div>
+          <figcaption class="cap glass absolute inset-x-3 bottom-3 rounded-2xl px-4 py-3 text-white" style="background:rgb(0 0 0/.35);border-color:rgb(255 255 255/.25)">
+            <div class="font-display text-lg font-bold">{PHOTOS[k].cap[lang]}</div>
+            <a href={PHOTOS[k].page} target="_blank" rel="noopener noreferrer" class="text-xs underline decoration-white/50 underline-offset-2">
+              {t.photo.credit}: {PHOTOS[k].author} · {PHOTOS[k].license}
+            </a>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    <p data-reveal class="mt-5 text-sm" style="color:var(--muted)">{t.gallery.credits}{[...new Set(keys.map((k) => PHOTOS[k].author))].join(', ')}.</p>
+  </div>
+</section>
+<style>
+  .shot-img { scale: 1.14; transition: scale .8s var(--ease-out-strong); will-change: transform; }
+  .cap { transition: transform .4s var(--ease-out-strong), opacity .3s; }
+  @media (hover: hover) {
+    .shot:hover .shot-img { scale: 1.22; }
+    .shot .cap { transform: translateY(calc(100% + 1rem)); opacity: 0; }
+    .shot:hover .cap, .shot:focus-within .cap { transform: none; opacity: 1; }
+  }
+</style>

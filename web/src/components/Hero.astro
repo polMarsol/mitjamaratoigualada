@@ -1,0 +1,74 @@
+---
+import { useT, type Lang } from '../i18n';
+import { EVENT } from '../data/event';
+import Photo from './Photo.astro';
+import { routeD } from '../lib/routePath';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+
+const W = 600, H = 600;
+const d = routeD('21k', W, H, 40);
+---
+<section class="relative isolate overflow-hidden px-5 pb-24 pt-32 sm:px-8 md:pt-40" id="inici" style="-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)">
+  <!-- formes de fons -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div data-parallax="-60" class="absolute -left-24 top-24 h-80 w-80 rounded-full blur-3xl" style="background:color-mix(in srgb,var(--accent) 45%,transparent)"></div>
+    <div data-parallax="80" class="absolute -right-20 top-1/2 h-96 w-96 rounded-full blur-3xl" style="background:color-mix(in srgb,var(--green) 35%,transparent)"></div>
+    <svg data-parallax="40" class="absolute right-[8%] top-28 hidden w-24 md:block" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="3"><circle cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="24" stroke-dasharray="4 8"/></svg>
+    <svg data-parallax="-30" class="absolute bottom-24 right-[46%] hidden w-16 opacity-70 lg:block" viewBox="0 0 100 100" fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round"><path d="M10 70 L40 30 L60 55 L90 15"/></svg>
+  </div>
+
+  <div class="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_.9fr]">
+    <div>
+      <p data-hero class="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold">
+        <span class="h-2 w-2 rounded-full" style="background:var(--accent)"></span>{t.hero.kicker}
+      </p>
+      <h1 class="mt-6 text-[clamp(3rem,8vw,6.25rem)] font-extrabold leading-[.92]">
+        <span class="block overflow-hidden"><span data-hero-line class="block">{t.hero.title1}</span></span>
+        <span class="block overflow-hidden"><span data-hero-line class="block" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">{t.hero.title2}</span></span>
+      </h1>
+      <p data-hero class="mt-6 max-w-xl text-lg sm:text-xl" style="color:var(--muted)">{t.hero.lead}</p>
+
+      <!-- CTA únic principal, visible sense fer scroll -->
+      <div data-hero class="mt-9 flex flex-wrap items-center gap-4">
+        <a href={`/${lang}/#inscripcions`} class="btn btn-primary text-lg">{t.cta.register} <span class="arrow" aria-hidden="true">→</span></a>
+        <a href={`/${lang}/#recorreguts`} class="btn btn-ghost">{t.cta.routes}</a>
+      </div>
+
+      <div data-hero class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <div>
+          <div class="font-display text-xl font-bold">{t.hero.date}</div>
+          <div class="text-sm" style="color:var(--muted)">{EVENT.place[lang]} · {t.hero.dateNote}</div>
+        </div>
+        <div id="countdown" data-date={`${EVENT.date}T08:30:00+01:00`} class="flex gap-2" role="timer" aria-live="off">
+          {(['d', 'h', 'm', 's'] as const).map((u) => (
+            <div class="neo min-w-16 !rounded-2xl px-3 py-2 text-center">
+              <div class="font-display text-2xl font-extrabold tabular-nums" data-unit={u}>--</div>
+              <div class="text-[.65rem] font-bold uppercase" style="color:var(--muted)">{t.hero.countdown[u]}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Traçat real de la 21K dibuixat amb GSAP -->
+    <div data-hero class="relative mx-auto w-full max-w-md">
+      <div class="glass relative aspect-square overflow-visible rounded-[2.5rem] p-4">
+        <div class="absolute inset-0 overflow-hidden rounded-[2.5rem]" aria-hidden="true"><Photo name="aeria" alt="" eager class="h-full w-full object-cover opacity-25 grayscale" sizes="450px" /></div>
+        <svg viewBox={`0 0 ${W} ${H}`} class="h-full w-full" role="img" aria-label={t.routes.mapAlt}>
+          <path d={d} fill="none" stroke="var(--line)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+          <path id="hero-route" d={d} fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+          <circle id="hero-dot" r="10" fill="var(--accent)" stroke="var(--bg)" stroke-width="4" />
+        </svg>
+        <div class="glass absolute -bottom-4 -left-3 rounded-2xl px-4 py-3 sm:-left-8" style="animation:float 6s ease-in-out infinite">
+          <div class="text-xs font-bold uppercase" style="color:var(--muted)">21K</div>
+          <div class="font-display text-2xl font-extrabold">21,097 km</div>
+        </div>
+        <div class="clay absolute -right-3 -top-4 px-4 py-2 text-sm font-extrabold sm:-right-6" style="animation:float 7s ease-in-out -2s infinite">{t.hero.chip}</div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  @keyframes float { 50% { transform: translateY(-10px); } }
+</style>

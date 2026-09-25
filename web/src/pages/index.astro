@@ -1,0 +1,18 @@
+---
+// Arrel: redirigeix a l'idioma del navegador (ca per defecte). Amb servidor real: 301/Accept-Language.
+---
+<!doctype html>
+<html lang="ca">
+  <head>
+    <meta charset="utf-8" />
+    <title>MM Igualada</title>
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content="0; url=/ca/" />
+    <link rel="canonical" href="/ca/" />
+    <script is:inline>
+      var l = (navigator.language || 'ca').slice(0, 2);
+      location.replace('/' + (['ca', 'en', 'es'].indexOf(l) > -1 ? l : 'ca') + '/');
+    </script>
+  </head>
+  <body><a href="/ca/">MM Igualada</a></body>
+</html>

@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import { LANGS, useT } from '../i18n';
+---
+<Base lang="ca" title="404 · MM Igualada" description="Pàgina no trobada" noindex>
+  <section class="relative grid min-h-[80vh] place-items-center overflow-hidden px-5 pt-28 text-center">
+    <div class="pointer-events-none absolute inset-x-0 bottom-24 mx-auto h-px max-w-3xl" style="background:repeating-linear-gradient(90deg,var(--line) 0 14px,transparent 14px 28px)"></div>
+    <div>
+      <div class="font-display text-[clamp(6rem,24vw,14rem)] font-extrabold leading-none" style="color:var(--accent)">4<span class="runner inline-block" aria-hidden="true">🏃</span>4</div>
+      {LANGS.map((l) => {
+        const t = useT(l);
+        return (
+          <div data-lang={l} hidden={l !== 'ca'}>
+            <h1 class="mt-4 text-3xl font-extrabold sm:text-5xl">{t.notFound.title}</h1>
+            <p class="mx-auto mt-3 max-w-md text-lg" style="color:var(--muted)">{t.notFound.text}</p>
+            <a href={`/${l}/`} class="btn btn-primary mt-8">{t.notFound.back} <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</Base>
+<style>
+  .runner { animation: dash 2.4s var(--ease-in-out-strong) infinite alternate; }
+  @keyframes dash { from { transform: translateX(-.4em) scaleX(-1); } to { transform: translateX(.4em) scaleX(-1); } }
+</style>
+<script is:inline>
+  var l = location.pathname.split('/')[1];
+  if (['ca', 'en', 'es'].indexOf(l) < 0) l = (navigator.language || 'ca').slice(0, 2);
+  document.querySelectorAll('[data-lang]').forEach(function (e) { e.hidden = e.dataset.lang !== l; });
+  if (!document.querySelector('[data-lang]:not([hidden])')) document.querySelector('[data-lang=ca]').hidden = false;
+</script>

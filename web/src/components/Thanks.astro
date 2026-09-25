@@ -1,0 +1,21 @@
+---
+import { useT, type Lang } from '../i18n';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+const mono = (n: string) => n.split(/[\s’']+/).filter((w) => /^[A-ZÀ-Ú]/.test(w) && w.length > 2).slice(0, 2).map((w) => w[0]).join('');
+---
+<section id="gracies" class="px-5 py-20 sm:px-8">
+  <div class="mx-auto max-w-6xl text-center">
+    <h2 data-reveal class="text-4xl font-extrabold sm:text-5xl">{t.thanks.title}<span style="color:var(--accent)">.</span></h2>
+    <p data-reveal class="mx-auto mt-3 max-w-xl text-lg" style="color:var(--muted)">{t.thanks.lead}</p>
+    <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {t.thanks.entities.map((e, i) => (
+        <li data-reveal class="glass card-hover flex items-center gap-4 rounded-2xl p-4 text-left">
+          <span class="clay grid h-12 w-12 shrink-0 place-items-center font-display text-lg font-extrabold" style={`filter:hue-rotate(${i * 25}deg)`} aria-hidden="true">{mono(e)}</span>
+          <span class="font-bold leading-tight">{e}</span>
+        </li>
+      ))}
+    </ul>
+    <p data-reveal class="mx-auto mt-8 max-w-xl" style="color:var(--muted)">{t.thanks.volunteers}</p>
+  </div>
+</section>

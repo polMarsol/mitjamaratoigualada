@@ -1,0 +1,15 @@
+---
+import { useT, type Lang } from '../i18n';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+---
+<section class="px-5 py-10 sm:px-8" aria-label={t.band.title}>
+  <div data-reveal class="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 overflow-hidden rounded-[2.5rem] p-8 sm:flex-row sm:items-center sm:p-12" style="background:var(--fg);color:var(--bg)">
+    <svg class="pointer-events-none absolute -right-8 -top-8 w-56 opacity-20" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="3" aria-hidden="true"><circle cx="50" cy="50" r="42"/><circle cx="50" cy="50" r="28" stroke-dasharray="5 9"/></svg>
+    <div class="relative">
+      <h2 class="text-3xl font-extrabold sm:text-5xl">{t.band.title}</h2>
+      <p class="mt-2 max-w-md opacity-80">{t.band.text}</p>
+    </div>
+    <a href={`/${lang}/#inscripcions`} class="btn btn-primary relative shrink-0 text-lg">{t.cta.register} <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+</section>

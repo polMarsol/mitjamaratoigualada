@@ -1,0 +1,84 @@
+---
+import { useT, type Lang } from '../i18n';
+import { SPONSORS } from '../data/sponsors';
+import SponsorLogo from './SponsorLogo.astro';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+const tiers = [
+  { label: t.sponsors.tiers[0], items: SPONSORS.main, size: 'lg' as const, cls: 'grid-cols-1', card: 'h-44 neo' },
+  { label: t.sponsors.tiers[1], items: SPONSORS.partners, size: 'md' as const, cls: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4', card: 'h-32 glass' },
+];
+---
+<section id="sponsors" class="px-5 py-24 sm:px-8">
+  <div class="mx-auto max-w-6xl">
+    <h2 data-reveal class="text-4xl font-extrabold sm:text-6xl">{t.sponsors.title}</h2>
+    <p data-reveal class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{t.sponsors.lead}</p>
+
+    <div class="mt-12 grid grid-cols-[minmax(0,1fr)] gap-10">
+      {tiers.map((tier) => (
+        <div data-reveal class="min-w-0">
+          <h3 class="mb-4 text-sm font-bold uppercase tracking-wider" style="color:var(--muted)">{tier.label}</h3>
+          <div class:list={['grid gap-4', tier.cls.replace('grid-cols-1', 'grid-cols-[minmax(0,1fr)]')]}>
+            {tier.items.map((sp) => (
+              <a href={`/${lang}/#contacte`} rel="sponsored noopener" aria-label={`${sp.name} — ${sp.sector[lang]}`} class:list={['sponsor tilt group relative flex flex-col items-center justify-center gap-1 overflow-hidden rounded-3xl px-4 text-center', tier.card]}>
+                <span class="glare pointer-events-none absolute inset-0" aria-hidden="true"></span>
+                <span class="logo relative"><SponsorLogo name={sp.name} shape={sp.shape} color={sp.color} size={tier.size} /></span>
+                <span class="sector relative text-xs font-semibold" style="color:var(--muted)">{sp.sector[lang]}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div data-reveal class="min-w-0">
+        <h3 class="mb-4 text-sm font-bold uppercase tracking-wider" style="color:var(--muted)">{t.sponsors.tiers[2]}</h3>
+        <div class="marquee glass overflow-hidden rounded-3xl py-6" aria-label={t.sponsors.tiers[2]}>
+          <div class="marquee-track flex w-max items-center gap-12 px-6">
+            {[0, 1].map((dup) => (
+              <ul class="flex items-center gap-12" aria-hidden={dup ? 'true' : undefined}>
+                {SPONSORS.local.map((sp) => <li class="logo-local opacity-70 transition-opacity"><SponsorLogo name={sp.name} shape={sp.shape} color={sp.color} size="sm" /></li>)}
+              </ul>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-5 text-xs" style="color:var(--muted)">{t.sponsors.place}</p>
+    <div data-reveal class="clay mt-8 flex flex-col items-start justify-between gap-6 p-8 sm:flex-row sm:items-center">
+      <div>
+        <h3 class="font-display text-2xl font-extrabold">{t.sponsors.becomeTitle}</h3>
+        <p class="mt-1 opacity-90">{t.sponsors.becomeText}</p>
+      </div>
+      <a href={`/${lang}/#contacte`} class="btn shrink-0" style="background:var(--bg);color:var(--fg)">{t.sponsors.becomeCta} <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+<style>
+  .sponsor { transform-style: preserve-3d; transition: box-shadow .3s; }
+  .sponsor .logo { filter: grayscale(1) opacity(.75); transition: filter .35s, transform .35s var(--ease-out-strong); }
+  .sponsor .glare { background: radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgb(255 255 255 / .55), transparent 55%); opacity: 0; transition: opacity .3s; mix-blend-mode: soft-light; }
+  @media (hover: hover) {
+    .sponsor:hover .logo { filter: none; transform: translateZ(30px) scale(1.06); }
+    .sponsor:hover .glare { opacity: 1; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .logo-local:hover { opacity: 1; }
+  }
+  .marquee { mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee-track { animation: marquee 32s linear infinite; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+</style>
+<script>
+  // Inclinació 3D + brillantor que segueix el cursor (només amb ratolí)
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLElement>('.tilt').forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        el.style.transform = `perspective(700px) rotateY(${(x - 0.5) * 12}deg) rotateX(${(0.5 - y) * 12}deg) translateY(-4px)`;
+        el.style.setProperty('--gx', `${x * 100}%`); el.style.setProperty('--gy', `${y * 100}%`);
+      });
+      el.addEventListener('pointerleave', () => { el.style.transition = 'transform .5s cubic-bezier(.23,1,.32,1)'; el.style.transform = ''; setTimeout(() => (el.style.transition = ''), 500); });
+    });
+  }
+</script>

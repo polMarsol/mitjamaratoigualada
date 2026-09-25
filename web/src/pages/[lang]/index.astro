@@ -1,0 +1,62 @@
+---
+import { LANGS, useT, type Lang } from '../../i18n';
+import { EVENT, MODALITIES, LEGAL, TIERS, OPENS } from '../../data/event';
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Modalities from '../../components/Modalities.astro';
+import RouteExplorer from '../../components/RouteExplorer.astro';
+import Register from '../../components/Register.astro';
+import Program from '../../components/Program.astro';
+import Solidarity from '../../components/Solidarity.astro';
+import Rules from '../../components/Rules.astro';
+import Faq from '../../components/Faq.astro';
+import Sponsors from '../../components/Sponsors.astro';
+import Thanks from '../../components/Thanks.astro';
+import Contact from '../../components/Contact.astro';
+import Gallery from '../../components/Gallery.astro';
+import Stories from '../../components/Stories.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Experience from '../../components/Experience.astro';
+import Finishers from '../../components/Finishers.astro';
+import Udl from '../../components/Udl.astro';
+
+export const getStaticPaths = () => LANGS.map((lang) => ({ params: { lang } }));
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const site = Astro.site!.href.replace(/\/$/, '');
+const url = `${site}/${lang}/`;
+const jsonld = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'MM Igualada', url, inLanguage: lang },
+  { '@context': 'https://schema.org', '@type': 'Organization', name: LEGAL.entity, url: site, logo: `${site}/icon-512.png`, email: EVENT.email },
+  {
+    '@context': 'https://schema.org', '@type': 'SportsEvent', name: t.meta.title.split(' · ')[0] + ' · ' + t.hero.title1 + ' ' + t.hero.title2,
+    description: t.meta.description, startDate: `${EVENT.date}T08:30:00+01:00`, endDate: `${EVENT.date}T11:45:00+01:00`,
+    eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    image: [`${site}/og.jpg`], url,
+    location: { '@type': 'Place', name: 'Igualada · Vilanova del Camí', address: { '@type': 'PostalAddress', addressLocality: 'Igualada', addressRegion: 'Barcelona', addressCountry: 'ES' } },
+    organizer: { '@type': 'Organization', name: LEGAL.entity, url: site },
+    offers: MODALITIES.map((m) => ({ '@type': 'Offer', name: t.modalities.items[m.id].name, price: m.fees[0], priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: `${url}#inscripcions`, validFrom: OPENS, priceValidUntil: TIERS[0] })),
+    subEvent: MODALITIES.map((m) => ({ '@type': 'SportsEvent', name: t.modalities.items[m.id].name, startDate: `${EVENT.date}T${m.start}:00+01:00` })),
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: t.faq.items.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) },
+];
+---
+<Base lang={lang} jsonld={jsonld}>
+  <Hero lang={lang} />
+  <Modalities lang={lang} />
+  <Gallery lang={lang} />
+  <RouteExplorer lang={lang} />
+  <Register lang={lang} />
+  <Experience lang={lang} />
+  <Program lang={lang} />
+  <Stories lang={lang} />
+  <Finishers lang={lang} />
+  <CtaBand lang={lang} />
+  <Udl lang={lang} />
+  <Solidarity lang={lang} />
+  <Rules lang={lang} />
+  <Faq lang={lang} />
+  <Sponsors lang={lang} />
+  <Thanks lang={lang} />
+  <Contact lang={lang} />
+</Base>

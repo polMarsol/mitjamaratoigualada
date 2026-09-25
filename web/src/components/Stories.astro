@@ -1,0 +1,56 @@
+---
+import { useT, type Lang } from '../i18n';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+const hues = [12, 150, 200, 320];
+---
+<section id="historias" class="overflow-hidden py-24">
+  <div class="mx-auto max-w-[76rem] px-5 sm:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <h2 data-reveal class="text-4xl font-extrabold sm:text-6xl">{t.stories.title}</h2>
+        <p data-reveal class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{t.stories.lead}</p>
+      </div>
+      <div class="flex gap-2">
+        <button id="st-prev" type="button" aria-label={t.stories.prev} class="glass grid h-12 w-12 place-items-center rounded-full transition-transform active:scale-95">←</button>
+        <button id="st-next" type="button" aria-label={t.stories.next} class="clay grid h-12 w-12 place-items-center !rounded-full text-lg transition-transform active:scale-95">→</button>
+      </div>
+    </div>
+  </div>
+
+  <ul id="st-track" class="no-bar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-8 sm:px-8 lg:px-[max(2rem,calc((100vw-72rem)/2))]" tabindex="0" aria-label={t.stories.title} style="scroll-padding-inline:max(1.25rem,calc((100vw - 72rem)/2))">
+    {t.stories.items.map((s, i) => (
+      <li class="story neo card-hover w-[82vw] max-w-sm shrink-0 snap-start p-7 sm:w-[24rem]">
+        <div class="flex items-center gap-4">
+          <div class="grid h-16 w-16 place-items-center rounded-full font-display text-2xl font-extrabold text-white" style={`background:linear-gradient(135deg,hsl(${hues[i]} 80% 55%),hsl(${hues[i] + 40} 70% 38%));box-shadow:inset 0 -4px 8px rgb(0 0 0/.25),inset 0 4px 8px rgb(255 255 255/.3)`} aria-hidden="true">{s.name[0]}</div>
+          <div>
+            <h3 class="font-display text-xl font-bold">{s.name}</h3>
+            <p class="text-sm" style="color:var(--muted)">{s.meta}</p>
+          </div>
+        </div>
+        <blockquote class="mt-6 text-lg leading-snug">“{s.quote}”</blockquote>
+        <div class="mt-6 flex flex-wrap gap-2 text-xs font-bold">
+          <span class="rounded-full px-3 py-1" style="background:var(--accent);color:var(--accent-fg)">{s.mod}</span>
+          <span class="rounded-full px-3 py-1" style="background:var(--line)">{s.stat}</span>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <p class="mx-auto max-w-[76rem] px-5 text-sm sm:px-8" style="color:var(--muted)">{t.stories.disclaimer}</p>
+</section>
+<style>
+  .no-bar { scrollbar-width: none; } .no-bar::-webkit-scrollbar { display: none; }
+</style>
+<script>
+  const tr = document.getElementById('st-track');
+  if (tr) {
+    const step = () => (tr.querySelector('li') as HTMLElement).offsetWidth + 20;
+    document.getElementById('st-prev')!.addEventListener('click', () => tr.scrollBy({ left: -step(), behavior: 'smooth' }));
+    document.getElementById('st-next')!.addEventListener('click', () => tr.scrollBy({ left: step(), behavior: 'smooth' }));
+    // arrossegar amb el ratolí (escriptori)
+    let down = false, sx = 0, sl = 0;
+    tr.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = tr.scrollLeft; tr.style.scrollSnapType = 'none'; tr.style.cursor = 'grabbing'; });
+    addEventListener('pointerup', () => { if (!down) return; down = false; tr.style.scrollSnapType = ''; tr.style.cursor = ''; });
+    addEventListener('pointermove', (e) => { if (down) tr.scrollLeft = sl - (e.clientX - sx); });
+  }
+</script>

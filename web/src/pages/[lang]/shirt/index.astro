@@ -1,0 +1,59 @@
+---
+import { LANGS, useT, type Lang } from '../../../i18n';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+export const getStaticPaths = () => LANGS.map((lang) => ({ params: { lang } }));
+const lang = Astro.params.lang as Lang;
+const t = useT(lang), s = t.shirt;
+const site = Astro.site!.href.replace(/\/$/, '');
+const jsonld = [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: t.breadcrumb.home, item: `${site}/${lang}/` },
+  { '@type': 'ListItem', position: 2, name: s.title, item: `${site}/${lang}/shirt/` }] }];
+const sw = [['#0b5cad', 'Blau llac'], ['#0e7f8c', 'Teal'], ['#1a7a50', 'Verd'], ['#0d2233', 'Blau fosc'], ['#eaf3f6', 'Boira']];
+---
+<Base lang={lang} path="shirt/" title={`${s.title} · MM Igualada`} description={s.metaDesc} jsonld={jsonld}>
+  <div class="mx-auto max-w-6xl px-5 pb-10 pt-32 sm:px-8 md:pt-40">
+    <Breadcrumb lang={lang} current={s.title} />
+    <h1 class="mt-6 text-4xl font-extrabold sm:text-6xl">{s.title}</h1>
+    <p class="mt-4 max-w-3xl text-lg" style="color:var(--muted)">{s.lead}</p>
+
+    <div id="shirt-viewer" class="glass relative mt-8 h-[68vh] min-h-[420px] w-full overflow-hidden rounded-[2.5rem]" data-loading={s.loading} data-nogl={s.nogl}>
+      <canvas id="shirt-canvas" class="block h-full w-full cursor-grab active:cursor-grabbing" tabindex="0" role="img" aria-label={s.canvas}></canvas>
+      <p id="shirt-status" class="absolute inset-0 grid place-items-center p-6 text-center font-semibold" style="color:var(--muted)">{s.loading}</p>
+      <p class="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-xs font-semibold" style="color:var(--muted)">{s.hint}</p>
+    </div>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2" role="group" aria-label={s.canvas}>
+      <button id="v-front" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.front}</button>
+      <button id="v-back" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.back}</button>
+      <button id="v-left" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.left}</button>
+      <button id="v-right" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.right}</button>
+      <button id="v-reset" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.reset}</button>
+      <label class="ml-auto flex min-h-11 items-center gap-2 text-sm font-semibold"><input id="shirt-bib" type="checkbox" class="h-5 w-5 accent-[var(--accent)]" />{s.bib}</label>
+      <label class="flex min-h-11 items-center gap-2 text-sm font-semibold"><input id="shirt-auto" type="checkbox" class="h-5 w-5 accent-[var(--accent)]" />{s.auto}</label>
+    </div>
+
+    <h2 class="mt-16 text-3xl font-extrabold sm:text-4xl">{s.designTitle}</h2>
+    <ol class="mt-6 grid gap-4 md:grid-cols-2">
+      {s.items.map((it, i) => (
+        <li class:list={['card-hover flex gap-4 rounded-[1.75rem] p-5', i % 3 === 1 ? 'neo' : 'glass']}>
+          <span class="clay grid h-10 w-10 shrink-0 place-items-center font-display text-lg font-extrabold" aria-hidden="true">{i + 1}</span>
+          <div><h3 class="font-display text-xl font-bold">{it.t}</h3><p class="mt-1" style="color:var(--muted)">{it.d}</p></div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      <span class="text-sm font-bold">{s.swatches}</span>
+      {sw.map(([c, n]) => <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold glass"><i class="inline-block h-4 w-4 rounded-full" style={`background:${c};box-shadow:0 0 0 1px var(--line)`}></i>{c}</span>)}
+    </div>
+    <p class="mt-6 text-sm" style="color:var(--muted)">{s.note}</p>
+    <a href={`/${lang}/#inscripcions`} class="btn btn-primary mt-8">{s.cta} <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+</Base>
+<style>
+  .vbtn { transition: transform .18s var(--ease-out-strong), background-color .2s; }
+  .vbtn:active { transform: scale(.96); }
+  @media (hover: hover) { .vbtn:hover { background: var(--glass-b); } }
+</style>
+<script>import '../../../scripts/shirt';</script>

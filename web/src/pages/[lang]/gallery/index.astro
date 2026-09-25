@@ -1,0 +1,96 @@
+---
+import { LANGS, useT, type Lang } from '../../../i18n';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import Photo from '../../../components/Photo.astro';
+import { PHOTOS, type Cat } from '../../../data/photos';
+export const getStaticPaths = () => LANGS.map((lang) => ({ params: { lang } }));
+const lang = Astro.params.lang as Lang;
+const t = useT(lang), g = t.galleryPage;
+const site = Astro.site!.href.replace(/\/$/, '');
+const jsonld = [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: t.breadcrumb.home, item: `${site}/${lang}/` },
+  { '@type': 'ListItem', position: 2, name: g.title, item: `${site}/${lang}/gallery/` }] }];
+const keys = Object.keys(PHOTOS);
+const cats = ['all', 'city', 'park', 'campus', 'sport', 'culture'] as const;
+---
+<Base lang={lang} path="gallery/" title={`${g.title} · MM Igualada`} description={g.metaDesc} jsonld={jsonld}>
+  <div class="mx-auto max-w-6xl px-5 pb-10 pt-32 sm:px-8 md:pt-40">
+    <Breadcrumb lang={lang} current={g.title} />
+    <h1 class="mt-6 text-4xl font-extrabold sm:text-6xl">{g.title}</h1>
+    <p class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{g.lead}</p>
+
+    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label={g.title}>
+      {cats.map((c, i) => <button type="button" data-cat={c} aria-pressed={i === 0 ? 'true' : 'false'} class="fchip glass rounded-full px-4 py-2 text-sm font-bold">{g.filters[c]}</button>)}
+    </div>
+
+    <ul id="grid" class="mt-8 gap-4 [column-count:1] sm:[column-count:2] lg:[column-count:3]">
+      {keys.map((k) => (
+        <li data-cat={PHOTOS[k].cat} class="mb-4 break-inside-avoid">
+          <button type="button" data-open={k} class="ph group relative block w-full overflow-hidden rounded-[1.5rem] text-left" aria-label={`${g.open}: ${PHOTOS[k].cap[lang]}`}>
+            <Photo name={k} alt={PHOTOS[k].cap[lang]} class="ph-img h-auto w-full" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
+            <span class="ph-cap absolute inset-x-0 bottom-0 p-4 font-display text-lg font-bold text-white" style="background:linear-gradient(transparent,rgb(0 0 0/.7))">{PHOTOS[k].cap[lang]}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-2 text-sm" style="color:var(--muted)">{t.gallery.credits}{[...new Set(keys.map((k) => PHOTOS[k].author))].join(', ')}.</p>
+    <a href={`/${lang}/results/`} class="btn btn-ghost mt-8">{g.results} →</a>
+  </div>
+
+  <dialog id="lb" class="lb" aria-label={g.title}>
+    <div class="lb-inner">
+      <img id="lb-img" alt="" />
+      <div class="lb-bar">
+        <div><div id="lb-cap" class="font-display text-lg font-bold"></div><a id="lb-credit" target="_blank" rel="noopener noreferrer" class="text-sm underline underline-offset-2"></a></div>
+        <div class="flex gap-2">
+          <button type="button" id="lb-prev" class="lb-btn" aria-label={g.prev}>←</button>
+          <button type="button" id="lb-next" class="lb-btn" aria-label={g.next}>→</button>
+          <button type="button" id="lb-close" class="lb-btn" aria-label={g.close}>✕</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+  <script id="photo-data" type="application/json" set:html={JSON.stringify(Object.fromEntries(keys.map((k) => [k, { cap: PHOTOS[k].cap[lang], author: PHOTOS[k].author, license: PHOTOS[k].license, page: PHOTOS[k].page, w: PHOTOS[k].w, h: PHOTOS[k].h, credit: t.photo.credit }])))} />
+</Base>
+<style>
+  .fchip { transition: background-color .2s, color .2s, transform .18s var(--ease-out-strong); }
+  .fchip:active { transform: scale(.96); }
+  .fchip[aria-pressed='true'] { background: var(--grad); color: var(--accent-fg); }
+  .ph-img { transition: transform .7s var(--ease-out-strong); }
+  .ph-cap { transition: opacity .3s, transform .35s var(--ease-out-strong); }
+  @media (hover: hover) { .ph .ph-cap { opacity: 0; transform: translateY(8px); } .ph:hover .ph-cap, .ph:focus-visible .ph-cap { opacity: 1; transform: none; } .ph:hover .ph-img { transform: scale(1.05); } }
+  .lb { border: 0; background: transparent; padding: 0; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100dvh; color: #fff; }
+  .lb::backdrop { background: rgb(4 12 18 / .92); backdrop-filter: blur(8px); }
+  .lb-inner { display: grid; grid-template-rows: 1fr auto; height: 100%; padding: 1rem; gap: .75rem; }
+  .lb-inner img { width: 100%; height: 100%; object-fit: contain; min-height: 0; border-radius: 1rem; }
+  .lb-bar { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; }
+  .lb-btn { width: 48px; height: 48px; border-radius: 999px; background: rgb(255 255 255 / .14); color: #fff; font-size: 1.1rem; transition: background-color .2s, transform .18s var(--ease-out-strong); }
+  .lb-btn:hover { background: rgb(255 255 255 / .28); } .lb-btn:active { transform: scale(.94); }
+</style>
+<script>
+  import gsap from 'gsap';
+  const data = JSON.parse(document.getElementById('photo-data')!.textContent!) as Record<string, any>;
+  const lb = document.getElementById('lb') as HTMLDialogElement, img = document.getElementById('lb-img') as HTMLImageElement;
+  const items = () => [...document.querySelectorAll<HTMLElement>('#grid li:not([hidden]) [data-open]')].map((b) => b.dataset.open!);
+  let cur = '';
+  const show = (k: string) => {
+    cur = k; const d = data[k];
+    img.src = `/img/${k}-1400.webp`; img.alt = d.cap;
+    document.getElementById('lb-cap')!.textContent = d.cap;
+    const a = document.getElementById('lb-credit') as HTMLAnchorElement; a.href = d.page; a.textContent = `${d.credit}: ${d.author} · ${d.license}`;
+    gsap.fromTo(img, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'expo.out' });
+  };
+  const step = (n: number) => { const l = items(); show(l[(l.indexOf(cur) + n + l.length) % l.length]); };
+  document.querySelectorAll<HTMLElement>('[data-open]').forEach((b) => b.addEventListener('click', () => { lb.showModal(); show(b.dataset.open!); }));
+  document.getElementById('lb-close')!.addEventListener('click', () => lb.close());
+  document.getElementById('lb-prev')!.addEventListener('click', () => step(-1));
+  document.getElementById('lb-next')!.addEventListener('click', () => step(1));
+  lb.addEventListener('click', (e) => e.target === lb && lb.close());
+  lb.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.fchip')];
+  chips.forEach((c) => c.addEventListener('click', () => {
+    chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+    document.querySelectorAll<HTMLElement>('#grid li').forEach((li) => (li.hidden = c.dataset.cat !== 'all' && li.dataset.cat !== c.dataset.cat));
+  }));
+</script>

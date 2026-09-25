@@ -1,0 +1,12 @@
+---
+import { useT, type Lang } from '../i18n';
+const { lang, current } = Astro.props as { lang: Lang; current: string };
+const t = useT(lang);
+---
+<nav aria-label={t.breadcrumb.label} class="text-sm">
+  <ol class="flex flex-wrap items-center gap-2" style="color:var(--muted)">
+    <li><a href={`/${lang}/`} class="font-semibold underline-offset-2 hover:underline" style="color:var(--fg)">{t.breadcrumb.home}</a></li>
+    <li aria-hidden="true">/</li>
+    <li aria-current="page">{current}</li>
+  </ol>
+</nav>

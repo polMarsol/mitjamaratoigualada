@@ -1,0 +1,31 @@
+---
+import { useT, type Lang } from '../i18n';
+import { ANALYTICS_ID } from '../data/event';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+---
+<div id="cookie-banner" hidden role="dialog" aria-live="polite" aria-labelledby="cb-title" data-ga={ANALYTICS_ID}
+     class="glass fixed inset-x-3 bottom-3 z-[180] mx-auto max-w-3xl rounded-3xl p-5 sm:bottom-5 sm:p-6" style="background:color-mix(in srgb,var(--bg) 97%,transparent)">
+  <h2 id="cb-title" class="font-display text-lg font-bold">{t.cookie.title}</h2>
+  <p class="mt-1 text-sm" style="color:var(--muted)">{t.cookie.text} <a href={`/${lang}/cookies/`} class="font-semibold underline underline-offset-2" style="color:var(--fg)">{t.cookie.more}</a></p>
+  <div class="mt-4 flex flex-wrap gap-3">
+    <!-- Mateix pes visual per acceptar i rebutjar (RGPD/LSSI) -->
+    <button type="button" data-consent="all" class="btn btn-primary !py-2.5 text-sm">{t.cookie.accept}</button>
+    <button type="button" data-consent="necessary" class="btn btn-ghost !py-2.5 text-sm">{t.cookie.reject}</button>
+  </div>
+</div>
+<script>
+  const banner = document.getElementById('cookie-banner')!;
+  const gaId = banner.dataset.ga || '';
+  const get = () => { try { return localStorage.getItem('consent'); } catch { return null; } };
+  const loadGA = () => {
+    if (!/^G-[A-Z0-9]+$/.test(gaId) || document.getElementById('ga4')) return;
+    const s = document.createElement('script'); s.id = 'ga4'; s.async = true; s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`; document.head.appendChild(s);
+    const w = window as any; w.dataLayer = w.dataLayer || []; w.gtag = function () { w.dataLayer.push(arguments); };
+    w.gtag('js', new Date()); w.gtag('config', gaId, { anonymize_ip: true });
+  };
+  const set = (v: string) => { try { localStorage.setItem('consent', v); } catch {} banner.hidden = true; if (v === 'all') loadGA(); };
+  if (get() === null) setTimeout(() => (banner.hidden = false), 1200); else if (get() === 'all') loadGA();
+  banner.querySelectorAll<HTMLElement>('[data-consent]').forEach((b) => b.addEventListener('click', () => set(b.dataset.consent!)));
+  document.querySelectorAll('[data-cookie-settings]').forEach((b) => b.addEventListener('click', () => { banner.hidden = false; (banner.querySelector('button') as HTMLElement).focus(); }));
+</script>

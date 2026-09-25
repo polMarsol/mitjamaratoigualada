@@ -1,0 +1,49 @@
+---
+import { useT, type Lang } from '../i18n';
+import { MODALITIES, TIERS } from '../data/event';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+const loc = { ca: 'ca-ES', en: 'en-GB', es: 'es-ES' }[lang];
+const fmt = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString(loc, { day: 'numeric', month: 'long' });
+---
+<div class="glass overflow-x-auto rounded-[2rem] p-2 sm:p-4" data-price-table>
+  <table class="w-full min-w-[34rem] text-left">
+    <thead>
+      <tr class="text-sm" style="color:var(--muted)">
+        <th scope="col" class="p-4">{t.register.tier}</th>
+        {MODALITIES.map((m) => <th scope="col" class="p-4">{t.modalities.items[m.id].name}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {TIERS.map((until, i) => (
+        <tr class="tier border-t transition-colors" style="border-color:var(--line)" data-until={until}>
+          <th scope="row" class="p-4 font-semibold">
+            {i + 1} <span class="text-sm font-normal" style="color:var(--muted)">· {i === TIERS.length - 1 ? t.register.last + ' · ' : ''}{t.register.until} {fmt(until)}</span>
+            <span class="now ml-2 hidden rounded-full px-2.5 py-0.5 text-xs font-bold" style="background:var(--grad);color:var(--accent-fg)">{t.register.now}</span>
+          </th>
+          {MODALITIES.map((m) => <td class="font-display p-4 text-2xl font-extrabold">{m.fees[i]} €</td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p id="price-next" class="mt-3 text-sm font-semibold" style="color:var(--accent)" data-days={t.register.days} data-label={t.register.nextChange}></p>
+<style>
+  :global(tr.tier[data-current='true']) { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  :global(tr.tier[data-current='true'] .now) { display: inline-block; }
+  :global(tr.tier[data-current='true'] td) { color: var(--accent); }
+</style>
+<script>
+  const rows = [...document.querySelectorAll<HTMLElement>('tr.tier')];
+  if (rows.length) {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const cur = rows.find((r) => new Date(`${r.dataset.until}T23:59:59`) >= today) ?? rows[rows.length - 1];
+    cur.dataset.current = 'true';
+    const out = document.getElementById('price-next')!;
+    const idx = rows.indexOf(cur);
+    if (idx < rows.length - 1) {
+      const d = Math.ceil((new Date(`${cur.dataset.until}T23:59:59`).getTime() - Date.now()) / 86400000);
+      out.textContent = `${out.dataset.label} ${Math.max(d, 0)} ${out.dataset.days}`;
+    }
+  }
+</script>

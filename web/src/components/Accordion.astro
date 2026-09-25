@@ -1,0 +1,25 @@
+---
+interface Props { items: { q: string; a: string }[]; name: string }
+const { items, name } = Astro.props;
+---
+<div class="grid gap-3">
+  {items.map((it, i) => (
+    <details name={name} data-reveal class="acc glass rounded-2xl" open={i === 0 ? undefined : undefined}>
+      <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left font-display text-lg font-bold">
+        <span>{it.q}</span>
+        <svg class="chev shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <p class="px-5 pb-5" style="color:var(--muted)">{it.a}</p>
+    </details>
+  ))}
+</div>
+<style>
+  .acc summary::-webkit-details-marker { display: none; }
+  .chev { transition: transform .3s var(--ease-out-strong); }
+  .acc[open] .chev { transform: rotate(180deg); }
+  .acc { transition: background-color .2s; }
+  .acc[open] { background: var(--glass-b); }
+  .acc::details-content { block-size: 0; overflow: clip; transition: block-size .35s var(--ease-out-strong), content-visibility .35s allow-discrete; }
+  .acc[open]::details-content { block-size: auto; }
+  @supports (interpolate-size: allow-keywords) { :global(:root) { interpolate-size: allow-keywords; } }
+</style>

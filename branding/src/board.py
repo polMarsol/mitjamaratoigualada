@@ -1,0 +1,67 @@
+import subprocess
+O='/home/pol/Documents/TFG_marti/branding/'
+shirt=lambda fill,logo,w='96',t='30%',l='50%': f'''<div class="shirt"><svg viewBox="0 0 300 300"><path d="M100 22Q150 58 200 22L282 62 256 114 226 98V276H74V98L44 114 18 62Z" fill="{fill}" stroke="rgb(0 0 0/.15)" stroke-width="2"/></svg><img src="{logo}" alt="" style="width:{w}px;top:{t};left:{l}"></div>'''
+html=f'''<!doctype html><html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logo MM Igualada · proposta</title>
+<style>
+:root{{--navy:#0d2233;--blue:#0b5cad;--green:#1a7a50;--mist:#eaf3f6}}
+*{{box-sizing:border-box}} body{{margin:0;font-family:system-ui,sans-serif;background:#f2f6f7;color:var(--navy);line-height:1.5}}
+main{{max-width:1180px;margin:0 auto;padding:48px 24px 96px}}
+h1{{font-size:clamp(2rem,5vw,3.4rem);margin:0 0 8px;letter-spacing:-.02em}} h2{{font-size:1.6rem;margin:64px 0 8px;letter-spacing:-.01em}} .lead{{max-width:62ch;color:#45606f}}
+.card{{border-radius:28px;padding:40px;display:grid;place-items:center;min-height:280px}} .grid{{display:grid;gap:20px}} .g2{{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}} .g3{{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}}
+.white{{background:#fff;box-shadow:0 10px 30px -14px rgb(11 60 110/.35)}} .navy{{background:var(--navy)}} .grad{{background:linear-gradient(135deg,#0b5cad,#0e7f8c 55%,#1a7a50)}} .mist{{background:var(--mist)}}
+.card img.big{{width:min(100%,440px)}} .cap{{font-size:.85rem;color:#45606f;margin-top:10px;text-align:center}} .capw{{color:#cfe0e8}}
+.shirt{{position:relative;width:min(100%,300px)}} .shirt svg{{width:100%;display:block}} .shirt img{{position:absolute;transform:translateX(-50%)}}
+.bib{{position:relative;width:min(100%,360px);aspect-ratio:1.45;background:#fff;border-radius:14px;box-shadow:0 8px 24px rgb(0 0 0/.18);padding:14px;display:flex;flex-direction:column;justify-content:space-between}}
+.bib b{{font-size:5rem;line-height:.9;letter-spacing:-.04em;text-align:center}} .bib .row{{display:flex;justify-content:space-between;align-items:center}} .bib .tag{{background:var(--navy);color:#fff;font-weight:800;padding:4px 12px;border-radius:99px;font-size:.8rem}}
+.banner{{width:130px;height:300px;background:var(--navy);border-radius:10px;padding:16px 14px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;color:#fff;text-align:center;box-shadow:0 8px 24px rgb(0 0 0/.25)}} .banner img{{width:100%}} .banner strong{{font-size:1rem;line-height:1.1}} .banner small{{font-size:.62rem}}
+.arch{{position:relative;width:min(100%,380px);height:220px}} .arch .pillar{{position:absolute;bottom:0;width:30px;height:200px;background:var(--navy);border-radius:6px 6px 0 0}} .arch .beam{{position:absolute;top:0;left:0;right:0;height:110px;background:var(--navy);border-radius:55px 55px 8px 8px;display:grid;place-items:center}} .arch .beam img{{height:78px}} .arch .finish{{position:absolute;bottom:0;left:30px;right:30px;height:14px;background:repeating-linear-gradient(90deg,#fff 0 14px,#111 14px 28px);border:1px solid #111}}
+.tab{{background:#dfe6ea;border-radius:12px 12px 0 0;padding:8px 14px;display:inline-flex;gap:8px;align-items:center;font-size:.85rem;width:250px}} .tab img{{width:16px;height:16px}}
+.sizes{{display:flex;align-items:end;gap:28px;flex-wrap:wrap}} .sizes img{{display:block}}
+.note{{background:#fff;border-radius:20px;padding:22px 26px;box-shadow:0 10px 30px -14px rgb(11 60 110/.3)}} li{{margin:6px 0}}
+</style></head><body><main>
+<p style="font-weight:700;letter-spacing:.14em;font-size:.8rem;color:var(--blue)">PROPOSTA DE LOGO · V1</p>
+<h1>MM Igualada</h1>
+<p class="lead">Una marca que es reconegui només veient-la: dues <b>M</b> dibuixades amb un sol traç, que són alhora la inicial de <em>Mitja Marató</em>, una serralada i el perfil d’altimetria d’una cursa. Comença amb un punt (sortida) i acaba amb un altre (meta), com al mapa d’un GPS. A sota, l’Anoia.</p>
+
+<h2>1 · Logotip principal</h2>
+<div class="grid g2">
+  <div class="card white"><img class="big" src="logo-principal.svg" alt="Logo principal"><div class="cap">Color · sobre blanc</div></div>
+  <div class="card navy"><img class="big" src="logo-mono-blanc.svg" alt="Logo blanc"><div class="cap capw">Blanc · sobre blau fosc (samarretes, cartells, llums)</div></div>
+  <div class="card grad"><img class="big" src="logo-mono-blanc.svg" alt="Logo blanc sobre degradat"><div class="cap capw">Blanc · sobre el degradat de marca</div></div>
+  <div class="card mist"><img class="big" src="logo-mono-blau-fosc.svg" alt="Logo blau fosc"><div class="cap">Una tinta · per a serigrafia, segells, fax i impressió barata</div></div>
+</div>
+
+<h2>2 · La família</h2>
+<div class="grid g3">
+  <div class="card white" style="grid-column:span 2"><img src="logo-horitzontal.svg" alt="Logo horitzontal" style="width:min(100%,640px)"><div class="cap">Horitzontal · capçalera web, dorsals, correus, pancartes baixes</div></div>
+  <div class="card white"><img src="logo-icona.svg" alt="Icona" style="width:150px;border-radius:34px"><div class="cap">Icona · favicon, xarxes, app</div></div>
+  <div class="card white"><img src="logo-insignia.svg" alt="Insígnia" style="width:210px"><div class="cap">Insígnia «Xemeneia de maó» · medalles, adhesius, arc de meta, samarreta finisher</div></div>
+  <div class="card white"><img src="logo-marca.svg" alt="Marca" style="width:210px"><div class="cap">Només la marca · brodats, patrons, fons</div></div>
+</div>
+
+<h2>3 · Aplicacions</h2>
+<div class="grid g3">
+  <div class="card mist"><div>{shirt('#ffffff','logo-principal.svg','92')}<div class="cap">Samarreta tècnica blanca</div></div></div>
+  <div class="card white"><div>{shirt('#0d2233','logo-mono-blanc.svg','92')}<div class="cap">Samarreta finisher blau fosc</div></div></div>
+  <div class="card white"><div>{shirt('#1a7a50','logo-mono-blanc.svg','92')}<div class="cap">Samarreta voluntariat</div></div></div>
+  <div class="card mist"><div><div class="bib"><div class="row"><img src="logo-horitzontal.svg" alt="" style="height:44px"><span class="tag">21K</span></div><b>0421</b><div class="row" style="font-size:.7rem;color:#45606f"><span>13 DE DESEMBRE · IGUALADA</span><span>XIP</span></div></div><div class="cap">Dorsal</div></div></div>
+  <div class="card mist"><div style="display:flex;gap:14px;justify-content:center"><div class="banner"><img src="logo-mono-blanc.svg" alt=""><strong>AVITUALLAMENT<br>KM 5</strong><small>AIGUA · ISOTÒNIC · FRUITA</small></div><div class="banner" style="background:var(--green)"><img src="logo-mono-blanc.svg" alt=""><strong>KM 10<br>TALL 10:00</strong><small>ÀNIMS!</small></div></div><div class="cap">Banderoles d’avituallament i control</div></div>
+  <div class="card white"><div class="arch"><div class="pillar" style="left:0"></div><div class="pillar" style="right:0"></div><div class="beam"><img src="logo-mono-blanc.svg" alt=""></div><div class="finish"></div></div><div class="cap">Arc de meta</div></div>
+</div>
+
+<h2>4 · Proves de llegibilitat</h2>
+<div class="grid g2">
+  <div class="card white"><div class="sizes"><img src="logo-principal.svg" width="160" alt=""><img src="logo-principal.svg" width="100" alt=""><img src="logo-principal.svg" width="64" alt=""><img src="logo-horitzontal.svg" width="180" alt=""><img src="logo-horitzontal.svg" width="110" alt=""></div><div class="cap">Reduccions (160 · 100 · 64 px)</div></div>
+  <div class="card white"><div class="sizes"><img src="logo-icona.svg" width="96" style="border-radius:22px" alt=""><img src="logo-icona.svg" width="48" style="border-radius:11px" alt=""><img src="logo-icona.svg" width="32" style="border-radius:8px" alt=""><img src="logo-icona.svg" width="16" style="border-radius:4px" alt=""></div><div><div class="tab" style="margin-top:18px"><img src="logo-icona.svg" alt="">MM Igualada · Mitja Marató</div></div><div class="cap">Icona / favicon: 96 · 48 · 32 · 16 px i pestanya del navegador</div></div>
+</div>
+<h2>5 · Per què funciona</h2>
+<div class="note"><ul>
+<li><b>Es reconeix en un cop d’ull:</b> una silueta molt simple (un traç en zig-zag) que es distingeix fins i tot a 16 px.</li>
+<li><b>Diu «Mitja Marató»</b> (MM) i diu «cursa» (perfil d’altimetria, sortida → meta) sense necessitat de text.</li>
+<li><b>Diu Igualada:</b> el nom en gran, l’Anoia a sota i, com a segell alternatiu, la xemeneia de maó de les antigues adoberies.</li>
+<li><b>Funciona en una tinta</b> (samarreta, serigrafia, brodat) i en negatiu.</li>
+<li><b>Coherent amb la web:</b> mateixa paleta blau-verd-gris del Parc Central i mateixa tipografia (Bricolage Grotesque).</li>
+</ul></div>
+</main></body></html>'''
+open(O+'presentacio.html','w').write(html)

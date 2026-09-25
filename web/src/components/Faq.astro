@@ -1,0 +1,16 @@
+---
+import { useT, type Lang } from '../i18n';
+import Accordion from './Accordion.astro';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+---
+<section id="faq" class="px-5 py-24 sm:px-8">
+  <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.8fr_1.2fr]">
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 data-reveal class="text-4xl font-extrabold sm:text-6xl">{t.faq.title}</h2>
+      <p data-reveal class="mt-4 text-lg" style="color:var(--muted)">{t.faq.lead}</p>
+      <a data-reveal href={`/${lang}/#contacte`} class="btn btn-ghost mt-8">{t.nav.contact} <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+    <Accordion items={t.faq.items} name="faq" />
+  </div>
+</section>

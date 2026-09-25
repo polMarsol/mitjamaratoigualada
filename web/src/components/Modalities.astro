@@ -1,0 +1,45 @@
+---
+import { useT, type Lang } from '../i18n';
+import { MODALITIES } from '../data/event';
+import { PHOTOS } from '../data/photos';
+import Photo from './Photo.astro';
+const pics: Record<string, string> = { '21k': 'aeria', '10k': 'passeig-2', walk: 'pf-pont' };
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+const skins = ['glass', 'neo', 'glass'];
+---
+<section id="modalitats" class="px-5 py-24 sm:px-8">
+  <div class="mx-auto max-w-6xl">
+    <h2 data-reveal class="text-4xl font-extrabold sm:text-6xl">{t.modalities.title}</h2>
+    <p data-reveal class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{t.modalities.lead}</p>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-3">
+      {MODALITIES.map((m, i) => {
+        const it = t.modalities.items[m.id];
+        return (
+          <article data-reveal class:list={['card-hover relative flex flex-col overflow-hidden rounded-[2rem] p-7', skins[i]]}>
+            <div class="mcard-photo relative -mx-7 -mt-7 mb-5 h-44 overflow-hidden">
+              <Photo name={pics[m.id]} alt={PHOTOS[pics[m.id]].cap[lang]} class="h-full w-full object-cover" sizes="(min-width:768px) 33vw, 100vw" />
+              <div class="absolute inset-0" style="background:linear-gradient(transparent 50%,rgb(0 0 0/.35))"></div>
+            </div>
+            <span class="relative w-fit rounded-full px-3 py-1 text-xs font-bold" style="background:var(--line)">{it.tag}</span>
+            <h3 class="relative mt-5 text-3xl font-extrabold">{it.name}</h3>
+            <div class="font-display relative mt-1 text-6xl font-extrabold" style="color:var(--accent)">{m.km}<span class="ml-1 text-xl font-bold">km</span></div>
+            <p class="relative mt-4 flex-1" style="color:var(--muted)">{it.desc}</p>
+            <dl class="relative mt-6 grid grid-cols-3 gap-2 text-sm">
+              <div><dt style="color:var(--muted)">{t.modalities.start}</dt><dd class="font-bold">{m.start}</dd></div>
+              <div><dt style="color:var(--muted)">{t.modalities.cutoff}</dt><dd class="font-bold">{m.cutoff}</dd></div>
+              <div><dt style="color:var(--muted)">{t.modalities.minAge}</dt><dd class="font-bold">{m.minAge ? `${m.minAge} ${t.modalities.years}` : t.modalities.allAges}</dd></div>
+            </dl>
+            <a href={`/${lang}/#recorreguts`} data-route-link={m.routeId} class="btn btn-ghost relative mt-6">{t.modalities.see} <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+<style>
+  .mcard-photo img { transition: transform .7s var(--ease-out-strong); }
+  @media (hover: hover) { :global(article:hover) .mcard-photo img { transform: scale(1.08); } }
+</style>

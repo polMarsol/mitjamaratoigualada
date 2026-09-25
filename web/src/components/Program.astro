@@ -1,0 +1,42 @@
+---
+import { useT, type Lang } from '../i18n';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang);
+---
+<section id="programa" class="px-5 py-24 sm:px-8">
+  <div class="mx-auto max-w-6xl">
+    <h2 data-reveal class="text-4xl font-extrabold sm:text-6xl">{t.program.title}</h2>
+    <p data-reveal class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{t.program.lead}</p>
+
+    <ol class="relative mt-14 grid gap-5 before:absolute before:bottom-2 before:left-[1.05rem] before:top-2 before:w-0.5 before:content-[''] md:before:left-[9.3rem]" style="--tl:var(--line)">
+      {t.program.items.map((it) => (
+        <li data-reveal class="relative grid gap-x-6 pl-11 md:grid-cols-[8rem_1fr] md:pl-0">
+          <span class="dot absolute left-2 top-2 h-5 w-5 rounded-full border-4 md:left-[8.35rem]" aria-hidden="true"></span>
+          <time class="font-display pt-0.5 text-2xl font-extrabold md:pr-4 md:text-right" style="color:var(--accent)">{it.time}</time>
+          <div class="md:pl-12">
+            <h3 class="text-xl font-bold">{it.title}</h3>
+            <p style="color:var(--muted)">{it.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="mt-20">
+      <h3 data-reveal class="text-3xl font-extrabold sm:text-4xl">{t.services.title}</h3>
+      <p data-reveal class="mt-3 max-w-2xl" style="color:var(--muted)">{t.services.lead}</p>
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {t.services.items.map((s, i) => (
+          <div data-reveal class:list={['card-hover rounded-[1.75rem] p-6', i % 2 ? 'glass' : 'neo']}>
+            <div class="clay mb-4 grid h-11 w-11 place-items-center font-display text-lg font-extrabold" aria-hidden="true">{i + 1}</div>
+            <h4 class="font-display text-xl font-bold">{s.title}</h4>
+            <p class="mt-2 text-sm" style="color:var(--muted)">{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  ol::before { background: var(--line); }
+  .dot { background: var(--bg); border-color: var(--accent); }
+</style>

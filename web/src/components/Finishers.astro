@@ -1,0 +1,105 @@
+---
+import { useT, type Lang } from '../i18n';
+import { RESULTS } from '../data/results';
+const { lang } = Astro.props as { lang: Lang };
+const t = useT(lang), f = t.finishers;
+
+// Mural de MOSTRA: noms ficticiosk de les dades d'exemple (mescla determinista).
+const names = [...new Set([...RESULTS['21k'].rows, ...RESULTS['10k'].rows].map((r) => r.name))];
+const rng = (seed: number) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+const r = rng(2026);
+const colors = ['var(--fg)', 'var(--accent)', 'var(--green)', '#0e7f8c', 'var(--fg)'];
+type Item = { kind: 'sig' | 'foot' | 'slot'; text?: string; size: number; rot: number; color: string; op: number };
+const items: Item[] = names.map((n, i) => {
+  const [first, s1] = n.split(' '), v = r();
+  const text = v < 0.5 ? `${first} ${s1}` : v < 0.78 ? `${first} ${s1[0]}.` : first;
+  return { kind: 'sig', text, size: 1.35 + r() * 1.35, rot: -7 + r() * 14, color: colors[i % colors.length], op: 0.72 + r() * 0.26 };
+});
+for (let i = 0; i < 14; i++) items.push({ kind: 'foot', size: 1.5 + r() * 1.2, rot: -25 + r() * 50, color: colors[(i + 1) % 4], op: 0.55 + r() * 0.3 });
+for (let i = 0; i < 9; i++) items.push({ kind: 'slot', size: 1.6, rot: -4 + r() * 8, color: 'var(--accent)', op: 1 });
+// barreja determinista
+for (let i = items.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [items[i], items[j]] = [items[j], items[i]]; }
+const foot = '<ellipse cx="12" cy="26" rx="7.4" ry="9.6" transform="rotate(-8 12 26)"/><circle cx="17.6" cy="8.6" r="3.2"/><circle cx="11.8" cy="6.2" r="2.4"/><circle cx="7" cy="8.2" r="2.1"/><circle cx="3.9" cy="12.6" r="1.9"/><circle cx="20.2" cy="14.4" r="1.6"/>';
+---
+<section id="finishers" class="px-5 py-24 sm:px-8">
+  <div class="mx-auto max-w-6xl">
+    <h2 data-reveal class="text-4xl font-extrabold sm:text-6xl">{f.title}</h2>
+    <p data-reveal class="mt-4 max-w-2xl text-lg" style="color:var(--muted)">{f.lead}</p>
+
+    <form id="mural-form" data-reveal class="glass mt-8 flex flex-wrap items-end gap-3 rounded-3xl p-4 sm:p-5">
+      <label class="grid flex-1 gap-1 text-sm font-bold" style="min-width:14rem"><span>{f.formLabel}</span>
+        <input id="mural-name" type="text" maxlength="24" autocomplete="off" placeholder={f.placeholder} class="field min-h-[52px] rounded-2xl px-4 text-lg" />
+      </label>
+      <label class="flex min-h-[52px] items-center gap-2 text-sm font-semibold"><input id="mural-foot" type="checkbox" class="h-5 w-5 accent-[var(--accent)]" />{f.footprint}</label>
+      <button type="submit" class="btn btn-primary">{f.sign}</button>
+    </form>
+
+    <div id="mural" data-reveal class="mural relative mt-6 overflow-hidden rounded-[2.5rem] px-5 py-10 sm:px-10 sm:py-14" role="list" aria-label={f.aria}>
+      <span class="clay absolute right-5 top-5 z-10 px-3 py-1 text-xs font-extrabold">{f.edition}</span>
+      <div id="mural-cloud" class="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+        {items.map((it) => {
+          if (it.kind === 'sig') return <span role="listitem" class="sig" style={`font-size:${it.size.toFixed(2)}rem;transform:rotate(${it.rot.toFixed(1)}deg);color:${it.color};opacity:${it.op.toFixed(2)}`} title={`${it.text} · ${f.edition}`}>{it.text}</span>;
+          if (it.kind === 'foot') return <svg role="listitem" aria-label="" class="sig foot" viewBox="0 0 24 36" fill="currentColor" style={`height:${(it.size * 1.4).toFixed(2)}rem;transform:rotate(${it.rot.toFixed(0)}deg);color:${it.color};opacity:${it.op.toFixed(2)}`} set:html={foot} />;
+          return <a role="listitem" href={`/${lang}/#inscripcions`} class="slot font-hand" style={`transform:rotate(${it.rot.toFixed(1)}deg)`}>{f.slot}</a>;
+        })}
+      </div>
+      <p class="mt-8 text-center text-sm" style="color:var(--muted)">{f.sample}</p>
+    </div>
+
+    <p id="mural-mine" hidden class="mt-4 text-center font-semibold" style="color:var(--accent)">{f.mine}</p>
+  </div>
+
+  <!-- Invitació que apareix en veure el mural -->
+  <aside id="mural-invite" hidden class="glass fixed inset-x-3 bottom-3 z-[170] mx-auto max-w-xl rounded-3xl p-5 sm:bottom-6 sm:p-6" style="background:color-mix(in srgb,var(--bg) 96%,transparent)" role="dialog" aria-labelledby="mi-t">
+    <button type="button" id="mural-invite-close" aria-label={f.close} class="glass absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-sm">✕</button>
+    <h3 id="mi-t" class="font-display pr-10 text-2xl font-extrabold">{f.inviteTitle}</h3>
+    <p class="mt-1" style="color:var(--muted)">{f.inviteText}</p>
+    <a href={`/${lang}/#inscripcions`} data-invite-cta class="btn btn-primary mt-4">{f.cta} <span class="arrow" aria-hidden="true">→</span></a>
+  </aside>
+</section>
+<style>
+  .font-hand, .sig:not(.foot) { font-family: var(--font-hand); }
+  .mural { background: linear-gradient(160deg, color-mix(in srgb, var(--glass-b) 70%, transparent), color-mix(in srgb, var(--glass) 60%, transparent)); border: 1px solid var(--glass-b); box-shadow: var(--shadow), inset 0 1px 0 rgb(255 255 255 / .3); backdrop-filter: blur(6px); }
+  .sig { display: inline-block; line-height: 1.1; font-weight: 600; transition: transform .35s var(--ease-out-strong), opacity .2s, filter .2s; cursor: default; }
+  @media (hover: hover) { .sig:hover { opacity: 1 !important; transform: scale(1.3) rotate(0deg) !important; z-index: 2; filter: drop-shadow(0 4px 8px rgb(0 0 0 / .18)); } }
+  .slot { display: inline-block; font-size: 1.45rem; font-weight: 600; padding: .15rem .9rem; border: 2px dashed var(--accent); border-radius: 999px; color: var(--accent); transition: background-color .25s, transform .3s var(--ease-out-strong); }
+  @media (hover: hover) { .slot:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); transform: scale(1.08) rotate(0deg) !important; } }
+  :global(.sig.mine) { color: var(--accent) !important; opacity: 1 !important; padding: .1rem .8rem; border: 2px dashed var(--accent); border-radius: 999px; background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 14%, transparent); font-size: 2.6rem !important; }
+  .field { background: var(--bg); border: 1.5px solid var(--line); color: var(--fg); font-family: var(--font-hand); }
+  .field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent); }
+</style>
+<script>
+  import gsap from 'gsap';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mural = document.getElementById('mural')!, cloud = document.getElementById('mural-cloud')!, invite = document.getElementById('mural-invite')!;
+  const mine = document.getElementById('mural-mine')!, form = document.getElementById('mural-form') as HTMLFormElement;
+  const name = document.getElementById('mural-name') as HTMLInputElement, foot = document.getElementById('mural-foot') as HTMLInputElement;
+  const footSvg = cloud.querySelector('svg.foot')?.innerHTML ?? '';
+  let dismissed = false;
+  const showInvite = () => { if (dismissed || !invite.hidden) return; invite.hidden = false; if (!reduce) gsap.fromTo(invite, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'expo.out' }); };
+  const hideInvite = () => { dismissed = true; invite.hidden = true; };
+  document.getElementById('mural-invite-close')!.addEventListener('click', hideInvite);
+  invite.querySelector('[data-invite-cta]')!.addEventListener('click', () => (invite.hidden = true));
+
+  // En veure el mural (un cop ben dins del viewport) apareix la invitació a participar
+  let timer: number;
+  new IntersectionObserver((en) => {
+    clearTimeout(timer);
+    if (en[0].isIntersecting) timer = window.setTimeout(showInvite, 1400); else invite.hidden = true;
+  }, { threshold: 0.35 }).observe(mural);
+
+  // Signatura de prova (només al navegador; no s'envia enlloc)
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = name.value.trim(); if (!v) { name.focus(); return; }
+    cloud.querySelector('.mine')?.remove();
+    const el = document.createElement('span'); el.className = 'sig mine'; el.setAttribute('role', 'listitem');
+    if (foot.checked) el.insertAdjacentHTML('beforeend', `<svg viewBox="0 0 24 36" fill="currentColor" style="height:2.2rem;vertical-align:middle;margin-right:.4rem" aria-hidden="true">${footSvg}</svg>`);
+    el.append(document.createTextNode(v));
+    const kids = [...cloud.children]; cloud.insertBefore(el, kids[Math.floor(kids.length * 0.35)] ?? null);
+    mine.hidden = false;
+    if (!reduce) gsap.fromTo(el, { scale: 0.2, opacity: 0, rotate: -10 }, { scale: 1, opacity: 1, rotate: -2, duration: 0.9, ease: 'elastic.out(1,.55)' });
+    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(showInvite, 600);
+  });
+</script>

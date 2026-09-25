@@ -1,0 +1,148 @@
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/instrument-sans';
+@import '@fontsource-variable/caveat';
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-sans: 'Instrument Sans Variable', system-ui, sans-serif;
+  --font-hand: 'Caveat Variable', 'Segoe Script', cursive;
+  --color-lake: #0b5cad;
+  --color-moss: #1f7a52;
+  --color-mist: #eef3f4;
+  --color-ink: #0d2233;
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ---------- Tokens de tema (contrast AA verificat en clar i fosc) ---------- */
+:root {
+  --bg: #eef3f4;
+  --bg-2: #e0e9eb;
+  --fg: #0d2233;
+  --muted: #45606f;        /* 5.6:1 sobre --bg */
+  --accent: #0b5cad;       /* blau llac: 6.3:1 sobre --bg, text blanc 6.6:1 */
+  --accent-fg: #ffffff;
+  --green: #1a7a50;
+  --grad: linear-gradient(135deg, #0b5cad 0%, #0e7f8c 55%, #1a7a50 100%);
+  --glass: rgb(255 255 255 / 0.58);
+  --glass-b: rgb(255 255 255 / 0.75);
+  --line: rgb(13 34 51 / 0.13);
+  --shadow: 0 10px 30px -12px rgb(11 60 110 / 0.38);
+  --neo-a: #f9fdfe;
+  --neo-b: #c9d8dd;
+}
+[data-theme='dark'] {
+  --bg: #08131c;
+  --bg-2: #0f1e2a;
+  --fg: #eaf3f6;
+  --muted: #9fb6c2;        /* 8:1 sobre --bg */
+  --accent: #4da3ff;       /* 7.6:1 sobre --bg */
+  --accent-fg: #04182c;
+  --green: #5fd6a0;
+  --grad: linear-gradient(135deg, #4da3ff 0%, #36c2c0 55%, #5fd6a0 100%);
+  --glass: rgb(255 255 255 / 0.06);
+  --glass-b: rgb(255 255 255 / 0.14);
+  --line: rgb(255 255 255 / 0.12);
+  --shadow: 0 14px 40px -14px rgb(0 0 0 / 0.8);
+  --neo-a: #142634;
+  --neo-b: #040a0f;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; color-scheme: light dark; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; transition: background-color .3s, color .3s; }
+h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; }
+p { text-wrap: pretty; }
+::selection { background: var(--accent); color: var(--accent-fg); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+/* ---------- Superfícies: glass / neumorfisme / clay ---------- */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-b);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: var(--shadow), inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+.neo {
+  background: linear-gradient(145deg, var(--neo-a), var(--neo-b));
+  box-shadow: 8px 8px 18px var(--neo-b), -8px -8px 18px var(--neo-a);
+  border-radius: 1.5rem;
+}
+.clay {
+  background: var(--grad);
+  color: var(--accent-fg);
+  border-radius: 1.25rem;
+  box-shadow:
+    inset 0 -6px 10px rgb(0 0 0 / 0.22),
+    inset 0 6px 10px rgb(255 255 255 / 0.35),
+    0 12px 22px -8px color-mix(in srgb, var(--accent) 70%, black);
+}
+
+@layer components {
+/* ---------- Botons amb microinteraccions ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem; justify-content: center;
+  font-weight: 700; padding: .95rem 1.6rem; border-radius: 999px; min-height: 48px;
+  transition: transform .18s var(--ease-out-strong), box-shadow .25s, background-color .2s;
+  will-change: transform; cursor: pointer;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--grad); color: var(--accent-fg);
+  box-shadow: inset 0 -5px 8px rgb(0 0 0 / .2), inset 0 5px 8px rgb(255 255 255 / .3), 0 14px 26px -10px var(--accent);
+}
+.btn-ghost { background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(10px); }
+.btn .arrow { transition: transform .25s var(--ease-out-strong); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: inset 0 -5px 8px rgb(0 0 0 / .2), inset 0 5px 8px rgb(255 255 255 / .3), 0 20px 32px -10px var(--accent); }
+  .btn-ghost:hover { background: var(--glass-b); }
+  .btn:hover .arrow { transform: translateX(4px); }
+  .card-hover { transition: transform .35s var(--ease-out-strong), box-shadow .35s; }
+  .card-hover:hover { transform: translateY(-6px); }
+}
+
+}
+
+/* ---------- Estat inicial de les animacions (GSAP les revela) ---------- */
+.js [data-reveal] { opacity: 0; transform: translateY(28px); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js [data-reveal] { opacity: 1; transform: none; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+.skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 200; background: var(--accent); color: var(--accent-fg); padding: .7rem 1rem; border-radius: 8px; }
+.skip-link:focus { top: 1rem; }
+
+/* ---------- Leaflet en mode fosc ---------- */
+[data-theme='dark'] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.7); }
+.leaflet-container { font-family: var(--font-sans); background: var(--bg-2); }
+.km-pin { background: var(--bg); color: var(--fg); border: 2px solid var(--accent); border-radius: 999px; font: 700 11px/1 var(--font-sans); display: grid; place-items: center; box-shadow: 0 2px 6px rgb(0 0 0 / .3); }
+
+/* ---------- Fons collage difuminat (fotos reals d'Igualada i del recorregut) ---------- */
+#bg-collage { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: var(--bg); }
+#bg-collage .tile { position: absolute; border-radius: 38%; background-size: cover; background-position: center; opacity: .95; filter: saturate(1.25); will-change: transform; animation: drift var(--dur, 40s) ease-in-out infinite alternate; }
+#bg-collage .veil { position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 74%, transparent), color-mix(in srgb, var(--bg) 88%, transparent) 60%, color-mix(in srgb, var(--bg) 92%, transparent)); }
+[data-theme='dark'] #bg-collage .tile { opacity: .7; }
+@keyframes drift { from { transform: translate3d(-2.5vw, -2vh, 0) rotate(var(--r, 0deg)) scale(1); } to { transform: translate3d(2.5vw, 2vh, 0) rotate(calc(var(--r, 0deg) + 6deg)) scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { #bg-collage .tile { animation: none; } }
+
+/* ---------- Logo: variant clara/fosca i pantalla de càrrega ---------- */
+.logo-dark { display: none; }
+[data-theme='dark'] .logo-light { display: none; }
+[data-theme='dark'] .logo-dark { display: block; }
+.loader-mark-unused { clip-path: inset(0 100% 0 0); animation: wipe .7s var(--ease-out-strong) forwards; }
+@keyframes wipe { to { clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) { .loader-mark-unused { animation: none; clip-path: none; } }
+
+/* Mentre es veu el cargador, el fons no s'anima (estalvia CPU/GPU i evita tirons) */
+body:has(#loader) #bg-collage .tile { animation-play-state: paused; }
+
+/* ---------- Revelat del logo en 3D: capes a diferents profunditats (les «captures») ---------- */
+#loader-stage { perspective: 900px; perspective-origin: 50% 50%; opacity: 0; visibility: hidden; }
+#loader-stack { transform-style: preserve-3d; }
+.ls { grid-area: 1 / 1; width: min(74vw, 460px); height: auto; will-change: transform; }

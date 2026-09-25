@@ -1,0 +1,106 @@
+---
+import '../styles/global.css';
+import { LANGS, LANG_NAMES, useT, type Lang } from '../i18n';
+import { EVENT } from '../data/event';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BgCollage from '../components/BgCollage.astro';
+import { routeD } from '../lib/routePath';
+import CookieBanner from '../components/CookieBanner.astro';
+
+interface Props { lang: Lang; path?: string; title?: string; description?: string; noindex?: boolean; jsonld?: object[] }
+const { lang, path = '', title, description, noindex = false, jsonld = [] } = Astro.props;
+const loaderD = routeD('21k', 600, 600, 30);
+const og = new URL('/og.jpg', Astro.site).href;
+const t = useT(lang);
+const pageTitle = title ?? t.meta.title;
+const pageDesc = description ?? t.meta.description;
+const url = (l: Lang) => new URL(`/${l}/${path}`, Astro.site).href;
+---
+<!doctype html>
+<html lang={t.htmlLang} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <meta name="theme-color" content="#eef3f4" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={url(lang)} />
+    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={url(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={url('ca')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:url" content={url(lang)} />
+    <meta property="og:locale" content={lang === 'ca' ? 'ca_ES' : lang === 'es' ? 'es_ES' : 'en_GB'} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="MM Igualada · 21K, 10K i Caminada Popular" />
+    <meta property="og:site_name" content="MM Igualada" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDesc} />
+    <meta name="twitter:image" content={og} />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <script is:inline>
+      // Evita el flaix de tema: s'aplica abans del primer pintat
+      (function () {
+        // Forçar HTTPS en producció (l'hosting també ho ha de fer amb HSTS/redirecció 301)
+        if (location.protocol === 'http:' && !/^(localhost|127\.|\[::1\])/.test(location.hostname)) location.replace('https:' + location.href.substring(5));
+        document.documentElement.classList.add('js');
+        var s = null; try { s = localStorage.getItem('theme'); } catch (e) {}
+        var d = s ? s === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = d ? 'dark' : 'light';
+      })();
+    </script>
+  </head>
+  <body>
+    <BgCollage />
+    <a class="skip-link" href="#main">{t.skip}</a>
+
+    <div id="loader" class="fixed inset-0 z-[300] grid place-items-center overflow-hidden" style="background:var(--bg)" role="status" aria-label={t.loader.label}>
+      <div id="loader-stage" class="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden="true">
+        <div id="loader-stack" class="grid place-items-center">
+          {Array.from({ length: 14 }).map((_, i) => (
+            <img class="ls" src={i === 0 ? '/brand/logo-principal.svg' : '/brand/logo-mono-blau-fosc.svg'} alt="" width="560" height="580" decoding="async"
+                 style={i === 0 ? '' : `opacity:${(0.5 * Math.pow(1 - i / 14, 1.4) + 0.04).toFixed(2)}`} />
+          ))}
+        </div>
+      </div>
+      <div id="loader-box" class="text-center">
+        <svg viewBox="0 0 600 600" class="mx-auto block h-[min(48vh,340px)] w-auto" aria-hidden="true">
+          <defs><linearGradient id="lgrad" gradientUnits="userSpaceOnUse" x1="30" y1="0" x2="570" y2="0"><stop offset="0" style="stop-color:var(--accent)" /><stop offset="1" style="stop-color:var(--green)" /></linearGradient></defs>
+          <path d={loaderD} fill="none" stroke="var(--line)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+          <path id="loader-route" d={loaderD} fill="none" stroke="url(#lgrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+          <circle id="loader-dot" r="11" fill="var(--accent)" stroke="var(--bg)" stroke-width="4" cx="-50" cy="-50" />
+        </svg>
+        <div class="font-display mt-2 text-5xl font-extrabold tabular-nums"><span id="loader-km">0,0</span> <span class="text-2xl">km</span></div>
+        <div class="mt-1 text-sm font-semibold uppercase tracking-[.2em]" style="color:var(--muted)">MM Igualada</div>
+        <button id="loader-skip" type="button" class="mt-6 rounded-full px-4 py-2 text-sm font-semibold underline underline-offset-4" style="color:var(--muted)">{t.loader.skip} →</button>
+      </div>
+    </div>
+
+    <Header lang={lang} path={path} />
+    <main id="main"><slot /></main>
+    <Footer lang={lang} />
+    <CookieBanner lang={lang} />
+
+    <a href={`https://wa.me/${EVENT.whatsapp}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+       class="clay fixed bottom-5 left-4 z-50 grid h-14 w-14 place-items-center !rounded-full" style="background:#1f8f4e;color:#fff">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.7A8.5 8.5 0 1 1 8 19.5L3 21Z"/><path d="M9 10c.5 2.5 2.500 4.500 5 5l1.200-1.300-2-1-.8.8c-1-.4-1.800-1.200-2.200-2.200l.8-.8-1-2L9 10Z"/></svg>
+    </a>
+    <button id="to-top" type="button" aria-label={t.cta.top}
+       class="glass pointer-events-none fixed bottom-5 right-4 z-50 grid h-12 w-12 translate-y-4 place-items-center rounded-full opacity-0 transition duration-300">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 15 7-7 7 7"/></svg>
+    </button>
+
+    <script>import '../scripts/main';</script>
+  </body>
+</html>
