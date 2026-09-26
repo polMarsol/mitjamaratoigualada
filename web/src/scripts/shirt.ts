@@ -36,10 +36,9 @@ async function init(host: HTMLElement) {
     const wm = wc * (1 - e) + wn * e, sw = wm * 0.62 + 34, gy = y0 + h + 6, g = ctx.createRadialGradient(W / 2, gy, 4, W / 2, gy, sw);
     g.addColorStop(0, 'rgba(30,40,50,.32)'); g.addColorStop(1, 'rgba(30,40,50,0)');
     ctx.save(); ctx.translate(0, gy); ctx.scale(1, 0.11); ctx.translate(0, -gy); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(W / 2, gy, sw, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    // volteig suau: cada imatge s'aprima fins a ~72% mentre desapareix / apareix (mai s'estira per sobre de la seva mida)
-    const sx1 = 1 - 0.28 * Math.sin(phi), sx2 = 0.72 + 0.28 * Math.sin(Math.PI / 2 - phi);
-    ctx.globalAlpha = 1 - smooth(0.25, 0.75, t); ctx.drawImage(cur.img, (W - wc * sx1) / 2, y0, wc * sx1, h);
-    ctx.globalAlpha = smooth(0.25, 0.75, t); ctx.drawImage(nxt.img, (W - wn * sx2) / 2, y0, wn * sx2, h);
+    // fosa creuada pura: cap escalat ni volteig, la samarreta mai es deforma
+    ctx.globalAlpha = 1 - smooth(0.2, 0.8, t); ctx.drawImage(cur.img, (W - wc) / 2, y0, wc, h);
+    ctx.globalAlpha = smooth(0.2, 0.8, t); ctx.drawImage(nxt.img, (W - wn) / 2, y0, wn, h);
     ctx.globalAlpha = 1;
   }
 

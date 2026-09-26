@@ -27,3 +27,4 @@ The notes and the regulations describe the same event, so changes in one usually
 
 - Documents are written in Catalan (the notes drift into Spanish). Keep the language of the file being edited and preserve the formal register of the regulations.
 - Edit the `.docx` files in place with the docx tooling rather than creating parallel copies. There is no version control here, so back up a file before large edits.
+
