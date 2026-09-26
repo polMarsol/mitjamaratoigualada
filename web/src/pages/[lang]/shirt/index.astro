@@ -9,7 +9,7 @@ const site = Astro.site!.href.replace(/\/$/, '');
 const jsonld = [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: t.breadcrumb.home, item: `${site}/${lang}/` },
   { '@type': 'ListItem', position: 2, name: s.title, item: `${site}/${lang}/shirt/` }] }];
-const sw = [['#0b5cad', 'Blau llac'], ['#0e7f8c', 'Teal'], ['#1a7a50', 'Verd'], ['#0d2233', 'Blau fosc'], ['#eaf3f6', 'Boira']];
+const sw = [['#ffffff', ''], ['#0b5cad', ''], ['#0e7f8c', ''], ['#1a7a50', ''], ['#0d2233', '']];
 ---
 <Base lang={lang} path="shirt/" title={`${s.title} · MM Igualada`} description={s.metaDesc} jsonld={jsonld}>
   <div class="mx-auto max-w-6xl px-5 pb-10 pt-32 sm:px-8 md:pt-40">
@@ -17,20 +17,8 @@ const sw = [['#0b5cad', 'Blau llac'], ['#0e7f8c', 'Teal'], ['#1a7a50', 'Verd'], 
     <h1 class="mt-6 text-4xl font-extrabold sm:text-6xl">{s.title}</h1>
     <p class="mt-4 max-w-3xl text-lg" style="color:var(--muted)">{s.lead}</p>
 
-    <div class="mt-8" role="group" aria-label={s.variantLabel}>
-      <p class="mb-2 text-sm font-bold">{s.variantLabel}</p>
-      <div class="grid gap-3 sm:grid-cols-3">
-        {(['a', 'b', 'c'] as const).map((v) => (
-          <button type="button" data-variant={v} aria-pressed={v === 'a' ? 'true' : 'false'} class="var glass card-hover rounded-2xl p-4 text-left">
-            <span class="font-display block text-lg font-bold">{s.variants[v].t}</span>
-            <span class="mt-1 block text-sm" style="color:var(--muted)">{s.variants[v].d}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-
-    <div id="shirt-viewer" class="stage relative mt-4 h-[72vh] min-h-[460px] w-full overflow-hidden rounded-[2.5rem]" data-loading={s.loading} data-nogl={s.nogl}>
-      <canvas id="shirt-canvas" class="block h-full w-full cursor-grab active:cursor-grabbing" tabindex="0" role="img" aria-label={s.canvas}></canvas>
+    <div id="shirt-viewer" class="stage relative mt-8 h-[74vh] min-h-[460px] w-full overflow-hidden rounded-[2.5rem]" data-loading={s.loading} data-nogl={s.nogl}>
+      <canvas id="shirt-canvas" class="block h-full w-full cursor-grab touch-pan-y" tabindex="0" role="img" aria-label={s.canvas}></canvas>
       <p id="shirt-status" class="absolute inset-0 grid place-items-center p-6 text-center font-semibold" style="color:var(--muted)">{s.loading}</p>
       <p class="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-xs font-semibold" style="color:var(--muted)">{s.hint}</p>
     </div>
@@ -41,8 +29,7 @@ const sw = [['#0b5cad', 'Blau llac'], ['#0e7f8c', 'Teal'], ['#1a7a50', 'Verd'], 
       <button id="v-left" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.left}</button>
       <button id="v-right" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.right}</button>
       <button id="v-reset" type="button" class="vbtn glass rounded-full px-4 py-2.5 text-sm font-bold">{s.views.reset}</button>
-      <label class="ml-auto flex min-h-11 items-center gap-2 text-sm font-semibold"><input id="shirt-bib" type="checkbox" class="h-5 w-5 accent-[var(--accent)]" />{s.bib}</label>
-      <label class="flex min-h-11 items-center gap-2 text-sm font-semibold"><input id="shirt-auto" type="checkbox" class="h-5 w-5 accent-[var(--accent)]" />{s.auto}</label>
+      <label class="ml-auto flex min-h-11 items-center gap-2 text-sm font-semibold"><input id="shirt-auto" type="checkbox" class="h-5 w-5 accent-[var(--accent)]" />{s.auto}</label>
     </div>
 
     <h2 class="mt-16 text-3xl font-extrabold sm:text-4xl">{s.designTitle}</h2>
@@ -64,9 +51,8 @@ const sw = [['#0b5cad', 'Blau llac'], ['#0e7f8c', 'Teal'], ['#1a7a50', 'Verd'], 
   </div>
 </Base>
 <style>
-  .stage { background: radial-gradient(ellipse at 50% 30%, #ffffff 0%, #eef2f4 45%, #d5dde2 100%); box-shadow: var(--shadow); }
+  .stage { background: radial-gradient(ellipse at 50% 32%, #f7f7f8 0%, #e9e9eb 50%, #d3d4d8 100%); box-shadow: var(--shadow); }
   :global([data-theme='dark']) .stage { background: radial-gradient(ellipse at 50% 30%, #2c3e4c 0%, #16232d 55%, #0a141c 100%); }
-  .var[aria-pressed='true'] { outline: 3px solid var(--accent); outline-offset: 2px; background: var(--glass-b); }
   .vbtn { transition: transform .18s var(--ease-out-strong), background-color .2s; }
   .vbtn:active { transform: scale(.96); }
   @media (hover: hover) { .vbtn:hover { background: var(--glass-b); } }

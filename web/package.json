@@ -17,13 +17,8 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/leaflet": "^1.9.22",
     "astro": "^7.3.5",
-    "delaunator": "^5.1.0",
     "gsap": "^3.15.0",
     "leaflet": "^1.9.4",
-    "tailwindcss": "^4.3.3",
-    "three": "^0.186.1"
-  },
-  "devDependencies": {
-    "@types/three": "^0.186.0"
+    "tailwindcss": "^4.3.3"
   }
 }

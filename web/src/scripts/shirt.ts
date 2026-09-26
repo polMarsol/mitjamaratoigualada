@@ -1,112 +1,76 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+// Visor «3D» de la samarreta a partir de 4 fotos reals (davant, lateral, darrere, lateral): efecte de caixa giratòria.
+// Cap malla ni deformació: cada cara és la foto original, comprimida només en horitzontal segons l'angle (com una peça que gira).
 import gsap from 'gsap';
-import { makeSurface, buildPanel, buildCollar, S, CX, CY } from './shirt/geometry';
-import { loadAssets, frontTexture, backTexture, collarTexture, weaveTexture, bibTexture, type Variant } from './shirt/designs';
 
 const host = document.getElementById('shirt-viewer');
 if (host) init(host);
 
+type Face = { img: HTMLImageElement; w: number };
 async function init(host: HTMLElement) {
+  const canvas = document.getElementById('shirt-canvas') as HTMLCanvasElement, ctx = canvas.getContext('2d')!;
   const status = document.getElementById('shirt-status')!;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const canvas = document.getElementById('shirt-canvas') as HTMLCanvasElement;
-  let renderer: THREE.WebGLRenderer;
-  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true }); }
-  catch { status.textContent = host.dataset.nogl || 'WebGL no disponible'; return; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.02;
-
-  const scene = new THREE.Scene();
-  const pm = new THREE.PMREMGenerator(renderer);
-  scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environmentIntensity = 0.85;
-  const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(2, 3, 4); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xbfe0ff, 0.5); fill.position.set(-3, 1, -3); scene.add(fill);
-
-  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
-  const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true; controls.dampingFactor = 0.08; controls.enablePan = false;
-  controls.minDistance = 2.4; controls.maxDistance = 9; controls.minPolarAngle = 0.35; controls.maxPolarAngle = Math.PI - 0.35;
-  controls.autoRotateSpeed = 1.4; controls.autoRotate = !reduce;
-  controls.listenToKeyEvents(canvas);
-  const home = () => (window.innerWidth < 700 ? 8.2 : 6.4);
-  const setView = (az: number, pol = Math.PI / 2 - 0.05, dist = home(), instant = false) => {
-    const s = { az: Math.atan2(camera.position.x, camera.position.z), pol: Math.acos(camera.position.y / camera.position.length()), d: camera.position.length() };
-    let d = az - s.az; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI;
-    const tgt = { az: s.az + d, pol, d: dist };
-    const apply = () => camera.position.set(s.d * Math.sin(s.pol) * Math.sin(s.az), s.d * Math.cos(s.pol), s.d * Math.sin(s.pol) * Math.cos(s.az));
-    if (instant || reduce) { Object.assign(s, tgt); apply(); return; }
-    gsap.to(s, { ...tgt, duration: 1.1, ease: 'expo.inOut', onUpdate: apply });
-  };
-  setView(0.35, Math.PI / 2 - 0.05, home(), true);
-
-  const resize = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
-  new ResizeObserver(resize).observe(host); resize();
-
-  // ---------- Model ----------
-  status.textContent = host.dataset.loading || 'Carregant…';
-  await new Promise((r) => requestAnimationFrame(r));
-  const assets = await loadAssets();
-  const front = makeSurface('front'), back = makeSurface('back');
-  const weave = new THREE.CanvasTexture(weaveTexture()); weave.wrapS = weave.wrapT = THREE.RepeatWrapping; weave.repeat.set(95, 80);
-  const mk = (c: HTMLCanvasElement) => { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t; };
-  const mat = (t: THREE.Texture) => new THREE.MeshPhysicalMaterial({ map: t, roughness: 0.78, metalness: 0, sheen: 0.7, sheenRoughness: 0.5, sheenColor: new THREE.Color(0xd8ecff), bumpMap: weave, bumpScale: 1.6, vertexColors: true });
-  const lining = new THREE.MeshStandardMaterial({ color: 0x0e6f86, roughness: 0.95, side: THREE.BackSide, vertexColors: true }); // cara interior llisa
-  const shirt = new THREE.Group();
-  const mats: THREE.MeshPhysicalMaterial[] = [];
-  for (const [surf, kind] of [[front, 'front'], [back, 'back']] as const) {
-    const g = buildPanel(surf, kind), m = mat(mk(document.createElement('canvas'))); mats.push(m);
-    shirt.add(new THREE.Mesh(g, m), new THREE.Mesh(g, lining));
-  }
-  const collar = buildCollar(front, back); const cm = collar.material as THREE.MeshStandardMaterial; cm.roughness = 0.75; shirt.add(collar);
-
-  // canvi de prototip: regenera les textures (davant, darrere i el brodat de quadrats del coll)
-  let current: Variant | '' = '';
-  const setVariant = (v: Variant) => {
-    if (v === current) return; current = v;
-    const swap = (m: THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial, c: HTMLCanvasElement, rep?: [number, number]) => { m.map?.dispose(); const t = mk(c); if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); t.magFilter = THREE.NearestFilter; } m.map = t; m.color.set(0xffffff); m.needsUpdate = true; };
-    swap(mats[0], frontTexture(v, assets)); swap(mats[1], backTexture(v)); swap(cm, collarTexture(v), [40, 2]);
-    document.querySelectorAll<HTMLElement>('[data-variant]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.variant === v)));
-    document.querySelectorAll<HTMLElement>('[data-variant-info]').forEach((b) => (b.hidden = b.dataset.variantInfo !== v));
-    try { history.replaceState(null, '', '#' + v); } catch {}
-  };
-  const initial = (location.hash.replace('#', '') || 'a') as Variant;
-  setVariant(['a', 'b', 'c'].includes(initial) ? initial : 'a');
-  document.querySelectorAll<HTMLElement>('[data-variant]').forEach((b) => b.addEventListener('click', () => setVariant(b.dataset.variant as Variant)));
-
-  // dorsal (opcional) enganxat a la superfície del davant
-  const bibW = 270, bibH = 193, bibCX = CX, bibCY = 690;
-  const bg = new THREE.PlaneGeometry(bibW * S, bibH * S, 26, 18); const p = bg.attributes.position;
-  for (let i = 0; i < p.count; i++) { const x = bibCX + p.getX(i) / S, y = bibCY - p.getY(i) / S; p.setZ(i, (front.heightAt(x, y) + 3) * S); p.setX(i, (x - CX) * S); p.setY(i, (CY - y) * S); }
-  bg.computeVertexNormals();
-  const bibT = new THREE.CanvasTexture(bibTexture(assets)); bibT.colorSpace = THREE.SRGBColorSpace; bibT.anisotropy = 8;
-  const bib = new THREE.Mesh(bg, new THREE.MeshStandardMaterial({ map: bibT, roughness: 0.6, side: THREE.DoubleSide })); bib.visible = false; shirt.add(bib);
-  scene.add(shirt);
-
-  // ombra suau sota la peça
-  const sc = document.createElement('canvas'); sc.width = sc.height = 128; const sx = sc.getContext('2d')!;
-  const rg = sx.createRadialGradient(64, 64, 2, 64, 64, 62); rg.addColorStop(0, 'rgba(20,30,40,.42)'); rg.addColorStop(0.5, 'rgba(20,30,40,.16)'); rg.addColorStop(1, 'rgba(20,30,40,0)'); sx.fillStyle = rg; sx.fillRect(0, 0, 128, 128);
-  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 1.0), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
-  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -1.47; scene.add(shadow);
-
+  const load = (src: string) => new Promise<HTMLImageElement>((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+  const names = ['front', 'side-l', 'back', 'side-r'];              // 0°, 90°, 180°, 270°
+  const imgs = await Promise.all(names.map((n) => load(`/shirt/${n}.webp`)));
+  const faces: Face[] = imgs.map((img) => ({ img, w: img.naturalWidth }));
+  const H = imgs[0].naturalHeight;
   status.hidden = true; host.classList.add('ready');
 
-  // ---------- UI ----------
-  const on = (id: string, fn: (e: Event) => void) => document.getElementById(id)?.addEventListener('click', fn);
-  const stop = () => { controls.autoRotate = false; (document.getElementById('shirt-auto') as HTMLInputElement).checked = false; };
-  canvas.addEventListener('pointerdown', stop);
-  on('v-front', () => { stop(); setView(0); }); on('v-back', () => { stop(); setView(Math.PI); });
-  on('v-left', () => { stop(); setView(-1.15, Math.PI / 2 - 0.15); }); on('v-right', () => { stop(); setView(1.15, Math.PI / 2 - 0.15); });
-  on('v-reset', () => { setView(0.35, Math.PI / 2 - 0.05); });
-  (document.getElementById('shirt-bib') as HTMLInputElement).addEventListener('change', (e) => { bib.visible = (e.target as HTMLInputElement).checked; });
-  (document.getElementById('shirt-auto') as HTMLInputElement).addEventListener('change', (e) => { controls.autoRotate = (e.target as HTMLInputElement).checked; });
-  (document.getElementById('shirt-auto') as HTMLInputElement).checked = controls.autoRotate;
-  (window as any).__shirt = { setView, stop, bib: (v: boolean) => (bib.visible = v), variant: setVariant, flat: (v: Variant, side: 'front' | 'back') => (side === 'front' ? frontTexture(v, assets) : backTexture(v)).toDataURL('image/png') }; // per a proves
+  let theta = 0, dpr = 1, W = 0, Ch = 0;                             // graus, 0 = davant
+  const resize = () => {
+    dpr = Math.min(devicePixelRatio || 1, 2); W = host.clientWidth; Ch = host.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(Ch * dpr); draw();
+  };
 
-  // només renderitza quan és visible
+  const smooth = (a: number, b: number, x: number) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  /** Cada foto conserva SIEMPRE sus proporciones reales (cap estirament). Entre dues vistes: fosa creuada amb un lleuger volteig. */
+  function draw() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, Ch);
+    const th = ((theta % 360) + 360) % 360, k = Math.floor(th / 90) % 4, t = (th - k * 90) / 90;
+    const cur = faces[k], nxt = faces[(k + 1) % 4];
+    const sc = Math.min((Ch * 0.86) / H, (W * 0.92) / (faces[0].w * 1.08)), h = H * sc, y0 = (Ch - h) / 2 - Ch * 0.015;
+    const e = smooth(0.12, 0.88, t), phi = e * Math.PI / 2;
+    const wc = cur.w * sc, wn = nxt.w * sc;
+    // ombra de terra (amplada mitjana entre les dues vistes)
+    const wm = wc * (1 - e) + wn * e, sw = wm * 0.62 + 34, gy = y0 + h + 6, g = ctx.createRadialGradient(W / 2, gy, 4, W / 2, gy, sw);
+    g.addColorStop(0, 'rgba(30,40,50,.32)'); g.addColorStop(1, 'rgba(30,40,50,0)');
+    ctx.save(); ctx.translate(0, gy); ctx.scale(1, 0.11); ctx.translate(0, -gy); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(W / 2, gy, sw, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    // volteig suau: cada imatge s'aprima fins a ~72% mentre desapareix / apareix (mai s'estira per sobre de la seva mida)
+    const sx1 = 1 - 0.28 * Math.sin(phi), sx2 = 0.72 + 0.28 * Math.sin(Math.PI / 2 - phi);
+    ctx.globalAlpha = 1 - smooth(0.25, 0.75, t); ctx.drawImage(cur.img, (W - wc * sx1) / 2, y0, wc * sx1, h);
+    ctx.globalAlpha = smooth(0.25, 0.75, t); ctx.drawImage(nxt.img, (W - wn * sx2) / 2, y0, wn * sx2, h);
+    ctx.globalAlpha = 1;
+  }
+
+  new ResizeObserver(resize).observe(host); resize();
+
+  // ---------- Interacció: arrossegar, ajust a la vista real més propera, botons, teclat i gir automàtic amb pauses ----------
+  let auto = !reduce, dragging = false, lastX = 0, vel = 0, tween: gsap.core.Tween | null = null, dwell = 0;
+  const autoBox = document.getElementById('shirt-auto') as HTMLInputElement; autoBox.checked = auto;
+  const stopAuto = () => { auto = false; autoBox.checked = false; };
+  const setTheta = (v: number) => { theta = v; draw(); };
+  const goTo = (target: number, dur = 1.0) => {
+    tween?.kill(); vel = 0;
+    const d = (((target - theta) % 360) + 540) % 360 - 180; if (Math.abs(d) < 0.3) { setTheta(target); return; }
+    const from = theta, o = { v: 0 };
+    tween = gsap.to(o, { v: 1, duration: reduce ? 0.01 : dur, ease: 'power3.inOut', onUpdate: () => setTheta(from + d * o.v) });
+  };
+  const snap = (dir = 0) => { const q = theta / 90; goTo((dir > 0 ? Math.ceil(q - 0.15) : dir < 0 ? Math.floor(q + 0.15) : Math.round(q)) * 90, 0.7); };
+  canvas.addEventListener('pointerdown', (e) => { dragging = true; lastX = e.clientX; vel = 0; tween?.kill(); stopAuto(); canvas.setPointerCapture(e.pointerId); canvas.style.cursor = 'grabbing'; });
+  canvas.addEventListener('pointermove', (e) => { if (!dragging) return; const dx = e.clientX - lastX; lastX = e.clientX; vel = -dx * 0.5; setTheta(theta + vel); });
+  const end = () => { if (!dragging) return; dragging = false; canvas.style.cursor = ''; snap(Math.abs(vel) > 1.2 ? Math.sign(vel) : 0); };
+  canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end);
+  canvas.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); stopAuto(); goTo(Math.round(theta / 90) * 90 + (e.key === 'ArrowLeft' ? -90 : 90), 0.8); } });
+  const on = (id: string, fn: () => void) => document.getElementById(id)?.addEventListener('click', fn);
+  const view = (deg: number) => () => { stopAuto(); goTo(deg, 1.1); };
+  on('v-front', view(0)); on('v-left', view(90)); on('v-back', view(180)); on('v-right', view(270)); on('v-reset', view(0));
+  autoBox.addEventListener('change', () => { auto = autoBox.checked; dwell = 0; });
+
   let visible = true; new IntersectionObserver((e) => (visible = e[0].isIntersecting)).observe(host);
-  renderer.setAnimationLoop(() => { if (!visible) return; controls.update(); renderer.render(scene, camera); });
+  gsap.ticker.add((_t, dt) => {
+    if (!visible || dragging || !auto || tween?.isActive()) return;
+    dwell += dt; if (dwell > 2300) { dwell = 0; goTo(Math.round(theta / 90) * 90 + 90, 1.3); }
+  });
+  (window as any).__shirt = { setTheta, goTo, stop: () => { tween?.kill(); stopAuto(); } }; // per a proves
 }
