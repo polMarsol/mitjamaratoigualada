@@ -1,0 +1,5 @@
+Pack de referències per generar la samarreta amb GPT / Nano Banana (Gemini)
+01 logo MM blanc (fons transparent)  -> escut del pit esquerre i mànigues (vegeu prompt)
+02 logo MM en color                  -> per veure'l sobre blanc
+03/04/05 maqueta 3D (davant/darrere/dorsal) -> referència de DISSENY i composició (no de realisme)
+06 bandera d'Igualada (armes: creu de Sant Jordi + barres + aigües) -> per a la nuca

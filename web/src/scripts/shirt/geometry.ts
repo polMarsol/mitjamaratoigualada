@@ -112,6 +112,6 @@ export function buildCollar(front: Surface, back: Surface): THREE.Mesh {
   const loop = [...f.map((p) => v(p, 1)), ...[...b].reverse().map((p) => v(p, -1))];
   const curve = new THREE.CatmullRomCurve3(loop, true, 'centripetal');
   const geo = new THREE.TubeGeometry(curve, 320, 0.026, 10, true);
-  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x0d2233, roughness: 0.85 }));
+  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x0d2233, roughness: 0.9 }));
   return m;
 }

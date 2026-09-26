@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import gsap from 'gsap';
 import { makeSurface, buildPanel, buildCollar, S, CX, CY } from './shirt/geometry';
-import { loadAssets, frontTexture, backTexture, weaveTexture, bibTexture } from './shirt/textures';
+import { loadAssets, frontTexture, backTexture, collarTexture, weaveTexture, bibTexture, type Variant } from './shirt/designs';
 
 const host = document.getElementById('shirt-viewer');
 if (host) init(host);
@@ -55,11 +55,26 @@ async function init(host: HTMLElement) {
   const mat = (t: THREE.Texture) => new THREE.MeshStandardMaterial({ map: t, roughness: 0.88, metalness: 0, bumpMap: weave, bumpScale: 1.2 });
   const lining = new THREE.MeshStandardMaterial({ color: 0x0e6f86, roughness: 0.95, side: THREE.BackSide }); // cara interior llisa
   const shirt = new THREE.Group();
-  for (const [surf, kind, tex] of [[front, 'front', frontTexture(assets)], [back, 'back', backTexture()]] as const) {
-    const g = buildPanel(surf, kind);
-    shirt.add(new THREE.Mesh(g, mat(mk(tex))), new THREE.Mesh(g, lining));
+  const mats: THREE.MeshStandardMaterial[] = [];
+  for (const [surf, kind] of [[front, 'front'], [back, 'back']] as const) {
+    const g = buildPanel(surf, kind), m = mat(mk(document.createElement('canvas'))); mats.push(m);
+    shirt.add(new THREE.Mesh(g, m), new THREE.Mesh(g, lining));
   }
-  shirt.add(buildCollar(front, back));
+  const collar = buildCollar(front, back); const cm = collar.material as THREE.MeshStandardMaterial; shirt.add(collar);
+
+  // canvi de prototip: regenera les textures (davant, darrere i el brodat de quadrats del coll)
+  let current: Variant | '' = '';
+  const setVariant = (v: Variant) => {
+    if (v === current) return; current = v;
+    const swap = (m: THREE.MeshStandardMaterial, c: HTMLCanvasElement, rep?: [number, number]) => { m.map?.dispose(); const t = mk(c); if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); t.magFilter = THREE.NearestFilter; } m.map = t; m.color.set(0xffffff); m.needsUpdate = true; };
+    swap(mats[0], frontTexture(v, assets)); swap(mats[1], backTexture(v)); swap(cm, collarTexture(v), [40, 2]);
+    document.querySelectorAll<HTMLElement>('[data-variant]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.variant === v)));
+    document.querySelectorAll<HTMLElement>('[data-variant-info]').forEach((b) => (b.hidden = b.dataset.variantInfo !== v));
+    try { history.replaceState(null, '', '#' + v); } catch {}
+  };
+  const initial = (location.hash.replace('#', '') || 'a') as Variant;
+  setVariant(['a', 'b', 'c'].includes(initial) ? initial : 'a');
+  document.querySelectorAll<HTMLElement>('[data-variant]').forEach((b) => b.addEventListener('click', () => setVariant(b.dataset.variant as Variant)));
 
   // dorsal (opcional) enganxat a la superfície del davant
   const bibW = 270, bibH = 193, bibCX = CX, bibCY = 690;
@@ -88,7 +103,7 @@ async function init(host: HTMLElement) {
   (document.getElementById('shirt-bib') as HTMLInputElement).addEventListener('change', (e) => { bib.visible = (e.target as HTMLInputElement).checked; });
   (document.getElementById('shirt-auto') as HTMLInputElement).addEventListener('change', (e) => { controls.autoRotate = (e.target as HTMLInputElement).checked; });
   (document.getElementById('shirt-auto') as HTMLInputElement).checked = controls.autoRotate;
-  (window as any).__shirt = { setView, stop, bib: (v: boolean) => (bib.visible = v) }; // per a proves
+  (window as any).__shirt = { setView, stop, bib: (v: boolean) => (bib.visible = v), variant: setVariant, flat: (v: Variant, side: 'front' | 'back') => (side === 'front' ? frontTexture(v, assets) : backTexture(v)).toDataURL('image/png') }; // per a proves
 
   // només renderitza quan és visible
   let visible = true; new IntersectionObserver((e) => (visible = e[0].isIntersecting)).observe(host);
