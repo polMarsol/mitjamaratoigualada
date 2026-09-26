@@ -11,7 +11,7 @@ const cubic = (p0: P, p1: P, p2: P, p3: P, n: number): P[] =>
   Array.from({ length: n }, (_, i) => { const t = i / n, u = 1 - t; return [u*u*u*p0[0] + 3*u*u*t*p1[0] + 3*u*t*t*p2[0] + t*t*t*p3[0], u*u*u*p0[1] + 3*u*u*t*p1[1] + 3*u*t*t*p2[1] + t*t*t*p3[1]] as P; });
 const dense = (a: P, b: P, step: number): P[] => { const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / step)); return Array.from({ length: n }, (_, i) => lerp(a, b, i / n)); };
 
-const NL: P = [558, 62], SL: P = [367, 118], SO: P = [120, 340], SI: P = [281, 518], AP: P = [330, 410], HL: P = [324, 1100];
+const NL: P = [512, 62], SL: P = [335, 155], SO: P = [105, 420], SI: P = [262, 545], AP: P = [318, 470], HL: P = [322, 1100];
 const NR = mirror(NL), SLr = mirror(SL), SOr = mirror(SO), SIr = mirror(SI), APr = mirror(AP), HR = mirror(HL);
 
 export interface Outline { pts: P[]; tags: Tag[]; neck: P[] }
@@ -21,9 +21,9 @@ export function outline(kind: 'front' | 'back'): Outline {
   add(NL, SL, 'seam'); add(SL, SO, 'seam'); add(SO, SI, 'open'); add(SI, AP, 'seam'); add(AP, HL, 'seam'); add(HL, HR, 'open', 10);
   add(HR, APr, 'seam'); add(APr, SIr, 'seam'); add(SIr, SOr, 'open'); add(SOr, SLr, 'seam'); add(SLr, NR, 'seam');
   // coll: de NR a NL (davant més baix que darrere)
-  const mid: P = kind === 'front' ? [700, 215] : [700, 98];
-  const c1 = kind === 'front' ? [[838, 140], [780, 215]] : [[820, 88], [760, 98]];
-  const c2 = kind === 'front' ? [[620, 215], [562, 140]] : [[640, 98], [580, 88]];
+  const mid: P = kind === 'front' ? [700, 192] : [700, 102];
+  const c1 = kind === 'front' ? [[884, 130], [790, 192]] : [[850, 90], [770, 102]];
+  const c2 = kind === 'front' ? [[610, 192], [516, 130]] : [[630, 102], [550, 90]];
   const neck = [...cubic(NR, c1[0] as P, c1[1] as P, mid, 22), ...cubic(mid, c2[0] as P, c2[1] as P, NL, 22)];
   neck.forEach((p) => { pts.push(p); tags.push('neck'); });
   return { pts, tags, neck: [...neck, NL] };
@@ -57,12 +57,21 @@ export function makeSurface(kind: 'front' | 'back') {
     return { d, dOpen };
   };
   const heightAt = (x: number, y: number, dd = dists(x, y)) => {
-    const sl = smooth(350, 410, Math.abs(x - CX));         // mànigues més primes
-    const amp = A * (1 - 0.45 * sl) * (1 - 0.1 * Math.pow((y - 520) / 600, 2));
+    const dx = Math.abs(x - CX), sl = smooth(372, 430, dx);                     // 0 = cos, 1 = màniga
+    const cuff = smooth(430, 600, dx);
+    const amp = A * (1 - 0.30 * sl) * (1 - 0.22 * cuff) * (1 + 0.06 * Math.sin(((y - 200) / 900) * Math.PI));
     const t = Math.min(1, dd.d / R), f = Math.sqrt(1 - (1 - t) * (1 - t));
-    return amp * f + C * (1 - smooth(0, 60, dd.dOpen)) * (1 - 0.35 * sl);
+    const folds = 4.5 * Math.sin(y * 0.022 + x * 0.007) + 3 * Math.sin(x * 0.03 - y * 0.011) * (0.4 + 0.6 * smooth(200, 900, y)); // plecs suaus del teixit
+    return amp * f + C * (1 - smooth(0, 60, dd.dOpen)) * (1 + 0.45 * sl) + folds * f * (1 - 0.85 * sl);
   };
-  return { outline: o, dists, heightAt, inside: (x: number, y: number) => inside(x, y, o.pts) };
+  // ombra d'oclusió (fosc a costures, aixella i sota el coll) → colors de vèrtex
+  const aoAt = (x: number, y: number, dd: { d: number; dOpen: number }) => {
+    let ao = 0.78 + 0.22 * smooth(0, 100, dd.d);
+    const dl = Math.hypot(x - AP[0], y - AP[1]), dr = Math.hypot(x - APr[0], y - APr[1]);
+    ao *= 0.72 + 0.28 * smooth(0, 120, Math.min(dl, dr));
+    return ao;
+  };
+  return { outline: o, dists, heightAt, aoAt, inside: (x: number, y: number) => inside(x, y, o.pts) };
 }
 export type Surface = ReturnType<typeof makeSurface>;
 
@@ -80,12 +89,13 @@ export function buildPanel(surf: Surface, kind: 'front' | 'back'): THREE.BufferG
   pts.forEach((p, i) => { coords[2 * i] = p[0]; coords[2 * i + 1] = p[1]; });
   const tri = new Delaunator(coords).triangles;
   const sign = kind === 'front' ? 1 : -1;
-  const pos: number[] = [], uv: number[] = [], idx: number[] = [];
+  const pos: number[] = [], uv: number[] = [], idx: number[] = [], col: number[] = [];
   const dd = pts.map((p) => surf.dists(p[0], p[1]));
   pts.forEach((p, i) => {
     const z = sign * surf.heightAt(p[0], p[1], dd[i]);
     pos.push((p[0] - CX) * S, (CY - p[1]) * S, z * S);
     uv.push(kind === 'front' ? p[0] / W : 1 - p[0] / W, 1 - p[1] / H);
+    const ao = surf.aoAt(p[0], p[1], dd[i]); col.push(ao, ao, ao);
   });
   for (let i = 0; i < tri.length; i += 3) {
     const a = tri[i], b = tri[i + 1], c = tri[i + 2];
@@ -101,6 +111,7 @@ export function buildPanel(surf: Surface, kind: 'front' | 'back'): THREE.BufferG
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
   g.setIndex(idx); g.computeVertexNormals();
   return g;
 }
@@ -111,7 +122,7 @@ export function buildCollar(front: Surface, back: Surface): THREE.Mesh {
   const v = (p: P, s: number) => new THREE.Vector3((p[0] - CX) * S, (CY - p[1]) * S, s * C * S);
   const loop = [...f.map((p) => v(p, 1)), ...[...b].reverse().map((p) => v(p, -1))];
   const curve = new THREE.CatmullRomCurve3(loop, true, 'centripetal');
-  const geo = new THREE.TubeGeometry(curve, 320, 0.026, 10, true);
+  const geo = new THREE.TubeGeometry(curve, 360, 0.031, 12, true);
   const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x0d2233, roughness: 0.9 }));
   return m;
 }

@@ -29,7 +29,7 @@ const sw = [['#0b5cad', 'Blau llac'], ['#0e7f8c', 'Teal'], ['#1a7a50', 'Verd'], 
       </div>
     </div>
 
-    <div id="shirt-viewer" class="glass relative mt-4 h-[68vh] min-h-[420px] w-full overflow-hidden rounded-[2.5rem]" data-loading={s.loading} data-nogl={s.nogl}>
+    <div id="shirt-viewer" class="stage relative mt-4 h-[72vh] min-h-[460px] w-full overflow-hidden rounded-[2.5rem]" data-loading={s.loading} data-nogl={s.nogl}>
       <canvas id="shirt-canvas" class="block h-full w-full cursor-grab active:cursor-grabbing" tabindex="0" role="img" aria-label={s.canvas}></canvas>
       <p id="shirt-status" class="absolute inset-0 grid place-items-center p-6 text-center font-semibold" style="color:var(--muted)">{s.loading}</p>
       <p class="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-xs font-semibold" style="color:var(--muted)">{s.hint}</p>
@@ -64,6 +64,8 @@ const sw = [['#0b5cad', 'Blau llac'], ['#0e7f8c', 'Teal'], ['#1a7a50', 'Verd'], 
   </div>
 </Base>
 <style>
+  .stage { background: radial-gradient(ellipse at 50% 30%, #ffffff 0%, #eef2f4 45%, #d5dde2 100%); box-shadow: var(--shadow); }
+  :global([data-theme='dark']) .stage { background: radial-gradient(ellipse at 50% 30%, #2c3e4c 0%, #16232d 55%, #0a141c 100%); }
   .var[aria-pressed='true'] { outline: 3px solid var(--accent); outline-offset: 2px; background: var(--glass-b); }
   .vbtn { transition: transform .18s var(--ease-out-strong), background-color .2s; }
   .vbtn:active { transform: scale(.96); }

@@ -42,10 +42,10 @@ const rng = (seed: number) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
 const smooth = (a: number, b: number, x: number) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
 // ---------- Línia de tall (dalt-dreta → baix-esquerra) ----------
-const Z0: P = [905, 88], Z1: P = [425, 1100];
+const Z0: P = [930, 100], Z1: P = [430, 1100];
 const dir = (() => { const dx = Z1[0] - Z0[0], dy = Z1[1] - Z0[1], l = Math.hypot(dx, dy); return { x: dx / l, y: dy / l, l }; })();
 const norm = { x: -dir.y, y: dir.x };                             // apunta cap a la zona A (esquerra/dalt)
-export const CUT = { tFront: 0.36 };
+export const CUT = { tFront: 0.44 };
 export const zzPoint = (t: number, off = 0): P => [Z0[0] + dir.x * dir.l * t + norm.x * off, Z0[1] + dir.y * dir.l * t + norm.y * off];
 function zig(t0: number, t1: number, offFn: (t: number) => number = () => 0, amp = 26, step = 84): P[] {
   const n = Math.max(2, Math.round(((t1 - t0) * dir.l) / step)), out: P[] = [];
@@ -66,7 +66,7 @@ function mosaic(ctx: CanvasRenderingContext2D, back: boolean, seed = 7) {
     const p = (sideB ? 0.95 : 0.55) * Math.exp(-dist / (sideB ? 300 : 150)) + 0.9 * smooth(0.62, 1, cy / H) * (sideB ? 1 : 0.6) + 0.5 * smooth(0.5, 1, cy / H) * (cx < 330 || cx > 1070 ? 0.4 : 0);
     // zones netes: logos al davant; bandera i patrocinadors al darrere
     const away = (px: number, py: number, rx: number, ry: number) => smooth(1, 1.45, Math.hypot((cx - px) / rx, (cy - py) / ry));
-    const keep = back ? Math.min(away(CX, 178, 110, 80), (cx > 330 && cx < 1070 && cy > 610 && cy < 990) ? 0.05 : 1) * (0.55 + 0.45 * smooth(0.55, 0.9, cy / H)) : Math.min(away(452, 375, 125, 115), away(977, 348, 130, 122));
+    const keep = back ? Math.min(away(CX, 178, 110, 80), (cx > 330 && cx < 1070 && cy > 610 && cy < 990) ? 0.05 : 1) * (0.55 + 0.45 * smooth(0.55, 0.9, cy / H)) : Math.min(away(505, 375, 125, 115), away(930, 350, 125, 118));
     if (r() < p * keep) {
       ctx.globalAlpha = 0.35 + 0.65 * Math.min(1, p) * (0.6 + 0.4 * r()); ctx.fillStyle = cols[Math.floor(r() * cols.length)];
       ctx.fillRect(x + 1.5, y + 1.5, s - 3, s - 3);
@@ -121,7 +121,7 @@ function drawBody(ctx: CanvasRenderingContext2D, th: Theme, mirrored: boolean) {
     t.fillStyle = v; t.fillRect(0, 0, tmp.width, tmp.height); void lx;
     ctx.drawImage(tmp, Math.min(x0, x1), 0, w, 660);
   };
-  fade(150, 410, th.sleeveL); fade(1250, 990, th.sleeveR);
+  fade(115, 430, th.sleeveL); fade(1285, 970, th.sleeveR);
   if (th.mosaic) { // quadrats que pugen per les mànigues
     const r = rng(3); for (const side of [0, 1]) for (let y = 300; y < 560; y += 30) for (let x = side ? 1000 : 90; x < (side ? 1330 : 400); x += 30) { const fadeP = side ? (x - 1000) / 330 : 1 - (x - 90) / 310; if (r() < 0.55 * fadeP * smooth(300, 520, y)) { ctx.fillStyle = side ? PAL.green : PAL.blue; ctx.globalAlpha = 0.3 + 0.5 * r(); ctx.fillRect(x, y, 27, 27); } }
     ctx.globalAlpha = 1;
@@ -142,11 +142,31 @@ function arms(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h:
   for (let r = 0; r < 2; r++) { ctx.beginPath(); for (let i = 0; i <= 8; i++) { const px = (w * i) / 8, py = wy + h * (0.06 + r * 0.08) + (i % 2 ? -h * 0.02 : h * 0.02); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
   ctx.restore();
 }
-function disc(ctx: CanvasRenderingContext2D, th: Theme, r: number, draw: () => void) {
-  ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.25)'; ctx.shadowBlur = 6; ctx.fillStyle = th.disc; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; draw(); ctx.restore();
+/** Etiqueta amb la vora inferior en zig-zag (com el tall de la samarreta): 98 × 132 u, centrada a (0,0) */
+function patch(ctx: CanvasRenderingContext2D, th: Theme, accent: string, draw: () => void) {
+  ctx.save(); ctx.shadowColor = 'rgba(0,10,20,.35)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+  const w = 49, top = -66, bot = 50;
+  ctx.beginPath(); ctx.moveTo(-w, top); ctx.lineTo(w, top); ctx.lineTo(w, bot);
+  for (let i = 0; i < 4; i++) { ctx.lineTo(w - (i * w) / 2 - w / 4, bot + 16); ctx.lineTo(w - ((i + 1) * w) / 2, bot); }
+  ctx.closePath(); ctx.fillStyle = th.disc; ctx.fill(); ctx.shadowColor = 'transparent';
+  ctx.save(); ctx.clip(); ctx.fillStyle = accent; ctx.fillRect(-w, top, 2 * w, 12); ctx.restore();
+  ctx.strokeStyle = th.discInk; ctx.globalAlpha = 0.25; ctx.lineWidth = 1.4; ctx.strokeRect(-w + 5, top + 17, 2 * w - 10, bot - top - 26); ctx.globalAlpha = 1;
+  ctx.fillStyle = th.discInk; ctx.textAlign = 'center'; draw(); ctx.restore();
 }
-function badgeEntitat(ctx: CanvasRenderingContext2D, th: Theme) { disc(ctx, th, 52, () => { ctx.fillStyle = th.discInk; ctx.textAlign = 'center'; ctx.font = `800 34px ${FONT_D}`; ctx.fillText('CAI', 0, 9); ctx.font = `700 8.5px ${FONT_S}`; ctx.fillText('ENTITAT COL·LAB.', 0, 27); }); }
-function badgeVilanova(ctx: CanvasRenderingContext2D, th: Theme) { disc(ctx, th, 52, () => { ctx.fillStyle = th.discInk; ctx.textAlign = 'center'; ctx.font = `800 30px ${FONT_D}`; ctx.fillText('VdC', 0, 8); ctx.font = `700 8px ${FONT_S}`; ctx.fillText('AJUNTAMENT', 0, 24); ctx.font = `700 7px ${FONT_S}`; ctx.fillText('VILANOVA DEL CAMÍ', 0, 33); }); }
+function badgeEntitat(ctx: CanvasRenderingContext2D, th: Theme) {
+  patch(ctx, th, PAL.teal, () => {
+    ctx.font = `800 40px ${FONT_D}`; ctx.fillText('CAI', 0, -8);
+    ctx.fillRect(-30, 3, 60, 3); ctx.fillRect(-30, 9, 44, 3);
+    ctx.font = `700 9px ${FONT_S}`; ctx.fillText('ENTITAT', 0, 27); ctx.fillText('COL·LABORADORA', 0, 38);
+  });
+}
+function badgeVilanova(ctx: CanvasRenderingContext2D, th: Theme) {
+  patch(ctx, th, PAL.green, () => {
+    ctx.save(); ctx.translate(0, -14); ctx.beginPath(); ctx.moveTo(-17, -20); ctx.lineTo(17, -20); ctx.lineTo(17, 6); ctx.quadraticCurveTo(17, 22, 0, 29); ctx.quadraticCurveTo(-17, 22, -17, 6); ctx.closePath();
+    ctx.fillStyle = PAL.green; ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = `800 17px ${FONT_D}`; ctx.fillText('VdC', 0, 8); ctx.restore();
+    ctx.fillStyle = th.discInk; ctx.font = `700 8.5px ${FONT_S}`; ctx.fillText('AJUNTAMENT', 0, 30); ctx.fillText('VILANOVA', 0, 40); ctx.fillText('DEL CAMÍ', 0, 50);
+  });
+}
 
 // ---------- Tisores de Cal Font (gràfiques): fulles DINS del tall, anelles a fora ----------
 function scissorsBlades(ctx: CanvasRenderingContext2D, th: Theme, x: number, y: number, ang: number, L: number) {
@@ -154,8 +174,8 @@ function scissorsBlades(ctx: CanvasRenderingContext2D, th: Theme, x: number, y: 
   for (const sgn of [1, -1]) {
     ctx.save(); ctx.rotate(sgn * 0.075);
     const g = ctx.createLinearGradient(0, -12, 0, 12); g.addColorStop(0, '#ffffff'); g.addColorStop(0.5, '#cfdbe3'); g.addColorStop(1, '#8fa3b0');
-    ctx.beginPath(); ctx.moveTo(-14, -12); ctx.lineTo(L, sgn * -1); ctx.lineTo(L + 2, sgn * 2); ctx.lineTo(-14, 12); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
-    ctx.strokeStyle = 'rgba(3,16,26,.55)'; ctx.lineWidth = 1.6; ctx.stroke(); ctx.restore();
+    ctx.beginPath(); ctx.moveTo(-16, -14); ctx.lineTo(L, sgn * -1); ctx.lineTo(L + 2, sgn * 2); ctx.lineTo(-16, 14); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = PAL.navy; ctx.lineWidth = 3; ctx.stroke(); ctx.restore();
   }
   ctx.restore();
 }
@@ -181,23 +201,22 @@ function drawFront(ctx: CanvasRenderingContext2D, th: Theme, a: Assets) {
   // tall obert
   ctx.save(); kerfPath(); ctx.shadowColor = 'rgba(0,0,0,.55)'; ctx.shadowBlur = 14; ctx.fillStyle = th.kerf; ctx.fill(); ctx.shadowBlur = 0; ctx.clip();
   ctx.strokeStyle = 'rgba(0,0,0,.85)'; ctx.lineWidth = 16; [Lk, Rk].forEach((e) => { ctx.beginPath(); trace(ctx, e); ctx.stroke(); });
-  // fulles de les tisores: només dins del tall
-  const tip = zzPoint(tf, 0), ang = Math.atan2(dir.y, dir.x), BL = 205;
-  scissorsBlades(ctx, th, tip[0] - dir.x * BL, tip[1] - dir.y * BL, ang, BL);
   ctx.restore();
+  // tisores ENTERES (només queda amagada la part que entraria a la tela): les puntes acaben on acaba el tall
+  const tip = zzPoint(tf, 0), ang = Math.atan2(dir.y, dir.x), BL = 250;
   ctx.strokeStyle = th.ink === '#ffffff' ? 'rgba(255,255,255,.6)' : 'rgba(255,255,255,.75)'; ctx.lineWidth = 2.2; [Lk, Rk].forEach((e) => { ctx.beginPath(); trace(ctx, e); ctx.stroke(); });
   // resta per tallar: zig-zag de punts fins a baix (dents grans)
   ctx.save(); ctx.setLineDash([14, 11]); ctx.lineCap = 'round'; ctx.strokeStyle = th.dot; ctx.lineWidth = 3.4;
   ctx.beginPath(); trace(ctx, zig(tf, 1.1)); ctx.stroke(); ctx.restore();
-  // anelles de les tisores (a fora, sobre la tela)
+  scissorsBlades(ctx, th, tip[0] - dir.x * BL, tip[1] - dir.y * BL, ang, BL);
   scissorsHandles(ctx, th, tip[0] - dir.x * BL, tip[1] - dir.y * BL, ang);
   // escut d'Igualada (esquerra) i MM (dreta)
   const eh = 148, ew = (a.escut.naturalWidth / a.escut.naturalHeight) * eh;
-  ctx.drawImage(a.escut, 452 - ew / 2, 300, ew, eh);
-  ctx.drawImage(th.mm === 'mono' ? a.monoW : a.color, 895, 262, 165, 171);
+  ctx.drawImage(a.escut, 505 - ew / 2, 302, ew, eh);
+  ctx.drawImage(th.mm === 'mono' ? a.monoW : a.color, 855, 285, 150, 155);
   // mànigues: entitat (esquerra) i Vilanova (dreta), en insígnies rodones
-  ctx.save(); ctx.translate(216, 372); ctx.rotate(0.84); badgeEntitat(ctx, th); ctx.restore();
-  ctx.save(); ctx.translate(1184, 372); ctx.rotate(-0.84); badgeVilanova(ctx, th); ctx.restore();
+  ctx.save(); ctx.translate(228, 392); ctx.rotate(0.71); badgeEntitat(ctx, th); ctx.restore();
+  ctx.save(); ctx.translate(1172, 392); ctx.rotate(-0.71); badgeVilanova(ctx, th); ctx.restore();
   ctx.restore();
 }
 
@@ -264,10 +283,13 @@ export function collarTexture(v: Variant) {
   x.fillStyle = c0; x.fillRect(0, 0, 64, 64); x.fillStyle = c2; x.fillRect(0, 0, 32, 32); x.fillRect(32, 32, 32, 32); x.fillStyle = c1; x.fillRect(32, 0, 32, 32);
   return c;
 }
-export function weaveTexture() {
+export function weaveTexture() { // malla d'un teixit tècnic esportiu: petits forats en retícula desplaçada
   const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d')!;
-  x.fillStyle = '#808080'; x.fillRect(0, 0, 128, 128);
-  for (let i = 0; i < 128; i += 2) { x.fillStyle = `rgba(0,0,0,${0.10 + Math.random() * 0.1})`; x.fillRect(0, i, 128, 1); x.fillStyle = `rgba(255,255,255,${0.08 + Math.random() * 0.1})`; x.fillRect(i, 0, 1, 128); }
+  x.fillStyle = '#9a9a9a'; x.fillRect(0, 0, 128, 128);
+  for (let j = 0; j < 16; j++) for (let i = 0; i < 16; i++) {
+    const px = i * 8 + (j % 2 ? 4 : 0) + 2, py = j * 8 + 2; const g = x.createRadialGradient(px, py, 0, px, py, 3);
+    g.addColorStop(0, 'rgba(20,20,20,.9)'); g.addColorStop(1, 'rgba(20,20,20,0)'); x.fillStyle = g; x.beginPath(); x.arc(px, py, 3, 0, 7); x.fill();
+  }
   return c;
 }
 export function bibTexture(a: Assets) {

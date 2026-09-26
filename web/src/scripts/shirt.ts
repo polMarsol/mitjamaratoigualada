@@ -17,6 +17,7 @@ async function init(host: HTMLElement) {
   catch { status.textContent = host.dataset.nogl || 'WebGL no disponible'; return; }
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.02;
 
   const scene = new THREE.Scene();
   const pm = new THREE.PMREMGenerator(renderer);
@@ -50,23 +51,23 @@ async function init(host: HTMLElement) {
   await new Promise((r) => requestAnimationFrame(r));
   const assets = await loadAssets();
   const front = makeSurface('front'), back = makeSurface('back');
-  const weave = new THREE.CanvasTexture(weaveTexture()); weave.wrapS = weave.wrapT = THREE.RepeatWrapping; weave.repeat.set(70, 60);
+  const weave = new THREE.CanvasTexture(weaveTexture()); weave.wrapS = weave.wrapT = THREE.RepeatWrapping; weave.repeat.set(95, 80);
   const mk = (c: HTMLCanvasElement) => { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t; };
-  const mat = (t: THREE.Texture) => new THREE.MeshStandardMaterial({ map: t, roughness: 0.88, metalness: 0, bumpMap: weave, bumpScale: 1.2 });
-  const lining = new THREE.MeshStandardMaterial({ color: 0x0e6f86, roughness: 0.95, side: THREE.BackSide }); // cara interior llisa
+  const mat = (t: THREE.Texture) => new THREE.MeshPhysicalMaterial({ map: t, roughness: 0.78, metalness: 0, sheen: 0.7, sheenRoughness: 0.5, sheenColor: new THREE.Color(0xd8ecff), bumpMap: weave, bumpScale: 1.6, vertexColors: true });
+  const lining = new THREE.MeshStandardMaterial({ color: 0x0e6f86, roughness: 0.95, side: THREE.BackSide, vertexColors: true }); // cara interior llisa
   const shirt = new THREE.Group();
-  const mats: THREE.MeshStandardMaterial[] = [];
+  const mats: THREE.MeshPhysicalMaterial[] = [];
   for (const [surf, kind] of [[front, 'front'], [back, 'back']] as const) {
     const g = buildPanel(surf, kind), m = mat(mk(document.createElement('canvas'))); mats.push(m);
     shirt.add(new THREE.Mesh(g, m), new THREE.Mesh(g, lining));
   }
-  const collar = buildCollar(front, back); const cm = collar.material as THREE.MeshStandardMaterial; shirt.add(collar);
+  const collar = buildCollar(front, back); const cm = collar.material as THREE.MeshStandardMaterial; cm.roughness = 0.75; shirt.add(collar);
 
   // canvi de prototip: regenera les textures (davant, darrere i el brodat de quadrats del coll)
   let current: Variant | '' = '';
   const setVariant = (v: Variant) => {
     if (v === current) return; current = v;
-    const swap = (m: THREE.MeshStandardMaterial, c: HTMLCanvasElement, rep?: [number, number]) => { m.map?.dispose(); const t = mk(c); if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); t.magFilter = THREE.NearestFilter; } m.map = t; m.color.set(0xffffff); m.needsUpdate = true; };
+    const swap = (m: THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial, c: HTMLCanvasElement, rep?: [number, number]) => { m.map?.dispose(); const t = mk(c); if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); t.magFilter = THREE.NearestFilter; } m.map = t; m.color.set(0xffffff); m.needsUpdate = true; };
     swap(mats[0], frontTexture(v, assets)); swap(mats[1], backTexture(v)); swap(cm, collarTexture(v), [40, 2]);
     document.querySelectorAll<HTMLElement>('[data-variant]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.variant === v)));
     document.querySelectorAll<HTMLElement>('[data-variant-info]').forEach((b) => (b.hidden = b.dataset.variantInfo !== v));
@@ -87,9 +88,9 @@ async function init(host: HTMLElement) {
 
   // ombra suau sota la peça
   const sc = document.createElement('canvas'); sc.width = sc.height = 128; const sx = sc.getContext('2d')!;
-  const rg = sx.createRadialGradient(64, 64, 4, 64, 64, 62); rg.addColorStop(0, 'rgba(0,20,40,.35)'); rg.addColorStop(1, 'rgba(0,20,40,0)'); sx.fillStyle = rg; sx.fillRect(0, 0, 128, 128);
-  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 1.1), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
-  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -1.42; scene.add(shadow);
+  const rg = sx.createRadialGradient(64, 64, 2, 64, 64, 62); rg.addColorStop(0, 'rgba(20,30,40,.42)'); rg.addColorStop(0.5, 'rgba(20,30,40,.16)'); rg.addColorStop(1, 'rgba(20,30,40,0)'); sx.fillStyle = rg; sx.fillRect(0, 0, 128, 128);
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 1.0), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -1.47; scene.add(shadow);
 
   status.hidden = true; host.classList.add('ready');
 
