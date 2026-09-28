@@ -69,7 +69,7 @@ const url = (l: Lang) => new URL(`/${l}/${path}`, Astro.site).href;
       <div id="loader-stage" class="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden="true">
         <div id="loader-stack" class="grid place-items-center">
           {Array.from({ length: 14 }).map((_, i) => (
-            <img class="ls" src={i === 0 ? '/brand/logo-principal.svg' : '/brand/logo-mono-blau-fosc.svg'} alt="" width="560" height="580" decoding="async"
+            <img class="ls" src={i === 0 ? '/brand/logo-principal.svg' : '/brand/logo-mono-blau-fosc.svg'} alt="" width="576" height="580" decoding="async"
                  style={i === 0 ? '' : `opacity:${(0.5 * Math.pow(1 - i / 14, 1.4) + 0.04).toFixed(2)}`} />
           ))}
         </div>

@@ -12,18 +12,29 @@ def wave(x0,x1,y,amp,per):
     d=f'M{x0} {y}'; x=x0
     while x<x1-1e-6: d+=f' q{per/4} {-amp} {per/2} 0 t{per/2} 0'; x+=per
     return d
-def mark(ox,oy,s,mode,gid='g',sw=SW,dots=True,wave_on=True,wave_gap=84):
-    """MM route mark. mode: 'color' | 'navy' | 'white' | hex. returns svg fragments"""
-    P=[(ox+x*s,oy+y*s) for x,y in PTS]
+MARK_W = 480 + 16   # amplada total del traç (MM + la I), amb el nudge de 16 ja inclòs
+def _mountain(cx,cy,w,h):
+    """Petita silueta de muntanya per a l'accent entre les dues M (mateix llenguatge que els pics del traç)."""
+    x0,x1 = cx-w/2, cx+w/2
+    return (f'M{x0:.1f} {cy+h*0.42:.1f} L{cx-w*0.14:.1f} {cy-h*0.5:.1f} '
+            f'L{cx+w*0.02:.1f} {cy-h*0.06:.1f} L{cx+w*0.24:.1f} {cy-h*0.42:.1f} '
+            f'L{x1:.1f} {cy+h*0.42:.1f}Z')
+def mark(ox,oy,s,mode,gid='g',sw=SW,dots=True,wave_on=True,wave_gap=84,nudge=16,accent=True):
+    """MMI route mark: MM + una muntanya petita entre les dues M (el punt de la «i») + la I sortint
+    directament de la segona M (mode: 'color' | 'navy' | 'white' | hex). Retorna fragments d'SVG."""
+    PTS_FULL = PTS + [(480+nudge, 22)]
+    P=[(ox+x*s,oy+y*s) for x,y in PTS_FULL]
     d='M'+' L'.join(f'{x:.1f} {y:.1f}' for x,y in P)
     stroke = f'url(#{gid})' if mode=='color' else (NAVY if mode=='navy' else '#ffffff' if mode=='white' else mode)
     c0 = BLUE if mode=='color' else stroke; c1 = GREEN if mode=='color' else stroke
-    wc = GREEN if mode=='color' else stroke
+    wc = GREEN if mode=='color' else stroke; ac = GREEN if mode=='color' else stroke
     out=f'<path d="{d}" fill="none" stroke="{stroke}" stroke-width="{sw*s:.1f}" stroke-linecap="round" stroke-linejoin="round"/>'
     if dots:
         out+=f'<circle cx="{P[0][0]:.1f}" cy="{P[0][1]:.1f}" r="{DOT*s:.1f}" fill="{c0}"/><circle cx="{P[-1][0]:.1f}" cy="{P[-1][1]:.1f}" r="{DOT*s:.1f}" fill="{c1}"/>'
     if wave_on:
         out+=f'<path d="{wave(P[0][0]-DOT*s*0.2,P[-1][0]+DOT*s*0.2,oy+(220+wave_gap)*s,8*s,60*s)}" fill="none" stroke="{wc}" stroke-width="{9*s:.1f}" stroke-linecap="round"/>'
+    if accent:
+        out+=f'<path d="{_mountain(ox+240*s, oy+22*s-40*s, 46*s, 40*s)}" fill="{ac}"/>'
     return out, (gradient(gid,P[0][0],P[-1][0]) if mode=='color' else '')
 def words(mode,cx,base,width,size_ig=None):
     tx = NAVY if mode in ('color','navy') else ('#ffffff' if mode=='white' else mode)
@@ -31,34 +42,32 @@ def words(mode,cx,base,width,size_ig=None):
     s2=fit('MITJA MARATÓ',width,700,300,100,22); mj,_=text_path('MITJA MARATÓ',s2,700,cx,base+s2*1.55+8,300,'middle',100,22)
     return f'<path d="{ig}" fill="{tx}"/><path d="{mj}" fill="{tx}"/>', s1, s2
 def stacked(mode='color',bg=None):
-    W,H=560,580
+    W,H=40+MARK_W+40,580
     m,defs=mark(40,52,1.0,mode)
-    w,s1,s2=words(mode,280,468,480)
+    w,s1,s2=words(mode,W/2,468,MARK_W*0.96)
     b=(f'<rect width="{W}" height="{H}" fill="{bg}"/>' if bg else '')+m+w
     return svg(W,H,b,defs)
 def horizontal(mode='color',bg=None):
-    # marca a l'esquerra (ample 300), text a la dreta
-    s=0.66; W,H=1000,300
+    # marca a l'esquerra, text a la dreta
+    s=0.66; xoff=30+MARK_W*s+52; W,H=round(xoff+560+40),300
     m,defs=mark(30,40,s,mode,dots=True,wave_on=True,wave_gap=80)
     tx = NAVY if mode in ('color','navy') else ('#ffffff' if mode=='white' else mode)
-    s1=fit('IGUALADA',560,800,10,100,44); ig,_=text_path('IGUALADA',s1,800,410,222,10,'start',100,44)
-    s2=fit('MITJA MARATÓ',560,700,300,100,22); mj,_=text_path('MITJA MARATÓ',s2,700,410,96+s2*0.0,300,'start',100,22)
-    # MITJA MARATÓ a sobre (base 118), IGUALADA a sota
-    mj,_=text_path('MITJA MARATÓ',s2,700,410,104,300,'start',100,22)
+    s1=fit('IGUALADA',560,800,10,100,44); ig,_=text_path('IGUALADA',s1,800,xoff,222,10,'start',100,44)
+    s2=fit('MITJA MARATÓ',560,700,300,100,22); mj,_=text_path('MITJA MARATÓ',s2,700,xoff,104,300,'start',100,22)
     b=(f'<rect width="{W}" height="{H}" fill="{bg}"/>' if bg else '')+m+f'<path d="{mj}" fill="{tx}"/><path d="{ig}" fill="{tx}"/>'
     return svg(W,H,b,defs)
 def icon(kind='gradient'):
-    """app icon / favicon: rounded square, MM en blanc, sense onada"""
+    """app icon / favicon: rounded square, MMI en blanc, sense onada"""
     W=512
     defs='<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b5cad"/><stop offset=".55" stop-color="#0e7f8c"/><stop offset="1" stop-color="#1a7a50"/></linearGradient>'
-    s=0.84
-    m,_=mark(256-240*s,256-121*s-14,s,'white',sw=40,dots=False,wave_on=False)
-    m2=f'<path d="M{256-240*s:.1f} {256-121*s-14+220*s:.1f}" />'
+    s=512/(MARK_W+70)
+    ox=(512-MARK_W*s)/2; oy=256-121*s-14+40*s
+    m,_=mark(ox,oy,s,'white',sw=40,dots=False,wave_on=False)
     bg=f'<rect width="{W}" height="{W}" rx="112" fill="url(#bg)"/>'
     return svg(W,W,bg+m,defs)
 def mark_only(mode='color',bg=None):
-    W,H=560,330
-    m,defs=mark(40,40,1.0,mode)
+    W,H=40+MARK_W+40,370
+    m,defs=mark(40,80,1.0,mode)
     return svg(W,H,(f'<rect width="{W}" height="{H}" fill="{bg}"/>' if bg else '')+m,defs)
 # ----- Insígnia (xemeneia de maó) -----
 def badge():
