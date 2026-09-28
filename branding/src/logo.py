@@ -60,7 +60,7 @@ def icon(kind='gradient'):
     defs='<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b5cad"/><stop offset=".55" stop-color="#0e7f8c"/><stop offset="1" stop-color="#1a7a50"/></linearGradient>'
     s=512/(MARK_W+70)
     ox=(512-MARK_W*s)/2; oy=256-121*s-14+40*s
-    m,_=mark(ox,oy,s,'white',sw=40,dots=False,wave_on=False)
+    m,_=mark(ox,oy,s,'white',sw=40,dots=True,wave_on=False)
     bg=f'<rect width="{W}" height="{W}" rx="112" fill="url(#bg)"/>'
     return svg(W,W,bg+m,defs)
 def mark_only(mode='color',bg=None):
