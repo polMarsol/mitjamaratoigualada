@@ -19,7 +19,7 @@ def _mountain(cx,cy,w,h):
     return (f'M{x0:.1f} {cy+h*0.42:.1f} L{cx-w*0.14:.1f} {cy-h*0.5:.1f} '
             f'L{cx+w*0.02:.1f} {cy-h*0.06:.1f} L{cx+w*0.24:.1f} {cy-h*0.42:.1f} '
             f'L{x1:.1f} {cy+h*0.42:.1f}Z')
-def mark(ox,oy,s,mode,gid='g',sw=SW,dots=True,wave_on=True,wave_gap=84,nudge=16,accent=True):
+def mark(ox,oy,s,mode,gid='g',sw=SW,dots=True,wave_on=True,wave_gap=84,nudge=16):
     """MMI route mark: MM + una muntanya petita entre les dues M (el punt de la «i») + la I sortint
     directament de la segona M (mode: 'color' | 'navy' | 'white' | hex). Retorna fragments d'SVG."""
     PTS_FULL = PTS + [(480+nudge, 22)]
@@ -27,14 +27,12 @@ def mark(ox,oy,s,mode,gid='g',sw=SW,dots=True,wave_on=True,wave_gap=84,nudge=16,
     d='M'+' L'.join(f'{x:.1f} {y:.1f}' for x,y in P)
     stroke = f'url(#{gid})' if mode=='color' else (NAVY if mode=='navy' else '#ffffff' if mode=='white' else mode)
     c0 = BLUE if mode=='color' else stroke; c1 = GREEN if mode=='color' else stroke
-    wc = GREEN if mode=='color' else stroke; ac = GREEN if mode=='color' else stroke
+    wc = GREEN if mode=='color' else stroke
     out=f'<path d="{d}" fill="none" stroke="{stroke}" stroke-width="{sw*s:.1f}" stroke-linecap="round" stroke-linejoin="round"/>'
     if dots:
         out+=f'<circle cx="{P[0][0]:.1f}" cy="{P[0][1]:.1f}" r="{DOT*s:.1f}" fill="{c0}"/><circle cx="{P[-1][0]:.1f}" cy="{P[-1][1]:.1f}" r="{DOT*s:.1f}" fill="{c1}"/>'
     if wave_on:
         out+=f'<path d="{wave(P[0][0]-DOT*s*0.2,P[-1][0]+DOT*s*0.2,oy+(220+wave_gap)*s,8*s,60*s)}" fill="none" stroke="{wc}" stroke-width="{9*s:.1f}" stroke-linecap="round"/>'
-    if accent:
-        out+=f'<path d="{_mountain(ox+240*s, oy+22*s-40*s, 46*s, 40*s)}" fill="{ac}"/>'
     return out, (gradient(gid,P[0][0],P[-1][0]) if mode=='color' else '')
 def words(mode,cx,base,width,size_ig=None):
     tx = NAVY if mode in ('color','navy') else ('#ffffff' if mode=='white' else mode)
