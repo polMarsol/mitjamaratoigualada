@@ -36,9 +36,11 @@ async function init(host: HTMLElement) {
     const wm = wc * (1 - e) + wn * e, sw = wm * 0.62 + 34, gy = y0 + h + 6, g = ctx.createRadialGradient(W / 2, gy, 4, W / 2, gy, sw);
     g.addColorStop(0, 'rgba(30,40,50,.32)'); g.addColorStop(1, 'rgba(30,40,50,0)');
     ctx.save(); ctx.translate(0, gy); ctx.scale(1, 0.11); ctx.translate(0, -gy); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(W / 2, gy, sw, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    // fosa creuada pura: cap escalat ni volteig, la samarreta mai es deforma
-    ctx.globalAlpha = 1 - smooth(0.2, 0.8, t); ctx.drawImage(cur.img, (W - wc) / 2, y0, wc, h);
-    ctx.globalAlpha = smooth(0.2, 0.8, t); ctx.drawImage(nxt.img, (W - wn) / 2, y0, wn, h);
+    // Fosa SEQÜENCIAL (mai les dues fotos alhora): les siluetes de davant i de perfil no coincideixen
+    // (coll, espatlles), així que superposar-les es veia com una queixalada a la roba. Primer
+    // s'esvaeix la foto actual fins a 0 i després apareix la següent des de 0: no hi ha superposició.
+    if (t < 0.5) { ctx.globalAlpha = 1 - smooth(0.32, 0.5, t); ctx.drawImage(cur.img, (W - wc) / 2, y0, wc, h); }
+    else { ctx.globalAlpha = smooth(0.5, 0.68, t); ctx.drawImage(nxt.img, (W - wn) / 2, y0, wn, h); }
     ctx.globalAlpha = 1;
   }
 
