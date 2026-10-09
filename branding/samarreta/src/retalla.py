@@ -66,8 +66,22 @@ def bg_mask(rgb: np.ndarray) -> np.ndarray:
     return bg
 
 
-def cutout(img: Image.Image) -> Image.Image:
+def smooth_sdf(fg: np.ndarray, k: float) -> np.ndarray:
+    """Distància amb signe (px de treball, + = dins) a un contorn «vectoritzat»: es treuen les
+    petites ondulacions del perfil (soroll de la foto) però es conserven cantonades i escletxes.
+    k = px de treball per px de la foto de davant (referència d'escala)."""
+    sdf = ndi.distance_transform_edt(fg) - ndi.distance_transform_edt(~fg)
+    sdf = np.where(fg, sdf - 0.5, sdf + 0.5)
+    soft, fine = ndi.gaussian_filter(sdf, 7 * k), ndi.gaussian_filter(sdf, 1.2 * k)
+    # on les dues versions discrepen hi ha una forma real (cantonada, punta, aixella): allà mana la fina
+    w = np.clip((np.abs(soft - fine) - 1.0 * k) / (1.5 * k), 0, 1)
+    w = ndi.gaussian_filter(ndi.maximum_filter(w, size=int(6 * k) | 1), 3 * k)
+    return soft * (1 - w) + fine * w
+
+
+def cutout(img: Image.Image, ref_h: float) -> Image.Image:
     rgb = np.asarray(img.convert('RGB'))
+    a = rgb.astype(np.float32)
     fg = ~bg_mask(rgb)
     # només la peça principal, sense forats interiors (logos blancs) ni brossa solta
     lab, n = ndi.label(fg)
@@ -76,29 +90,76 @@ def cutout(img: Image.Image) -> Image.Image:
         fg = lab == (1 + int(np.argmax(sizes)))
     fg = ndi.binary_fill_holes(fg)
     fg = ndi.binary_opening(fg, iterations=1)
+    s = fg.any(1).sum() / ref_h                              # escala respecte a la foto de davant
+    # escuts que sobresurten de la vora de la màniga (a la foto queden tallats i esfilagarsats, i el
+    # perfil hi feia una queixalada): en aquell tram la vora passa a ser l'envolupant convexa, de
+    # l'espatlla al puny. El que s'afegeix es pinta després amb el color interior més proper.
+    fg0 = fg.copy()
+    r = int(round(10 * s))
+    yy, xx = np.ogrid[-r:r + 1, -r:r + 1]
+    bump = fg & ~ndi.binary_opening(fg, yy * yy + xx * xx <= r * r)
+    white = (a.max(2) - a.min(2) < 28) & (a.mean(2) > 190)
+    lab, n = ndi.label(bump)
+    H, W = fg.shape
+    crests = [sl for i, sl in enumerate(ndi.find_objects(lab), 1)
+              if (lab[sl] == i).sum() >= 20 * s * s and white[sl][lab[sl] == i].mean() >= 0.2]
+    for sl in crests:                                         # 1) fora el sortint esfilagarsat
+        fg[sl] &= ~(lab[sl] > 0)
+    for sl in crests:                                         # 2) vora recta/convexa d'espatlla a puny
+        left = (sl[1].start + sl[1].stop) / 2 < W / 2
+        edge = np.where(fg.any(1), fg.argmax(1) if left else W - 1 - fg[:, ::-1].argmax(1), -1)
+        y0, y1 = max(sl[0].start - int(30 * s), 0), sl[0].stop
+        while edge[y0] < 0:
+            y0 += 1
+        while y1 < H - 1 and edge[y1 + 1] >= 0 and abs(edge[y1 + 1] - edge[y1]) <= 8 * s:
+            y1 += 1                                           # fins a la cantonada del puny
+        ys = np.arange(y0, y1 + 1)
+        xs = (edge[ys] if left else -edge[ys]).astype(float)
+        hull = []                                             # envolupant inferior de x(y)
+        for q in zip(ys, xs):
+            while len(hull) >= 2 and (hull[-1][0] - hull[-2][0]) * (q[1] - hull[-2][1]) - (hull[-1][1] - hull[-2][1]) * (q[0] - hull[-2][0]) <= 0:
+                hull.pop()
+            hull.append(q)
+        hx = np.interp(ys, [h[0] for h in hull], [h[1] for h in hull])
+        for y, x in zip(ys, hx):
+            if left:
+                fg[y, int(round(x)):edge[y]] = True
+            else:
+                fg[y, edge[y]:int(round(-x)) + 1] = True
+    fg = ndi.binary_fill_holes(fg)
+    # 3) dins l'escut, el fons que s'hi havia colat (gris clar) es pinta amb el blanc del mateix escut,
+    #    i la resta es deixa tal com és a la foto: nítid, sense repintar ni difuminar
+    if crests:
+        zone = np.zeros_like(fg)
+        for sl in crests:
+            zone[sl] |= lab[sl] > 0
+        zone = ndi.binary_dilation(zone, yy * yy + xx * xx <= r * r)
+        solid = ndi.binary_erosion(fg0)
+        near = ndi.distance_transform_edt(~solid, return_distances=False, return_indices=True)
+        whitish = (a.max(2) - a.min(2) < 40) & (a.mean(2) > 150)
+        rows = np.zeros_like(fg)
+        for sl in crests:
+            rows[sl[0]] = True                                # a l'alçada de l'escut, tot el que queda dins la vora
+        paint = zone & fg & ~solid & (a.max(2) - a.min(2) < 28) & (a.mean(2) > np.where(rows, 105, 170)) & (whitish[near[0], near[1]] | rows)
+        rgb = rgb.copy()
+        rgb[paint] = np.median(a[white & zone & solid], axis=0)
+        img = Image.fromarray(rgb)
+        fg0 = fg0 | paint
 
     big = img.convert('RGB').resize((img.width * UP, img.height * UP), Image.LANCZOS)
     c = np.asarray(big).astype(np.float32)
-    m = np.asarray(Image.fromarray((fg * 255).astype(np.uint8)).resize(big.size, Image.BICUBIC)).astype(np.float32) / 255
-    d_raw = ndi.distance_transform_edt(m > 0.5)             # distància al fons real (sense suavitzar)
-    m = ndi.gaussian_filter(m, UP * 0.9)                    # contorn suau, sense escales
-    d_in = ndi.distance_transform_edt(m > 0.5)              # px (a x3) cap endins
-    # el suavitzat tanca les escletxes fines de fons (aixella entre màniga i cos): d_raw les manté obertes
-    d_in = np.minimum(d_in, d_raw + UP * 0.5)
-    inset, feather = UP * 1.1, UP * 0.9
-    alpha = np.clip((d_in - inset) / feather, 0, 1)
+    m = np.asarray(Image.fromarray((fg * 255).astype(np.uint8)).resize(big.size, Image.BICUBIC)) > 127
+    k = UP * s
+    d_raw = ndi.distance_transform_edt(m)                    # distància a la vora (sense suavitzar)
+    m0 = np.asarray(Image.fromarray((fg0 * 255).astype(np.uint8)).resize(big.size, Image.BICUBIC)) > 127
+    d_fab = ndi.distance_transform_edt(m0)                   # distància al fons real de la foto
+    d_in = np.minimum(smooth_sdf(m, k), d_raw + 0.5 * k)     # mai més enfora que la peça real
+    px = fg.any(1).sum() * UP / H_OUT                        # 1 px final, en px de treball
+    inset, feather = 1.3 * k, 1.5 * px
+    alpha = np.clip((d_in - inset) / feather + 0.5, 0, 1)
     alpha = alpha * alpha * (3 - 2 * alpha)
-    safe = d_in > inset + feather + UP * 0.6
-    # espurnes clares soltes enganxades a la vora (punta de l'escletxa de l'aixella): no són tela,
-    # així que no poden fer de color «segur» i es repinten amb la tela del costat
-    light = (c.max(2) - c.min(2) < 50) & (c.mean(2) > 75) & (m > 0.5)   # gris: fons barrejat amb ombra
-    lab, n = ndi.label(light)
-    if n:
-        ids = np.arange(1, n + 1)
-        small = ndi.sum(light, lab, ids) < 9 * UP * UP
-        edge = ndi.minimum(d_in, lab, ids) < UP * 4
-        safe &= ~ndi.binary_dilation(np.isin(lab, ids[small & edge]), iterations=UP)
     # descontaminació: a la franja de vora, el color ve del píxel interior segur més proper
+    safe = d_fab > inset + 0.9 * k
     idx = ndi.distance_transform_edt(~safe, return_distances=False, return_indices=True)
     c = np.where(safe[..., None], c, c[idx[0], idx[1]])
     out = np.dstack([c, alpha * 255]).round().clip(0, 255).astype(np.uint8)
@@ -123,7 +184,7 @@ def main():
     }
     meta = {}
     for name in ('front', 'back', 'side-l', 'side-r'):
-        im = fit(cutout(views[name]))
+        im = fit(cutout(views[name], 580))
         im.save(OUT / f'{name}.webp', quality=92, alpha_quality=100, method=6)
         meta[name] = {'w': im.width, 'h': im.height}
         print(name, im.size)
