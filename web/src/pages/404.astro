@@ -25,8 +25,7 @@ import { LANGS, useT } from '../i18n';
   @keyframes dash { from { transform: translateX(-.4em) scaleX(-1); } to { transform: translateX(.4em) scaleX(-1); } }
 </style>
 <script is:inline>
-  var l = location.pathname.split('/')[1];
-  if (['ca', 'en', 'es'].indexOf(l) < 0) l = (navigator.language || 'ca').slice(0, 2);
+  var l = (location.pathname.match(/\/(ca|en|es)(\/|$)/) || [])[1] || (navigator.language || 'ca').slice(0, 2);
   document.querySelectorAll('[data-lang]').forEach(function (e) { e.hidden = e.dataset.lang !== l; });
   if (!document.querySelector('[data-lang]:not([hidden])')) document.querySelector('[data-lang=ca]').hidden = false;
 </script>
