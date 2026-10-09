@@ -8,6 +8,7 @@ const pics: Record<string, string> = { '21k': 'aeria', '10k': 'passeig-2', walk:
 const { lang } = Astro.props as { lang: Lang };
 const t = useT(lang);
 const skins = ['glass', 'neo', 'glass'];
+import { routeD } from '../lib/routePath';
 ---
 <section id="modalitats" class="px-5 py-24 sm:px-8">
   <div class="mx-auto max-w-6xl">
@@ -18,10 +19,12 @@ const skins = ['glass', 'neo', 'glass'];
       {MODALITIES.map((m, i) => {
         const it = t.modalities.items[m.id];
         return (
-          <article data-reveal class:list={['card-hover relative flex flex-col overflow-hidden rounded-[2rem] p-7', skins[i]]}>
+          <article data-reveal class:list={['card-hover card-zoom relative flex flex-col overflow-hidden rounded-[2rem] p-7', skins[i]]}>
             <div class="mcard-photo relative -mx-7 -mt-7 mb-5 h-44 overflow-hidden">
               <Photo name={pics[m.id]} alt={PHOTOS[pics[m.id]].cap[lang]} class="h-full w-full object-cover" sizes="(min-width:768px) 33vw, 100vw" />
               <div class="absolute inset-0" style="background:linear-gradient(transparent 50%,rgb(0 0 0/.35))"></div>
+              <!-- en passar el ratolí, el traçat real del recorregut es dibuixa sobre la foto -->
+              <svg class="mroute absolute inset-0 h-full w-full" viewBox="0 0 320 176" aria-hidden="true"><path d={routeD(m.routeId, 320, 176, 16)} fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
             </div>
             <span class="relative w-fit rounded-full px-3 py-1 text-xs font-bold" style="background:var(--line)">{it.tag}</span>
             <h3 class="relative mt-5 text-3xl font-extrabold">{it.name}</h3>
@@ -40,6 +43,10 @@ const skins = ['glass', 'neo', 'glass'];
   </div>
 </section>
 <style>
+  .mroute { background: rgb(8 30 50 / 0); transition: background-color .45s; filter: drop-shadow(0 2px 5px rgb(0 0 0 / .6)); }
+  .mroute path { stroke-dasharray: 3000; stroke-dashoffset: 3000; transition: stroke-dashoffset 2.2s var(--ease-in-out-strong); }
+  :global(.card-hover.is-hover) .mroute, .card-hover:focus-within .mroute { background: rgb(8 30 50 / .5); }
+  :global(.card-hover.is-hover) .mroute path, .card-hover:focus-within .mroute path { stroke-dashoffset: 0; }
   .mcard-photo img { transition: transform .7s var(--ease-out-strong); }
   @media (hover: hover) { :global(article:hover) .mcard-photo img { transform: scale(1.08); } }
 </style>

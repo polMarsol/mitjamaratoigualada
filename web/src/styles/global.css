@@ -103,6 +103,16 @@ p { text-wrap: pretty; }
   .btn:hover .arrow { transform: translateX(4px); }
   .card-hover { transition: transform .35s var(--ease-out-strong), box-shadow .35s; }
   .card-hover:hover { transform: translateY(-6px); }
+  /* Targetes amb zoom (modalitats i botiga): creixen, s'aixequen una mica i hi llisca un reflex (JS a main.ts) */
+  .card-zoom { position: relative; transition: transform .45s var(--ease-out-strong), box-shadow .35s; }
+  .card-zoom.is-hover { z-index: 3; box-shadow: 0 30px 55px -22px rgb(11 60 110 / .6), inset 0 1px 0 rgb(255 255 255 / .3); }
+  .card-zoom::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .35s;
+    background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / .34), transparent 55%); mix-blend-mode: soft-light; }
+  .card-zoom.is-hover::after { opacity: 1; }
+  .card-zoom img, .card-zoom .prod-img { transition: transform .6s var(--ease-out-strong); transform-origin: var(--ox, 50%) var(--oy, 50%); }
+  .card-zoom.is-hover img, .card-zoom.is-hover .prod-img { transform: scale(1.18); }
+  .card-zoom h3 { transition: transform .4s var(--ease-out-strong); }
+  .card-zoom.is-hover h3 { transform: translateX(3px); }
 }
 
 }
@@ -119,6 +129,7 @@ p { text-wrap: pretty; }
 .skip-link:focus { top: 1rem; }
 
 /* ---------- Leaflet en mode fosc ---------- */
+[data-theme='dark'] .card-zoom.is-hover { box-shadow: 0 30px 60px -20px rgb(0 0 0 / .9), 0 0 0 1px rgb(255 255 255 / .16); }
 [data-theme='dark'] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.7); }
 .leaflet-container { font-family: var(--font-sans); background: var(--bg-2); }
 .km-pin { background: var(--bg); color: var(--fg); border: 2px solid var(--accent); border-radius: 999px; font: 700 11px/1 var(--font-sans); display: grid; place-items: center; box-shadow: 0 2px 6px rgb(0 0 0 / .3); }

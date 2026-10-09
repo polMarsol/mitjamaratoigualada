@@ -1,0 +1,68 @@
+---
+// Mapa compartit de les pàgines de logística (carrers tallats i avituallaments).
+import { useT, type Lang } from '../i18n';
+const { lang, mode } = Astro.props as { lang: Lang; mode: 'closures' | 'aid' };
+const t = useT(lang), l = t.logistics;
+const layers = [
+  { k: '21k', label: l.races['21k'], c: 'var(--c21)' },
+  { k: '10k', label: l.races['10k'], c: 'var(--c10)' },
+  { k: 'cam', label: l.races.cam, c: 'var(--ccam)' },
+  { k: 'aid', label: l.map.aid, c: 'var(--caid)' },
+  { k: 'vol', label: l.map.vol, c: 'var(--fg)' },
+];
+const i18n = { expand: l.map.expand, collapse: l.map.collapse, start: l.map.start, maps: l.words.maps, turn: l.words.turn, cross: l.words.cross, finish: l.words.finish,
+  people: l.words.people, races: l.races, kinds: l.kinds, sim: l.closures.sim, dec: lang === 'en' ? '.' : ',' };
+---
+<div id="logi-wrap" data-reveal data-mode={mode} data-i18n={JSON.stringify(i18n)} class="glass relative mt-10 overflow-hidden rounded-[2rem] p-2">
+  <div class="flex flex-wrap items-center gap-2 px-2 pb-2 pt-1" role="group" aria-label={l.map.alt}>
+    {layers.map((x) => (
+      <button type="button" data-layer={x.k} aria-pressed={mode === 'aid' && x.k === 'vol' ? 'false' : 'true'} class="chip flex min-h-10 items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-bold">
+        <i class="inline-block h-3 w-3 rounded-full" style={`background:${x.c}`}></i>{x.label}
+      </button>
+    ))}
+    <button id="logi-expand" type="button" class="btn btn-ghost !min-h-10 !px-4 !py-2 ml-auto text-sm">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      <span id="logi-expand-label">{l.map.expand}</span>
+    </button>
+  </div>
+  <div id="logi-map" class="h-[58vh] min-h-[360px] w-full overflow-hidden rounded-[1.5rem]" role="application" aria-label={l.map.alt}></div>
+  <slot />
+  <p class="px-3 pb-2 pt-3 text-xs" style="color:var(--muted)">{l.map.hint}</p>
+</div>
+<style is:global>
+  :root { --c21: var(--accent); --c10: #c2660d; --ccam: var(--green); --cpol: #c23b32; --caid: #0e7f8c; }
+  [data-theme='dark'] { --c10: #f0a050; --cpol: #ef6a5f; --caid: #3fc1c3; }
+  #logi-wrap.is-full { position: fixed; inset: 0.75rem; z-index: 250; border-radius: 1.5rem; display: flex; flex-direction: column; background: var(--bg); margin: 0; }
+  #logi-wrap.is-full #logi-map { height: auto; flex: 1; }
+  .chip { background: var(--glass); border: 1px solid var(--line); transition: opacity .2s, transform .18s var(--ease-out-strong), background-color .2s; }
+  .chip:active { transform: scale(.96); }
+  .chip[aria-pressed='false'] { opacity: .45; }
+  .chip[aria-pressed='false'] i { background: transparent !important; box-shadow: inset 0 0 0 2px var(--muted); }
+  .logi-aid { background: var(--caid); color: #fff; border: 3px solid #fff; border-radius: 9px; font: 800 12px/1 var(--font-sans); display: grid; place-items: center; box-shadow: 0 3px 8px rgb(0 0 0 / .4); transition: transform .25s var(--ease-out-strong); }
+  .logi-aid:hover { transform: scale(1.15); }
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--bg); color: var(--fg); box-shadow: 0 10px 30px -10px rgb(0 0 0 / .5); }
+  .leaflet-popup-content-wrapper { border-radius: 1rem; }
+  .leaflet-popup-content { margin: .8rem 1rem; font-size: .85rem; line-height: 1.45; }
+  .leaflet-popup-content b { font-family: var(--font-display); font-size: 1rem; }
+  .leaflet-popup-content a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+  .leaflet-container a.leaflet-popup-close-button { color: var(--muted); }
+  .rdot { display: inline-block; width: .6rem; height: .6rem; border-radius: 999px; }
+  .ltab { transition: background-color .2s, color .2s, transform .18s var(--ease-out-strong); }
+  .ltab:active { transform: scale(.97); }
+  .ltab[aria-selected='true'] { background: var(--grad); color: var(--accent-fg); box-shadow: inset 0 -3px 5px rgb(0 0 0 / .2), inset 0 3px 5px rgb(255 255 255 / .3); }
+  .lrow { cursor: pointer; transition: background-color .2s; }
+  .lrow:hover, .lrow:focus-visible, .lrow.is-on { background: var(--line); }
+  .field { background: var(--bg); border: 1.5px solid var(--line); color: var(--fg); }
+  .field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent); }
+  .pill { display: inline-block; white-space: nowrap; border-radius: 999px; padding: .15rem .6rem; font-size: .75rem; font-weight: 700; }
+  .pill-policia, .pill-closed { background: color-mix(in srgb, var(--cpol) 16%, transparent); color: var(--cpol); }
+  .pill-vol, .pill-done { background: color-mix(in srgb, var(--caid) 18%, transparent); color: var(--caid); }
+  .pill-gir, .pill-open { background: var(--line); color: var(--muted); }
+  .pill-soon { background: color-mix(in srgb, var(--c10) 18%, transparent); color: var(--c10); }
+  [data-sim='off'] .st { display: none; }
+</style>
+<script>
+  // Càrrega mandrosa: Leaflet només es baixa quan el mapa s'acosta a la pantalla
+  const w = document.getElementById('logi-wrap');
+  if (w) new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { o.disconnect(); import('../scripts/logistics'); } }, { rootMargin: '600px' }).observe(w);
+</script>

@@ -150,3 +150,24 @@ else {
   $('#loader-skip')!.addEventListener('click', quick);
   setTimeout(quick, 12000); // xarxa lenta: mai bloquegem la pàgina
 }
+
+// ---------- Targetes amb zoom (.card-zoom: modalitats i botiga): en passar-hi el ratolí fan zoom i hi llisca un reflex (sense inclinació 3D) ----------
+if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  let cur: HTMLElement | null = null, raf = 0, ev: PointerEvent | null = null;
+  const paint = () => {
+    raf = 0; if (!cur || !ev) return;
+    const r = cur.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+    cur.style.setProperty('--mx', `${x * 100}%`); cur.style.setProperty('--my', `${y * 100}%`);          // posició del reflex
+    cur.style.setProperty('--ox', `${(x * 100).toFixed(1)}%`); cur.style.setProperty('--oy', `${(y * 100).toFixed(1)}%`); // el zoom de la imatge neix on és el cursor
+  };
+  const enter = (el: HTMLElement) => { const w = el.getBoundingClientRect().width; el.classList.add('is-hover'); el.style.transform = `translateY(-6px) scale(${w > 620 ? 1.02 : w > 380 ? 1.05 : 1.07})`; };
+  const leave = (el: HTMLElement) => { el.classList.remove('is-hover'); el.style.transform = ''; };
+  document.addEventListener('pointermove', (e) => {
+    const el = (e.target as HTMLElement).closest?.<HTMLElement>('.card-zoom') ?? null;
+    if (el !== cur) { if (cur) leave(cur); cur = el; if (el) enter(el); }
+    if (!el) return;
+    ev = e; if (!raf) raf = requestAnimationFrame(paint);
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => { if (cur) leave(cur); cur = null; });
+  addEventListener('scroll', () => { if (cur) { leave(cur); cur = null; } }, { passive: true });
+}

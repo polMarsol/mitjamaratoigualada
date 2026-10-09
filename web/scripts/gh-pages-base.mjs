@@ -11,7 +11,7 @@ walk('dist');
 const no = `(?!\\/|${base.slice(1)}\\/)`;                                              // ni «//host» ni ja prefixat
 const abs = (s) => s.replaceAll(origin + '/', origin + base + '/');                       // canonical, og, sitemap, JSON-LD
 const cssUrl = (s) => s.replace(new RegExp(`url\\((['"]?)\\/${no}`, 'g'), `url($1${base}/`);
-const js = (s) => s.replace(/([`'"])\/(gpx|img|shirt|brand|_astro)\//g, `$1${base}/$2/`)  // rutes d'actius dins del codi
+const js = (s) => s.replace(/([`'"])\/(gpx|img|shirt|shop|brand|_astro)\//g, `$1${base}/$2/`)  // rutes d'actius dins del codi
   .replace(/location\.replace\((['"])\/\1/g, `location.replace($1${base}/$1`)             // redirecció d'idioma de l'arrel
   .replace(/return\s*([`'"])\/\1\s*\+/g, (m, q) => (preload++, `return ${q}${base}/${q}+`)); // imports dinàmics de Vite («_astro/…»)
 let preload = 0;

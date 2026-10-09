@@ -1,0 +1,376 @@
+---
+// Plantilla única dels apartats d'informació (contingut a src/data/proto.ts). Validats l'octubre de 2026.
+import { LANGS, useT, type Lang } from '../../../i18n';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import Photo from '../../../components/Photo.astro';
+import { PROTO, SPOTS, tr, type T2 } from '../../../data/proto';
+import { RESULTS } from '../../../data/results';
+import { routeD } from '../../../lib/routePath';
+export const getStaticPaths = () => LANGS.flatMap((lang) => PROTO.map((p) => ({ params: { lang, slug: p.slug }, props: { p } })));
+const lang = Astro.params.lang as Lang;
+const { p } = Astro.props;
+const t = useT(lang);
+const x = (v: T2 | string) => tr(v, lang);
+const ui = (ca: string, es: string) => x([ca, es]);
+const CC: Record<string, string> = { p: 'var(--accent)', t: 'var(--caid)', s: 'var(--green)', w: 'var(--c10)' };
+const starters = [...RESULTS['21k'].rows.slice(0, 40).map((r) => ({ ...r, mod: '21K' })), ...RESULTS['10k'].rows.slice(0, 40).map((r) => ({ ...r, mod: '10K' }))].sort((a, b) => a.name.localeCompare(b.name));
+const others = PROTO.filter((o) => o.group === p.group && o.slug !== p.slug);
+let mapN = 0;
+---
+<Base lang={lang} path={`info/${p.slug}/`} title={`${x(p.title)} · MM Igualada`} description={x(p.lead)}>
+  <div class="mx-auto max-w-6xl px-5 pb-10 pt-32 sm:px-8 md:pt-40">
+    <Breadcrumb lang={lang} current={x(p.title)} />
+    <div class="mt-6 flex items-center gap-4 sm:gap-5">
+      <span class="hero-ic clay grid h-16 w-16 shrink-0 place-items-center sm:h-20 sm:w-20" aria-hidden="true"><svg class="h-8 w-8 sm:h-10 sm:w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={p.icon}/></svg></span>
+      <div><p class="text-xs font-bold uppercase tracking-widest" style="color:var(--muted)">{x(p.kicker)}</p>
+        <h1 class="mt-1 text-4xl font-extrabold sm:text-6xl">{x(p.title)}</h1></div>
+    </div>
+    <p class="mt-4 max-w-3xl text-lg" style="color:var(--muted)">{x(p.lead)}</p>
+
+    {p.blocks.map((b) => (
+      <section class="mt-14">
+        {b.title && <h2 data-reveal class="text-3xl font-extrabold sm:text-4xl">{x(b.title)}</h2>}
+        {b.lead && <p data-reveal class="mt-3 max-w-3xl" style="color:var(--muted)">{x(b.lead)}</p>}
+
+        {b.k === 'stats' && (
+          <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {b.items.map(([n, label]: [string, T2], i: number) => (
+              <div data-reveal class:list={['card-hover p-5', i === 3 ? 'clay' : 'neo']}>
+                <div class="font-display text-4xl font-extrabold tabular-nums sm:text-5xl" data-num={/^\d+$/.test(n) ? n : undefined} style={i === 3 ? '' : 'color:var(--accent)'}>{n}</div>
+                <div class="mt-1 text-sm font-semibold" style={i === 3 ? '' : 'color:var(--muted)'}>{x(label)}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {b.k === 'cards' && (
+          <ol class:list={['mt-6 grid gap-4 md:grid-cols-2', b.cols === 3 && 'lg:grid-cols-3']}>
+            {b.items.map((it: any, i: number) => (
+              <li data-reveal class:list={['card-hover rounded-[1.75rem] p-5', i % 3 === 1 ? 'neo' : 'glass']}>
+                <span class="cnum font-display" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="font-display text-xl font-bold">{x(it.t)} {it.tag && <span class="pill pill-soon align-middle">{x(it.tag)}</span>}</h3>
+                <p class="mt-1.5" style="color:var(--muted)">{x(it.d)}</p>
+              </li>
+            ))}
+          </ol>
+        )}
+
+        {b.k === 'steps' && (
+          <ol class="steps mt-6 grid gap-3">
+            {b.items.map(([when, tt, d]: [T2 | string, T2, T2]) => (
+              <li data-reveal class="glass grid grid-cols-[5.5rem_1fr] items-start gap-4 rounded-[1.5rem] p-4 sm:grid-cols-[7rem_1fr] sm:p-5">
+                <span class="clay grid min-h-11 place-items-center px-2 py-1.5 text-center font-display text-lg font-extrabold tabular-nums leading-tight">{x(when)}</span>
+                <div><h3 class="font-display text-xl font-bold">{x(tt)}</h3><p class="mt-0.5" style="color:var(--muted)">{x(d)}</p></div>
+              </li>
+            ))}
+          </ol>
+        )}
+
+        {b.k === 'table' && (
+          <>
+            <div data-reveal class="glass mt-6 overflow-x-auto rounded-[1.75rem] p-2">
+              <table class="w-full min-w-[34rem] text-left text-sm">
+                <thead><tr style="color:var(--muted)">{b.cols.map((c: T2 | string) => <th scope="col" class="p-3">{x(c)}</th>)}</tr></thead>
+                <tbody>{b.rows.map((r: (T2 | string)[]) => <tr class="border-t transition-colors hover:bg-[var(--line)]" style="border-color:var(--line)">{r.map((c, i) => <td class:list={['p-3', i === 0 && 'font-display text-base font-bold']}>{x(c)}</td>)}</tr>)}</tbody>
+              </table>
+            </div>
+            {b.note && <p class="mt-3 max-w-3xl text-sm" style="color:var(--muted)">{x(b.note)}</p>}
+          </>
+        )}
+
+        {b.k === 'faq' && (
+          <div class="mt-6 grid gap-3">
+            {b.items.map(([q, a]: [T2, T2]) => (
+              <details name={`faq-${p.slug}`} data-reveal class="acc glass rounded-2xl">
+                <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-display text-lg font-bold"><span>{x(q)}</span>
+                  <svg class="chev shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+                <p class="px-5 pb-5" style="color:var(--muted)">{x(a)}</p>
+              </details>
+            ))}
+          </div>
+        )}
+
+        {b.k === 'check' && (
+          <div data-reveal data-check={b.id} class="neo mt-6 p-5 sm:p-7">
+            <div class="mb-4 h-2.5 overflow-hidden rounded-full" style="background:var(--line)"><div data-bar class="h-full w-0 rounded-full transition-[width] duration-500" style="background:var(--grad)"></div></div>
+            <ul class="grid gap-1">
+              {b.items.map((it: T2, i: number) => (
+                <li><label class="chk flex min-h-11 cursor-pointer items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-[var(--line)]"><input type="checkbox" data-i={i} class="h-5 w-5 shrink-0 accent-[var(--accent)]" /><span>{x(it)}</span></label></li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {b.k === 'note' && (
+          <aside data-reveal class="neo mt-0 p-6 sm:p-8">
+            <ul class="grid max-w-4xl gap-3">{b.items.map((n: T2) => <li class="flex gap-3" style="color:var(--muted)"><span class="mt-2 h-2 w-2 shrink-0 rounded-full" style="background:var(--accent)" aria-hidden="true"></span><span>{x(n)}</span></li>)}</ul>
+          </aside>
+        )}
+
+        {b.k === 'photos' && (
+          <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {b.items.map(([name, cap]: [string, T2], i: number) => (
+              <figure data-reveal class:list={['card-hover relative overflow-hidden rounded-[1.75rem]', i % 2 ? 'lg:translate-y-6' : '']}>
+                <Photo name={name} alt={x(cap)} sizes="(min-width:1024px) 25vw, 50vw" class="aspect-[3/4] h-full w-full object-cover" />
+                <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 pt-10 font-display text-lg font-bold text-white">{x(cap)}</figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+
+        {b.k === 'map' && (
+          <div data-reveal class="glass mt-6 grid gap-2 overflow-hidden rounded-[2rem] p-2 lg:grid-cols-[1fr_20rem]">
+            <div data-pmap={JSON.stringify(b.points.map((q: any) => ({ lat: q.lat, lon: q.lon, t: x(q.t), d: x(q.d), c: q.c })))} data-n={mapN++} class="pmap h-[54vh] min-h-[340px] w-full overflow-hidden rounded-[1.5rem]" role="application" aria-label={x(b.title)}></div>
+            <ol class="grid max-h-[54vh] content-start gap-1 overflow-y-auto p-1">
+              {b.points.map((q: any, i: number) => (
+                <li><button type="button" data-pt={i} class="pt flex w-full items-start gap-3 rounded-2xl p-3 text-left transition-colors hover:bg-[var(--line)]">
+                  <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-extrabold text-white" style={`background:${CC[q.c]}`}>{i + 1}</span>
+                  <span><b class="font-display block leading-tight">{x(q.t)}</b><span class="text-sm" style="color:var(--muted)">{x(q.d)}</span></span>
+                </button></li>
+              ))}
+            </ol>
+            {b.note && <p class="px-3 pb-2 text-xs lg:col-span-2" style="color:var(--muted)">{x(b.note)}</p>}
+          </div>
+        )}
+
+        {b.k === 'meters' && (
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            {b.items.map(([v, label, show]: [number, T2, string?]) => (
+              <div data-reveal class="glass rounded-[1.75rem] p-5">
+                <div class="flex items-baseline justify-between gap-3"><span class="font-semibold">{x(label)}</span><span class="font-display text-3xl font-extrabold tabular-nums" style="color:var(--green)">{show ?? `${v}%`}</span></div>
+                <div class="mt-3 h-3 overflow-hidden rounded-full" style="background:var(--line)"><div data-meter={show ? 100 : v} class="h-full w-0 rounded-full" style="background:var(--grad)"></div></div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {b.k === 'files' && (
+          <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {b.items.map(([href, label, ext]: [string, T2, string]) => (
+              <a data-reveal href={href} download class="glass card-hover flex items-center gap-4 rounded-[1.5rem] p-4">
+                <span class="clay grid h-12 w-12 shrink-0 place-items-center text-xs font-extrabold">{ext}</span>
+                <span class="font-semibold">{x(label)}</span>
+                <svg class="ml-auto shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></svg>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {b.k === 'news' && (
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {b.items.map((n: any, i: number) => (
+              <article data-reveal class:list={['news card-hover glass flex cursor-pointer flex-col overflow-hidden rounded-[2rem]', i === 0 && 'md:col-span-2 lg:col-span-2 lg:flex-row']}>
+                <div class:list={['overflow-hidden', i === 0 ? 'lg:w-1/2' : '']}><Photo name={n.photo} alt="" class="news-img aspect-[16/10] h-full w-full object-cover" /></div>
+                <div class="flex flex-1 flex-col gap-2 p-5">
+                  <p class="flex items-center gap-2 text-xs font-bold"><span class="pill pill-vol">{x(n.cat)}</span><time style="color:var(--muted)">{x(n.date)}</time></p>
+                  <h3 class:list={['font-display font-extrabold leading-tight', i === 0 ? 'text-3xl' : 'text-xl']}>{x(n.t)}</h3>
+                  <p style="color:var(--muted)">{x(n.d)}</p>
+                  <span class="mt-auto pt-2 text-sm font-bold" style="color:var(--accent)">{ui('Llegeix-ho', 'Leer')} <span class="arrow inline-block" aria-hidden="true">→</span></span>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {b.k === 'form' && (
+          <form data-reveal data-pform class="glass mt-6 grid max-w-3xl gap-4 rounded-[2rem] p-6 sm:grid-cols-2 sm:p-8" novalidate>
+            {b.fields.map(([label, type, opts]: [T2, string, (T2 | string)[]?], i: number) => (
+              <label class:list={['grid gap-1 text-sm font-bold', (type === 'textarea' || b.fields.length === 1) && 'sm:col-span-2']}><span>{x(label)}</span>
+                {type === 'textarea' ? <textarea required rows="4" class="field rounded-2xl px-4 py-3"></textarea>
+                  : type === 'select' ? <select class="field min-h-[48px] rounded-2xl px-4">{opts!.map((o) => <option>{x(o)}</option>)}</select>
+                  : <input required type={type} min={type === 'number' ? 1 : undefined} class="field min-h-[48px] rounded-2xl px-4" />}
+              </label>
+            ))}
+            <div class="flex flex-wrap items-center gap-4 sm:col-span-2">
+              <button type="submit" class="btn btn-primary">{x(b.submit)} <span class="arrow" aria-hidden="true">→</span></button>
+              <p data-ok hidden role="status" class="font-semibold" style="color:var(--green)">✓ {x(b.ok)}</p>
+              <p data-err hidden role="alert" class="font-semibold" style="color:var(--cpol)">{ui('Omple tots els camps.', 'Rellena todos los campos.')}</p>
+            </div>
+            <p class="text-xs sm:col-span-2" style="color:var(--muted)">{ui('Formulari de demostració: no s’envia cap dada.', 'Formulario de demostración: no se envía ningún dato.')}</p>
+          </form>
+        )}
+
+        {b.k === 'pace' && (
+          <div data-reveal id="pace" class="glass grid gap-6 rounded-[2rem] p-6 sm:p-8 lg:grid-cols-[20rem_1fr]">
+            <div class="grid content-start gap-4">
+              <h2 class="font-display text-3xl font-extrabold">{ui('Calculadora de ritmes', 'Calculadora de ritmos')}</h2>
+              <div role="group" class="glass inline-flex w-fit rounded-full p-1.5">{[['21.0975', '21K'], ['10', '10K']].map(([v, l], i) => <button type="button" data-dist={v} aria-selected={i === 0 ? 'true' : 'false'} class="ltab rounded-full px-5 py-2 text-sm font-bold">{l}</button>)}</div>
+              <label class="grid gap-1 text-sm font-bold"><span>{ui('Temps objectiu', 'Tiempo objetivo')}: <output id="pace-goal" class="font-display text-2xl font-extrabold tabular-nums">2:00:00</output></span>
+                <input id="pace-range" type="range" min="65" max="180" step="1" value="120" class="w-full accent-[var(--accent)]" /></label>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="neo p-4"><div class="text-sm" style="color:var(--muted)">{ui('Ritme', 'Ritmo')}</div><div class="font-display text-3xl font-extrabold tabular-nums" style="color:var(--accent)"><span id="pace-km">5:41</span><span class="text-base"> /km</span></div></div>
+                <div class="neo p-4"><div class="text-sm" style="color:var(--muted)">{ui('Velocitat', 'Velocidad')}</div><div class="font-display text-3xl font-extrabold tabular-nums"><span id="pace-kmh">10,5</span><span class="text-base"> km/h</span></div></div>
+              </div>
+              <p class="text-sm" style="color:var(--muted)">{ui('Calaix i llebre recomanats', 'Cajón y liebre recomendados')}: <b id="pace-box" style="color:var(--fg)">—</b></p>
+            </div>
+            <div>
+              <h3 class="font-display text-xl font-bold">{ui('A quina hora passes per cada punt', 'A qué hora pasas por cada punto')}</h3>
+              <ol id="pace-splits" class="mt-3 grid gap-2"></ol>
+            </div>
+          </div>
+        )}
+
+        {b.k === 'plan' && (
+          <div data-reveal id="plan" class="mt-0">
+            <h2 class="text-3xl font-extrabold sm:text-4xl">{ui('Pla de vuit setmanes', 'Plan de ocho semanas')}</h2>
+            <p class="mt-3 max-w-3xl" style="color:var(--muted)">{ui('Comença el dilluns 19 d’octubre. Tria distància i nivell: quatre sessions per setmana, amb el diumenge reservat als entrenaments oficials.', 'Empieza el lunes 19 de octubre. Elige distancia y nivel: cuatro sesiones por semana, con el domingo reservado a los entrenamientos oficiales.')}</p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <div role="group" class="glass inline-flex rounded-full p-1.5">{['21K', '10K'].map((l, i) => <button type="button" data-pd={i} aria-selected={i === 0 ? 'true' : 'false'} class="ltab rounded-full px-5 py-2 text-sm font-bold">{l}</button>)}</div>
+              <div role="group" class="glass inline-flex rounded-full p-1.5">{[ui('Acabar-la', 'Acabarla'), ui('Millorar marca', 'Mejorar marca'), ui('Anar a per totes', 'Ir a por todas')].map((l, i) => <button type="button" data-pl={i} aria-selected={i === 0 ? 'true' : 'false'} class="ltab rounded-full px-4 py-2 text-sm font-bold sm:px-5">{l}</button>)}</div>
+            </div>
+            <div class="glass mt-4 overflow-x-auto rounded-[1.75rem] p-2">
+              <table class="w-full min-w-[40rem] text-left text-sm"><thead><tr style="color:var(--muted)">{[ui('Setmana', 'Semana'), ui('Dimarts', 'Martes'), ui('Dijous', 'Jueves'), ui('Dissabte', 'Sábado'), ui('Diumenge', 'Domingo'), 'km'].map((h) => <th scope="col" class="p-3">{h}</th>)}</tr></thead>
+                <tbody id="plan-body" data-w={JSON.stringify({ easy: ui('suau', 'suave'), tempo: ui('a ritme de cursa', 'a ritmo de carrera'), series: ui('sèries', 'series'), rest: ui('descans', 'descanso'), long: ui('tirada llarga', 'tirada larga'), race: ui('LA CURSA', 'LA CARRERA'), strides: ui('+ 6 progressius', '+ 6 progresivos'), wk: ui('Setmana', 'Semana') })}></tbody></table>
+            </div>
+          </div>
+        )}
+
+        {b.k === 'spect' && (
+          <div data-reveal id="spect" data-spots={JSON.stringify(SPOTS.map((s) => ({ id: s.id, km: s.km, t: x(s.t) })))} class="glass rounded-[2rem] p-6 sm:p-8">
+            <h2 class="font-display text-3xl font-extrabold">{ui('Quan passarà el teu corredor?', '¿Cuándo pasará tu corredor?')}</h2>
+            <div class="mt-5 flex flex-wrap items-end gap-4">
+              <div role="group" class="glass inline-flex rounded-full p-1.5">{[['21k', '21K'], ['10k', '10K'], ['cam', ui('Caminada', 'Caminada')]].map(([v, l], i) => <button type="button" data-race={v} aria-selected={i === 0 ? 'true' : 'false'} class="ltab rounded-full px-5 py-2 text-sm font-bold">{l}</button>)}</div>
+              <label class="grid min-w-[16rem] flex-1 gap-1 text-sm font-bold"><span>{ui('Temps previst', 'Tiempo previsto')}: <output id="sp-goal" class="font-display text-2xl font-extrabold tabular-nums">2:00</output></span><input id="sp-range" type="range" min="65" max="180" value="120" class="w-full accent-[var(--accent)]" /></label>
+            </div>
+            <ol id="sp-list" class="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-5"></ol>
+            <p class="mt-4 text-sm" style="color:var(--muted)">{ui('Hores aproximades a ritme constant. Sota cada hora, la franja en què passa tota la prova, del primer a l’últim.', 'Horas aproximadas a ritmo constante. Bajo cada hora, la franja en la que pasa toda la prueba, del primero al último.')}</p>
+          </div>
+        )}
+
+        {b.k === 'lookup' && (
+          <div data-reveal id="lookup" class="grid gap-5 lg:grid-cols-[22rem_1fr]">
+            <form class="glass grid content-start gap-4 rounded-[2rem] p-6" novalidate>
+              <h2 class="font-display text-2xl font-extrabold">{ui('Cerca la teva inscripció', 'Busca tu inscripción')}</h2>
+              <label class="grid gap-1 text-sm font-bold"><span>{ui('Localitzador o DNI', 'Localizador o DNI')}</span><input id="lk-q" class="field min-h-[48px] rounded-2xl px-4 uppercase" placeholder="MMI-4821" /></label>
+              <button type="submit" class="btn btn-primary">{ui('Consulta', 'Consultar')}</button>
+              <p class="text-xs" style="color:var(--muted)">{ui('Demostració: escriu qualsevol codi.', 'Demostración: escribe cualquier código.')}</p>
+            </form>
+            <div id="lk-card" class="neo relative grid content-start gap-4 p-6 opacity-40 transition-opacity duration-500 sm:p-8">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <div><p class="text-sm font-bold" style="color:var(--muted)">{ui('Dorsal', 'Dorsal')} <span id="lk-bib" class="tabular-nums">—</span> · <span id="lk-loc">—</span></p><p class="font-display text-3xl font-extrabold">Laia Puig Serra</p></div>
+                <span id="lk-state" class="pill pill-done text-sm">{ui('Confirmada i pagada', 'Confirmada y pagada')}</span>
+              </div>
+              <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-4">
+                {[[ui('Modalitat', 'Modalidad'), 'lk-mod', ui('Mitja Marató 21K', 'Media Maratón 21K')], [ui('Calaix', 'Cajón'), '', ui('Verd · Porta B', 'Verde · Puerta B')], [ui('Samarreta', 'Camiseta'), '', 'M'], [ui('Pagat', 'Pagado'), 'lk-paid', '18,00 €']].map(([k, id, v]) => <div><dt style="color:var(--muted)">{k}</dt><dd id={id || undefined} class="font-display text-lg font-bold">{v}</dd></div>)}
+              </dl>
+              <div class="flex flex-wrap gap-2">
+                {[['mod', ui('Canvia de distància', 'Cambiar de distancia')], ['give', ui('Cedeix el dorsal', 'Ceder el dorsal')], ['back', ui('Demana la devolució', 'Pedir la devolución')], ['qr', ui('Mostra el QR', 'Mostrar el QR')]].map(([a, l]) => <button type="button" data-act={a} class="btn btn-ghost !min-h-11 !px-4 !py-2 text-sm">{l}</button>)}
+              </div>
+              <p id="lk-msg" role="status" class="min-h-6 font-semibold" style="color:var(--accent)" data-m={JSON.stringify({ mod: ui('Has passat a la 10K. Et retornem 6,00 € al mateix mitjà de pagament.', 'Has pasado a la 10K. Te devolvemos 6,00 € al mismo medio de pago.'), give: ui('Hem enviat un enllaç de cessió vàlid 48 h. Cost: 3 €.', 'Hemos enviado un enlace de cesión válido 48 h. Coste: 3 €.'), back: ui('Devolució del 80 % sol·licitada: 14,40 € en 5–7 dies.', 'Devolución del 80 % solicitada: 14,40 € en 5–7 días.'), m10: ui('Cursa 10K', 'Carrera 10K'), m21: ui('Mitja Marató 21K', 'Media Maratón 21K'), cancel: ui('Devolució en tràmit', 'Devolución en trámite') })}></p>
+              <svg id="lk-qr" hidden class="absolute bottom-6 right-6 h-24 w-24 rounded-xl bg-white p-2" viewBox="0 0 21 21" shape-rendering="crispEdges" aria-label="QR"></svg>
+            </div>
+          </div>
+        )}
+
+        {b.k === 'startlist' && (
+          <div id="startlist">
+            <h2 data-reveal class="text-3xl font-extrabold sm:text-4xl">{ui('Llista d’inscrits', 'Lista de inscritos')}</h2>
+            <div data-reveal class="mt-5 flex flex-wrap items-end gap-3">
+              <label class="grid gap-1 text-sm font-bold"><span>{ui('Cerca per nom o dorsal', 'Busca por nombre o dorsal')}</span><input id="sl-q" type="search" class="field min-h-[48px] rounded-2xl px-4" /></label>
+              <p class="pb-3 text-sm" style="color:var(--muted)"><span id="sl-n">{starters.length}</span> {ui('inscrits (mostra fictícia)', 'inscritos (muestra ficticia)')}</p>
+            </div>
+            <div data-reveal class="glass mt-3 max-h-[26rem] overflow-auto rounded-[1.75rem] p-2">
+              <table class="w-full min-w-[30rem] text-left text-sm"><thead><tr style="color:var(--muted)">{[ui('Dorsal', 'Dorsal'), ui('Nom', 'Nombre'), ui('Prova', 'Prueba'), ui('Categoria', 'Categoría')].map((h) => <th scope="col" class="sticky top-0 p-3" style="background:var(--bg)">{h}</th>)}</tr></thead>
+                <tbody>{starters.map((r) => <tr data-s={`${r.name.toLowerCase()} ${r.bib}`} class="border-t" style="border-color:var(--line)"><td class="p-3 font-display font-extrabold tabular-nums">{r.bib}</td><td class="p-3 font-semibold">{r.name}</td><td class="p-3">{r.mod}</td><td class="p-3">{r.cat} · {r.sex}</td></tr>)}</tbody></table>
+            </div>
+          </div>
+        )}
+
+        {b.k === 'track' && (
+          <div data-reveal id="track" class="glass grid gap-4 rounded-[2rem] p-4 sm:p-6 lg:grid-cols-[1fr_22rem]">
+            <div class="relative overflow-hidden rounded-[1.5rem]" style="background:var(--bg-2)">
+              <svg viewBox="0 0 700 520" class="block h-auto w-full" role="img" aria-label={x(p.title)}>
+                <path d={routeD('21k', 700, 520, 36)} fill="none" stroke="var(--line)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+                <path id="tr-path" d={routeD('21k', 700, 520, 36)} fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                <g id="tr-cps"></g><g id="tr-dots"></g>
+              </svg>
+              <div class="absolute left-4 top-4 flex items-center gap-2"><span class="live-dot"></span><span class="font-display text-lg font-extrabold tabular-nums" id="tr-clock">08:30:00</span></div>
+              <div class="absolute bottom-4 left-4 right-4 flex items-center gap-3">
+                <button id="tr-play" type="button" class="btn btn-primary !min-h-11 !px-5 !py-2 text-sm" data-l={JSON.stringify([ui('Reprodueix la cursa', 'Reproducir la carrera'), ui('Pausa', 'Pausa')])}><span>{ui('Reprodueix la cursa', 'Reproducir la carrera')}</span></button>
+                <input id="tr-range" type="range" min="0" max="10800" value="0" aria-label={ui('Temps de cursa', 'Tiempo de carrera')} class="w-full accent-[var(--accent)]" />
+              </div>
+            </div>
+            <div class="grid content-start gap-3">
+              <label class="grid gap-1 text-sm font-bold"><span>{ui('Segueix un dorsal', 'Sigue un dorsal')}</span><select id="tr-sel" class="field min-h-[48px] rounded-2xl px-4">{RESULTS['21k'].rows.filter((_, i) => i % 9 === 0).slice(0, 12).map((r) => <option value={r.sec} data-bib={r.bib}>#{r.bib} · {r.name}</option>)}</select></label>
+              <div class="neo p-4"><p class="text-sm" style="color:var(--muted)">{ui('Ara mateix', 'Ahora mismo')}</p><p class="font-display text-3xl font-extrabold tabular-nums"><span id="tr-km">0,0</span> km</p><p class="text-sm font-semibold" id="tr-eta" data-l={JSON.stringify([ui('Arribada prevista', 'Llegada prevista'), ui('Ha arribat a meta', 'Ha llegado a meta')])}>—</p></div>
+              <ol id="tr-splits" class="grid gap-1.5 text-sm" data-l={JSON.stringify(['km 5', 'km 10', 'km 15', ui('Meta', 'Meta')])}></ol>
+            </div>
+          </div>
+        )}
+
+        {b.k === 'shop' && (
+          <div id="shop" data-l={JSON.stringify([ui('Afegit', 'Añadido'), ui('Afegeix', 'Añadir')])}>
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {b.items.map((it: any) => (
+                <article data-reveal class="prod glass card-hover card-zoom flex flex-col overflow-hidden rounded-[2rem]">
+                  <div class="relative grid aspect-[4/3] place-items-center overflow-hidden" style="background:radial-gradient(ellipse at 50% 30%,#f9fafb,#cfd3da)">
+                    <img src={it.img} alt={x(it.t)} loading="lazy" width="600" height="450" class:list={['prod-img', it.img.endsWith('.svg') ? 'h-full w-full object-cover' : 'h-[92%] w-auto object-contain']} />
+                    {it.tag && <span class="clay absolute left-3 top-3 !rounded-full px-3 py-1 text-xs font-bold">{x(it.tag)}</span>}
+                  </div>
+                  <div class="flex flex-1 flex-col gap-2 p-5">
+                    <div class="flex items-baseline justify-between gap-3"><h3 class="font-display text-xl font-bold">{x(it.t)}</h3><span class="font-display text-2xl font-extrabold tabular-nums" style="color:var(--accent)">{it.price} €</span></div>
+                    <p class="text-sm" style="color:var(--muted)">{x(it.d)}</p>
+                    {it.sizes && <div class="flex flex-wrap gap-1.5" role="group">{it.sizes.map((s: string, i: number) => <button type="button" data-size aria-pressed={i === Math.min(2, it.sizes.length - 1) ? 'true' : 'false'} class="size min-h-9 min-w-9 rounded-xl px-2 text-xs font-bold">{s}</button>)}</div>}
+                    <button type="button" data-add={it.price} class="btn btn-primary mt-auto !min-h-11 !py-2 text-sm"><span>{ui('Afegeix', 'Añadir')}</span></button>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div id="cart" class="clay fixed bottom-5 left-1/2 z-[90] flex -translate-x-1/2 translate-y-32 items-center gap-4 !rounded-full px-6 py-3 font-bold shadow-2xl transition-transform duration-500">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7zM9 8V6a3 3 0 0 1 6 0v2"/></svg>
+              <span><span id="cart-n">0</span> {ui('articles', 'artículos')} · <span id="cart-t" class="tabular-nums">0</span> €</span>
+              <span class="rounded-full bg-white/25 px-3 py-1 text-sm">{ui('Tramita', 'Tramitar')} →</span>
+            </div>
+          </div>
+        )}
+
+        {b.k === 'team' && (
+          <div data-reveal id="team" class="glass grid gap-6 rounded-[2rem] p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-center">
+            <div class="grid gap-4">
+              <h2 class="font-display text-3xl font-extrabold">{ui('Quants sou?', '¿Cuántos sois?')}</h2>
+              <label class="grid gap-2 text-sm font-bold"><span><output id="tm-n" class="font-display text-4xl font-extrabold tabular-nums" style="color:var(--accent)">12</output> {ui('dorsals', 'dorsales')} · <span id="tm-tier" data-l={JSON.stringify([ui('Sense paquet', 'Sin paquete'), ui('Colla', 'Peña'), ui('Equip', 'Equipo'), ui('Empresa', 'Empresa')])}></span></span>
+                <input id="tm-range" type="range" min="1" max="60" value="12" class="w-full accent-[var(--accent)]" /></label>
+              <div role="group" class="glass inline-flex w-fit rounded-full p-1.5">{[['18', '21K'], ['12', '10K'], ['6', ui('Caminada', 'Caminada')]].map(([v, l], i) => <button type="button" data-fee={v} aria-selected={i === 0 ? 'true' : 'false'} class="ltab rounded-full px-5 py-2 text-sm font-bold">{l}</button>)}</div>
+            </div>
+            <div class="clay grid gap-1 px-8 py-6 text-center"><div class="text-sm font-semibold">{ui('Preu per dorsal', 'Precio por dorsal')}</div><div class="font-display text-5xl font-extrabold tabular-nums"><span id="tm-each">15,30</span> €</div><div class="text-sm font-semibold">{ui('Total', 'Total')} <span id="tm-total" class="tabular-nums">183,60</span> € · {ui('estalvi', 'ahorro')} <span id="tm-save" class="tabular-nums">32,40</span> €</div></div>
+          </div>
+        )}
+      </section>
+    ))}
+
+    {others.length > 0 && (
+      <nav class="mt-20" aria-label={x(p.kicker)}>
+        <h2 class="font-display text-2xl font-extrabold">{ui('També en aquest apartat', 'También en este apartado')}</h2>
+        <div class="mt-4 flex flex-wrap gap-3">{others.map((o) => <a href={`/${lang}/info/${o.slug}/`} class="btn btn-ghost">{x(o.title)} <span class="arrow" aria-hidden="true">→</span></a>)}</div>
+      </nav>
+    )}
+  </div>
+</Base>
+<style is:global>
+  :root { --c10: #c2660d; --cpol: #c23b32; --caid: #0e7f8c; } [data-theme='dark'] { --c10: #f0a050; --cpol: #ef6a5f; --caid: #3fc1c3; }
+  .pill { display: inline-block; white-space: nowrap; border-radius: 999px; padding: .15rem .6rem; font-size: .75rem; font-weight: 700; }
+  .pill-soon { background: color-mix(in srgb, var(--c10) 18%, transparent); color: var(--c10); }
+  .pill-vol, .pill-done { background: color-mix(in srgb, var(--caid) 18%, transparent); color: var(--caid); }
+  .pill-closed { background: color-mix(in srgb, var(--cpol) 16%, transparent); color: var(--cpol); }
+  .ltab { transition: background-color .2s, color .2s, transform .18s var(--ease-out-strong); } .ltab:active { transform: scale(.97); }
+  .ltab[aria-selected='true'] { background: var(--grad); color: var(--accent-fg); box-shadow: inset 0 -3px 5px rgb(0 0 0 / .2), inset 0 3px 5px rgb(255 255 255 / .3); }
+  .field { background: var(--bg); border: 1.5px solid var(--line); color: var(--fg); }
+  .field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent); }
+  .acc summary::-webkit-details-marker { display: none; } .acc .chev { transition: transform .3s var(--ease-out-strong); } .acc[open] .chev { transform: rotate(180deg); } .acc[open] { background: var(--glass-b); }
+  .chk:has(input:checked) span { text-decoration: line-through; color: var(--muted); }
+  .pt.is-on { background: var(--line); }
+  .pm-pin { color: #fff; border: 3px solid #fff; border-radius: 999px; font: 800 12px/1 var(--font-sans); display: grid; place-items: center; box-shadow: 0 3px 8px rgb(0 0 0 / .4); }
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--bg); color: var(--fg); } .leaflet-popup-content-wrapper { border-radius: 1rem; } .leaflet-popup-content b { font-family: var(--font-display); font-size: 1rem; }
+  .news-img { transition: transform .6s var(--ease-out-strong); } .news:hover .news-img { transform: scale(1.06); }
+  .size { background: var(--bg); border: 1.5px solid var(--line); transition: all .18s; } .size[aria-pressed='true'] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .live-dot { width: .7rem; height: .7rem; border-radius: 50%; background: var(--cpol); animation: livep 1.4s ease-out infinite; } @keyframes livep { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--cpol) 70%, transparent); } 100% { box-shadow: 0 0 0 .9rem transparent; } }
+  #cart.is-on { transform: translate(-50%, 0); }
+  .cnum { display: block; font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: .5rem; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; opacity: .85; }
+  .steps { position: relative; } .steps::before { content: ''; position: absolute; left: 3.6rem; top: 1.5rem; bottom: 1.5rem; width: 3px; border-radius: 3px; background: var(--grad); opacity: .35; }
+  @media (min-width: 640px) { .steps::before { left: 4.6rem; } }
+  .steps > li { position: relative; }
+  .hero-ic { animation: floaty 5s ease-in-out infinite; } @keyframes floaty { 50% { transform: translateY(-6px) rotate(-4deg); } }
+  @media (prefers-reduced-motion: reduce) { .hero-ic { animation: none; } }
+</style>
+<script>import '../../../scripts/proto';</script>
