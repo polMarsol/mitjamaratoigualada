@@ -50,7 +50,10 @@ const tiers = [
         <h3 class="font-display text-2xl font-extrabold">{t.sponsors.becomeTitle}</h3>
         <p class="mt-1 opacity-90">{t.sponsors.becomeText}</p>
       </div>
-      <a href={`/${lang}/#contacte`} class="btn shrink-0" style="background:var(--bg);color:var(--fg)">{t.sponsors.becomeCta} <span class="arrow" aria-hidden="true">→</span></a>
+      <div class="flex shrink-0 flex-wrap gap-3">
+        <a href="/patrocini/" class="btn" style="background:transparent;color:inherit;border:1.5px solid currentColor">{t.sponsors.dossierCta}</a>
+        <a href={`/${lang}/#contacte`} class="btn" style="background:var(--bg);color:var(--fg)">{t.sponsors.becomeCta} <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
     </div>
   </div>
 </section>

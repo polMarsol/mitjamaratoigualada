@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Dossier de patrocini · MM Igualada 2026</title>
+<link rel="icon" href="assets/logos/logo-icona.svg">
+<link rel="stylesheet" href="dossier.css">
+</head>
+<body>
+
+<!-- Barra per personalitzar el dossier (no surt al PDF) -->
+<form class="toolbar noprint" id="tb" autocomplete="off" onsubmit="return false">
+  <strong>Personalitza</strong>
+  <label>Empresa <input type="text" name="empresa" placeholder="p. ex. Bonpreu"></label>
+  <label>Contacte <input type="text" name="contacte" placeholder="Nom de la persona"></label>
+  <label>Nivell recomanat <select name="nivell"><option value="">— cap —</option></select></label>
+  <label>Logo <input type="file" name="logofile" accept="image/*" style="width:150px"></label>
+  <label>Color <input type="color" name="color" value="#0b5cad" style="width:36px;padding:2px"></label>
+  <span class="sp"></span>
+  <button type="button" class="ghost" id="copyLink" title="Copia l’enllaç de la versió web personalitzada">Copia l’enllaç</button>
+  <button type="button" id="print">Desa en PDF</button>
+</form>
+
+<div class="toolbar noprint" id="viewer" hidden>
+  <img src="assets/logos/logo-horitzontal-blanc.svg" alt="MM Igualada" style="height:26px;width:auto">
+  <span style="opacity:.7" id="vtitle">Dossier de patrocini 2026</span>
+  <span class="sp"></span>
+  <a class="btn" id="vmail" style="background:transparent;color:#fff;border:1px solid rgb(255 255 255 / .3)">Contacta</a>
+  <a class="btn" href="Dossier-Patrocini-MM-Igualada-2026.pdf" download>Descarrega el PDF</a>
+</div>
+
+<main class="deck">
+
+<!-- 1 · PORTADA -->
+<section class="page page--photo" style="padding:72px 80px">
+  <img class="bgimg" src="assets/img/aeria.jpg" alt="">
+  <div class="shade"></div>
+  <img src="assets/logos/logo-horitzontal-blanc.svg" alt="MM Igualada" style="height:64px;width:auto;align-self:flex-start">
+  <div class="mt-a">
+    <div class="eyebrow">Dossier de patrocini · Edició 2026</div>
+    <h1 class="h-xxl" style="max-width:11ch">Tornem a fer córrer Igualada.</h1>
+    <p class="lead" style="margin-top:22px"><span data-mm="event.data"></span> · <span data-mm="event.lloc"></span></p>
+    <div class="row" style="gap:10px;margin-top:22px;flex-wrap:wrap">
+      <span class="chip" style="background:rgb(255 255 255 / .14);color:#fff">Mitja Marató 21K</span>
+      <span class="chip" style="background:rgb(255 255 255 / .14);color:#fff">Cursa 10K</span>
+      <span class="chip" style="background:rgb(255 255 255 / .14);color:#fff">Caminada Popular</span>
+    </div>
+  </div>
+  <div class="m-static" data-show="empresa" style="position:absolute;right:80px;bottom:72px;text-align:right">
+    <div class="hand" style="font-size:30px;color:#8fd3c4">preparat per a</div>
+    <div style="margin-top:6px" data-brand='{"white":true,"h":56}'></div>
+  </div>
+</section>
+
+<!-- 2 · CARTA -->
+<section class="page">
+  <div class="row" style="gap:64px;height:100%">
+    <div style="flex:1.35;display:flex;flex-direction:column">
+      <div class="eyebrow">Carta de presentació</div>
+      <h2 class="h-l" style="margin-bottom:26px">Una cursa que Igualada ja estimava, i que torna.</h2>
+      <div class="body" style="font-size:16.5px;display:grid;gap:14px;max-width:62ch">
+        <p><b data-greet>Benvolgut equip,</b></p>
+        <p>Durant anys, la Mitja Marató de l’Anoia va ser una cita fixa al calendari de la comarca. Va arribar a reunir prop de 900 corredors, i va desaparèixer. Aquest desembre la recuperem amb un nom nou, <b>MM Igualada</b>, i amb tres modalitats perquè hi pugui participar tothom: la 21K, una 10K i una caminada popular.</p>
+        <p>És la <b>primera edició d’una nova etapa</b>. Volem fer-la bé des del primer dia: amb els permisos dels ajuntaments d’Igualada i Vilanova del Camí, el teixit atlètic local i un recorregut pla pel Parc Central, el Parc Fluvial i l’Anella Verda.</p>
+        <p data-pitch>Busquem empreses que vulguin créixer amb nosaltres. En aquest dossier trobareu què és la cursa, a qui arriba i totes les maneres de formar-ne part, des d’una tanca a la recta de meta fins a posar-li el vostre nom.</p>
+        <p>Ens agradaria molt comptar amb <b data-empresa="vosaltres"></b>.</p>
+      </div>
+      <div class="mt-a" style="padding-top:20px">
+        <div class="hand" style="font-size:34px;color:var(--lake);line-height:1">Ens veiem a la sortida!</div>
+        <div class="small" style="margin-top:6px"><b style="color:var(--ink)" data-mm="contacte.persona"></b> · <span data-mm="contacte.carrec"></span> · MM Igualada</div>
+      </div>
+    </div>
+    <aside style="flex:1;display:flex;flex-direction:column;gap:14px">
+      <img src="assets/img/parc-central.jpg" alt="Parc Central d’Igualada" style="width:100%;height:330px;object-fit:cover;border-radius:14px">
+      <div class="card" style="display:grid;gap:10px">
+        <div class="h-s">La cursa en una línia</div>
+        <ul class="ticks">
+          <li><b data-mm="event.data"></b></li>
+          <li>Sortida i meta al <b>Parc Central</b></li>
+          <li>Objectiu: <b><span data-mm="event.participants"></span> participants</b></li>
+          <li>Organitza una entitat sense ànim de lucre</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>02</span></div>
+</section>
+
+<!-- 3 · XIFRES -->
+<section class="page page--grad">
+  <div class="eyebrow">La cursa en xifres</div>
+  <h2 class="h-xl" style="max-width:16ch">Un matí de diumenge, tres curses i tota una ciutat.</h2>
+  <div class="grid g4" style="margin-top:auto;gap:18px">
+    <div class="card card--glass"><div class="num" data-mm="event.participants"></div><div class="body" style="margin-top:8px">participants previstos entre les tres modalitats</div></div>
+    <div class="card card--glass"><div class="num">21,1<span style="font-size:.45em"> km</span></div><div class="body" style="margin-top:8px">de mitja marató, amb només 180 m de desnivell positiu</div></div>
+    <div class="card card--glass"><div class="num" data-mm="event.espectadors"></div><div class="body" style="margin-top:8px">persones al carrer, entre acompanyants i públic (previsió)</div></div>
+    <div class="card card--glass"><div class="num" data-mm="event.voluntaris"></div><div class="body" style="margin-top:8px">voluntaris, 4 avituallaments i un dispositiu sanitari complet</div></div>
+  </div>
+  <div class="grid g3" style="margin-top:18px;gap:18px" id="mods"></div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal-blanc.svg" alt=""><span>03</span></div>
+</section>
+
+<!-- 4 · HISTÒRIA -->
+<section class="page page--mist">
+  <div class="row" style="gap:56px;height:100%">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div class="eyebrow">D’on venim</div>
+      <h2 class="h-l">No comencem de zero: recuperem una cursa històrica.</h2>
+      <p class="lead" style="margin-top:18px;font-size:18px">La comarca ja ha demostrat que respon. Ara tornem amb un format més obert, un recorregut més pla i una comunicació pensada per a les xarxes.</p>
+      <div class="card card--ink mt-a">
+        <div class="hand" style="font-size:26px;color:#8fd3c4">Per què hi creiem</div>
+        <p class="body" style="margin-top:6px">Afegir la 10K i la caminada multiplica el públic potencial: famílies, gent que comença a córrer, clubs i escoles. La 21K continua sent la prova reina.</p>
+      </div>
+    </div>
+    <ol style="flex:1.1;list-style:none;display:grid;gap:0;position:relative;align-content:center">
+      <li class="tl"><span class="tl__y">Els inicis</span><b>Mitja Marató de l’Anoia</b><span class="body">Recorregut comarcal que, fins al 2013, passava per Jorba o Tous. Una cursa de referència a l’Anoia.</span></li>
+      <li class="tl"><span class="tl__y">El millor moment</span><b>Fins a ~900 corredors</b><span class="body">Difusió a RAC1, cronometratge amb xip i suport de la Diputació de Barcelona.</span></li>
+      <li class="tl"><span class="tl__y">La davallada</span><b>De 600 a 400 participants</b><span class="body">La participació baixa i la cursa deixa de fer-se. Aprenentatge: recorregut més pla i més difusió.</span></li>
+      <li class="tl tl--now"><span class="tl__y">13.12.2026</span><b>Neix la MM Igualada</b><span class="body">21K, 10K i caminada, sortida al Parc Central i una nova identitat. Primera edició d’una nova etapa.</span></li>
+    </ol>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Dades històriques: entrevista amb el Club Atlètic Igualada · 04</span></div>
+</section>
+
+<!-- 5 · RECORREGUTS -->
+<section class="page page--ink">
+  <div class="row" style="justify-content:space-between;align-items:flex-end">
+    <div><div class="eyebrow">Els recorreguts</div><h2 class="h-l" style="max-width:20ch">Plans, ràpids i entre parcs.</h2></div>
+    <p class="body m-hide" style="max-width:40ch">Sortida i meta al Parc Central. El traçat passa per Igualada i Vilanova del Camí, el Parc Fluvial del riu Anoia i l’Anella Verda.</p>
+  </div>
+  <div class="grid g3" style="margin-top:auto;gap:22px" id="routes"></div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal-blanc.svg" alt=""><span>05</span></div>
+</section>
+
+<!-- 6 · PÚBLIC I ABAST -->
+<section class="page">
+  <div class="eyebrow">A qui arribareu</div>
+  <h2 class="h-l" style="max-width:24ch">Una audiència activa, local i que es deixa veure.</h2>
+  <div class="grid g3" style="margin-top:30px;gap:22px">
+    <div class="card">
+      <div class="h-m">Qui hi serà</div>
+      <ul class="ticks" style="margin-top:14px">
+        <li><b>Corredors populars</b> de 18 a 60 anys, amb molts perfils professionals i directius</li>
+        <li><b>Famílies</b> a la Caminada, oberta a totes les edats i amb gossos</li>
+        <li><b>Clubs</b> de l’Anoia, el Bages, el Penedès i l’àrea de Barcelona</li>
+        <li><b>Públic</b> al Parc Central i als punts d’animació</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="h-m">On es veurà la marca</div>
+      <ul class="ticks" style="margin-top:14px">
+        <li>Web oficial en català, castellà i anglès</li>
+        <li>Plataforma d’inscripcions i correus als inscrits</li>
+        <li>Instagram, Facebook i Strava de la cursa</li>
+        <li>Cartells a Igualada i Vilanova del Camí</li>
+        <li>800 samarretes tècniques que es fan servir als entrenaments durant mesos</li>
+      </ul>
+    </div>
+    <div class="card" style="background:var(--mist);border:0">
+      <div class="h-m">Mitjans locals</div>
+      <p class="body" style="margin-top:12px"><b>Ràdio Igualada</b> i <b>Canal Taronja</b> ja han fet difusió de la cursa sense cost en edicions anteriors. Proposem tenir-los com a mitjans col·laboradors.</p>
+      <div class="divider"></div>
+      <div class="row" style="gap:20px">
+        <div><div class="num" style="font-size:40px">41k</div><div class="small">habitants a Igualada</div></div>
+        <div><div class="num" style="font-size:40px">120k</div><div class="small">habitants a l’Anoia</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt-a" style="display:flex;gap:28px;align-items:center;padding:18px 24px">
+    <div class="h-s" style="flex:none">8 setmanes de campanya</div>
+    <div class="row m-hide" style="gap:0;flex:1;font-size:12.5px;color:var(--ink-2)">
+      <div class="phase" style="--c:#0b5cad">Presentació de la cursa i dels patrocinadors</div>
+      <div class="phase" style="--c:#0e7f8c">Samarreta i obertura d’inscripcions</div>
+      <div class="phase" style="--c:#1a7a50">Recorreguts, llebres, quilòmetres</div>
+      <div class="phase" style="--c:#c9a227">Fira del Corredor i dia de cursa</div>
+      <div class="phase" style="--c:#0d2233">Fotos, resultats i agraïments</div>
+    </div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Perfil i públic: estimació de l’organització · 06</span></div>
+</section>
+
+<!-- 7 · VALORS -->
+<section class="page page--photo">
+  <img class="bgimg" src="assets/img/anoia.jpg" alt="">
+  <div class="shade" style="background:linear-gradient(90deg, rgb(8 19 28 / .94) 0%, rgb(8 19 28 / .82) 60%, rgb(8 19 28 / .45) 100%)"></div>
+  <div class="eyebrow">Per què patrocinar-la</div>
+  <h2 class="h-l" style="max-width:22ch">Una marca al costat del que la gent valora.</h2>
+  <div class="grid g3" style="margin-top:auto;gap:16px">
+    <div class="card card--glass"><div class="h-m">Territori</div><p class="body" style="margin-top:8px">Una cursa feta a Igualada i Vilanova del Camí, amb proveïdors i voluntaris de la comarca.</p></div>
+    <div class="card card--glass"><div class="h-m">Salut</div><p class="body" style="margin-top:8px">Hàbits actius per a tothom: de la primera caminada a la primera mitja marató.</p></div>
+    <div class="card card--glass"><div class="h-m">Sostenibilitat</div><p class="body" style="margin-top:8px">Pla de residus al Parc Fluvial i l’Anella Verda: dipòsits d’aigua, gots compostables i punts nets.</p></div>
+    <div class="card card--glass"><div class="h-m">Solidaritat</div><p class="body" style="margin-top:8px">La Botifarrada Popular dona el 100% de la recaptació a una entitat social d’Igualada.</p></div>
+    <div class="card card--glass"><div class="h-m">Inclusió</div><p class="body" style="margin-top:8px">Categories d’esport adaptat amb trofeu propi: cadira de rodes i handbike, pròtesis i discapacitat visual.</p></div>
+    <div class="card card--glass" style="background:rgb(201 162 39 / .2);border-color:rgb(201 162 39 / .5)"><div class="h-m">+ Universitat</div><p class="body" style="margin-top:8px">El projecte neix d’un treball de final de grau, amb la implicació d’estudiants.</p></div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal-blanc.svg" alt=""><span>07</span></div>
+</section>
+
+<!-- 8 · IMAGINEU-VOS-HI (personalitzat) -->
+<section class="page page--mist">
+  <div class="row" style="gap:40px;height:100%">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div class="eyebrow">Imagineu-vos-hi</div>
+      <h2 class="h-l">Així es veuria <span data-empresa="la vostra marca" style="color:var(--accent)"></span> com a patrocinador principal.</h2>
+      <p class="body" style="margin-top:16px;font-size:16px;max-width:44ch">El patrocinador principal no apareix només <i>al costat</i> de la cursa: en forma part del nom. Dissenyem el logotip conjunt a mida, i el posem a la samarreta, el dorsal, l’arc de meta i tota la comunicació.</p>
+      <div class="card mt-a" style="padding:26px 28px">
+        <div class="small" style="text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px">Logotip conjunt</div>
+        <div class="lockup lockup--sm"><img class="lockup__mm" src="assets/logos/logo-horitzontal.svg" alt="MM Igualada"><span class="lockup__by">by</span><span class="lockup__brand" data-brand='{"h":46,"fs":34}'></span></div>
+      </div>
+    </div>
+    <div style="flex:1.05;display:flex;flex-direction:column;justify-content:center;gap:0">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div data-shirt='{"side":"front"}'></div><div data-shirt='{"side":"back"}'></div></div>
+      <div style="width:56%;align-self:center;margin-top:-4px" data-bib='{}'></div>
+    </div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Maqueta orientativa · 08</span></div>
+</section>
+
+<!-- 9 · MAPA DE LA SAMARRETA -->
+<section class="page">
+  <div class="row" style="gap:40px;height:100%">
+    <div style="flex:1.2;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:center">
+      <div><div data-shirt='{"side":"front","zones":true}'></div><div class="small" style="text-align:center">Davant</div></div>
+      <div><div data-shirt='{"side":"back","zones":true}'></div><div class="small" style="text-align:center">Darrere</div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div class="eyebrow">La samarreta oficial</div>
+      <h2 class="h-l">800 samarretes, 7 espais.</h2>
+      <p class="body" style="margin-top:12px">La samarreta tècnica és l’obsequi de tots els inscrits i el soport que dura més: es fa servir als entrenaments durant mesos.</p>
+      <table class="t" style="margin-top:20px">
+        <tbody>
+          <tr><td><span class="zn zn--hot">1</span> Pit, al costat de l’escut</td><td>Patrocinador principal</td></tr>
+          <tr><td><span class="zn zn--hot">5</span> Franja superior de l’esquena</td><td>Patrocinador principal (“by…”)</td></tr>
+          <tr><td><span class="zn">3</span> Màniga dreta</td><td>Partner oficial</td></tr>
+          <tr><td><span class="zn">4</span> Màniga esquerra</td><td>Partner oficial</td></tr>
+          <tr><td><span class="zn">6</span> Fila de l’esquena (×6)</td><td>350 € per logo</td></tr>
+          <tr><td><span class="zn">2</span> Escut MM Igualada</td><td class="small">Organització</td></tr>
+          <tr><td><span class="zn">7</span> Institucions i bandera</td><td class="small">Ajuntaments i CAI</td></tr>
+        </tbody>
+      </table>
+      <p class="small mt-a">Les institucions que fan possible la cursa passen a la fila inferior de l’esquena, i deixen lliures les mànigues per als partners.</p>
+    </div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>09</span></div>
+</section>
+
+<!-- 10 · MAPA DEL RECORREGUT -->
+<section class="page page--mist">
+  <div class="row" style="gap:40px;height:100%">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div class="eyebrow">El recorregut, quilòmetre a quilòmetre</div>
+      <h2 class="h-l">Cada punt del traçat és un espai de marca.</h2>
+      <div style="display:grid;gap:12px;margin-top:24px">
+        <div class="legend"><span class="lg" style="background:#c9a227">5</span><div><b>Avituallaments</b> als km 5, 10 i 15, i al postmeta. Hi passen tots els corredors.</div></div>
+        <div class="legend"><span class="lg" style="background:#0d2233">10</span><div><b>Quilòmetres clau:</b> 1, 10 (control de pas), 15 i 21. Més atenció i més fotos.</div></div>
+        <div class="legend"><span class="lg" style="background:rgb(13 34 51 / .55)">7</span><div><b>Quilòmetres patrocinables:</b> cartell d’1×1,5 m amb “Km X by [Marca]”.</div></div>
+        <div class="legend"><span class="lg" style="background:var(--grad);font-size:10px">S/M</span><div><b>Sortida i meta</b> al Parc Central: arc, recta de meta, tanques, Fira del Corredor i festa.</div></div>
+      </div>
+      <div class="card mt-a" style="display:flex;gap:16px;align-items:center">
+        <div class="num" style="font-size:44px;color:var(--lake)">21</div>
+        <div class="body">quilòmetres per patrocinar, a partir de <b>120 €</b>. Una manera assequible de ser dins la cursa.</div>
+      </div>
+    </div>
+    <div style="flex:1;position:relative;align-self:center;aspect-ratio:1;max-height:100%" data-routemap></div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Traçat de la 21K · 10</span></div>
+</section>
+
+<!-- 11 · GRANS PATROCINIS -->
+<section class="page">
+  <div class="row cat-head" style="justify-content:space-between;align-items:flex-end">
+    <div><div class="eyebrow">Catàleg · 1 de 6</div><h2 class="h-l">Grans patrocinis</h2></div>
+    <p class="body" style="max-width:44ch">Places úniques. S’adjudiquen per <b>candidatura</b> a l’oferta més alta, a partir del preu mínim. Detalls a la pàgina 18.</p>
+  </div>
+  <div class="row" style="gap:18px;flex:1;min-height:0">
+    <div style="flex:1.25;display:grid" data-levels="naming" data-ticks="all" data-hero="naming"></div>
+    <div style="flex:1;display:grid;gap:18px" data-levels="partner,modalitat" data-ticks="0"></div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Preus sense IVA · 11</span></div>
+</section>
+
+<!-- 12 · MOMENTS (1) -->
+<section class="page page--mist">
+  <div class="row cat-head" style="justify-content:space-between;align-items:flex-end">
+    <div><div class="eyebrow">Catàleg · 2 de 6</div><h2 class="h-l">Moments de la cursa</h2></div>
+    <p class="body" style="max-width:44ch">Associeu la marca a un instant concret del dia: on la gent mira, s’atura i fa fotos.</p>
+  </div>
+  <div class="grid g3 compact" style="flex:1;gap:14px" data-levels="meta,avituallament,km,trofeus,medalla,bossa" data-ticks="0"></div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Preus sense IVA · 12</span></div>
+</section>
+
+<!-- 13 · MOMENTS (2) -->
+<section class="page page--mist">
+  <div class="row cat-head" style="justify-content:space-between;align-items:flex-end">
+    <div><div class="eyebrow">Catàleg · 3 de 6</div><h2 class="h-l">L’arribada i la festa</h2></div>
+    <p class="body" style="max-width:44ch">El que passa després de creuar la meta: el que es menja, el que es fotografia i el que es recorda.</p>
+  </div>
+  <div class="grid g2 compact" style="flex:1;gap:14px" data-levels="calent,fotos,festa,animacio" data-ticks="1"></div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Preus sense IVA · 13</span></div>
+</section>
+
+<!-- 14 · MOMENTS (3) -->
+<section class="page page--mist">
+  <div class="row cat-head" style="justify-content:space-between;align-items:flex-end">
+    <div><div class="eyebrow">Catàleg · 4 de 6</div><h2 class="h-l">Dins del recorregut</h2></div>
+    <p class="body" style="max-width:44ch">Espais que acompanyen els corredors durant tota la cursa: ritme, voluntaris, entorn i resultats.</p>
+  </div>
+  <div class="grid g2 compact" style="flex:1;gap:14px" data-levels="llebres,voluntaris,eco,resultats" data-ticks="2"></div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Preus sense IVA · 14</span></div>
+</section>
+
+<!-- 15 · VISIBILITAT I ESPÈCIE -->
+<section class="page">
+  <div class="row cat-head" style="justify-content:space-between;align-items:flex-end">
+    <div><div class="eyebrow">Catàleg · 5 de 6</div><h2 class="h-l">Visibilitat i espècie</h2></div>
+    <p class="body" style="max-width:44ch">Formats directes i assequibles per al comerç i l’empresa local, i col·laboracions amb producte.</p>
+  </div>
+  <div class="grid g3 compact" style="flex:1;gap:14px" data-levels="tanques,esquena,speaker,web,sorteig,mitjans" data-ticks="0"></div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Preus sense IVA · 15</span></div>
+</section>
+
+<!-- 16 · PACKS I GUIA -->
+<section class="page page--mist">
+  <div class="eyebrow">Catàleg · 6 de 6</div>
+  <h2 class="h-l" style="max-width:26ch">Packs, i quin patrocini us encaixa segons el pressupost.</h2>
+  <div class="grid g3" style="gap:14px;margin-top:24px" id="packs"></div>
+  <div class="h-s mt-a" style="margin-bottom:12px">Segons el vostre pressupost</div>
+  <div class="grid g3" style="gap:14px">
+    <div class="card guide"><div class="guide__b">Fins a 300 €</div><p class="body">Tanques, quilòmetre patrocinat, col·laborador web, speaker, punt d’animació o Pack Comerç.</p></div>
+    <div class="card guide"><div class="guide__b">De 300 a 1.000 €</div><p class="body">Esquena de la samarreta, avituallament, bossa, fotografia, trofeus, voluntariat, festa o Pack Dia de Cursa.</p></div>
+    <div class="card guide card--ink"><div class="guide__b" style="color:#8fd3c4">Més de 1.000 €</div><p class="body">Partner oficial, recta de meta, medalla o modalitat, i el patrocini principal, amb candidatura.</p></div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Preus sense IVA · 16</span></div>
+</section>
+
+<!-- 17 · RESUM DE PREUS -->
+<section class="page">
+  <div class="eyebrow">Resum</div>
+  <h2 class="h-l" style="margin-bottom:14px;font-size:38px">Tots els patrocinis, d’un cop d’ull.</h2>
+  <div class="grid g2" style="gap:40px;align-items:start" data-summary></div>
+  <p class="small mt-a" style="color:var(--ink-2)"><b>Sobre els preus:</b> imports mínims sense IVA (21%). Es formalitzen amb contracte de patrocini i factura, i són despesa deduïble per a l’empresa. En els patrocinis per candidatura, el preu final és l’oferta guanyadora.</p>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>17</span></div>
+</section>
+
+<!-- 18 · CANDIDATURES -->
+<section class="page page--ink">
+  <div class="eyebrow">Com funcionen les candidatures</div>
+  <h2 class="h-l" style="max-width:24ch">Els espais únics són per a qui més hi aposta.</h2>
+  <p class="lead" style="margin-top:14px;font-size:18px;max-width:60ch">Patrocinador principal, partners oficials, modalitats, recta de meta i medalla s’adjudiquen per candidatura. La resta, per ordre de confirmació.</p>
+  <div class="grid g2" style="margin-top:26px;gap:16px">
+    <div class="card card--glass"><div class="h-s">Què ha d’incloure la candidatura</div><ul class="ticks" style="margin-top:10px;grid-template-columns:1fr 1fr;column-gap:18px"><li>Empresa i persona de contacte</li><li>Espai o espais que us interessen</li><li>Import ofert (+ IVA)</li><li>Producte o servei, si n’hi ha</li><li>Logo en vectorial (SVG, AI o PDF)</li><li>Si voleu activar un estand a la Fira</li></ul></div>
+    <div class="card card--glass" style="background:rgb(201 162 39 / .14);border-color:rgb(201 162 39 / .45)"><div class="h-s">Exemple</div><p class="body" style="margin-top:8px">Dues empreses volen ser patrocinador principal. A ofereix <b style="color:#fff">3.000 €</b>. B ofereix <b style="color:#fff">2.600 € + 900 €</b> en producte per als avituallaments. B guanya: <b style="color:#fff">3.500 €</b> de valor, amb el producte per sota del 50%.</p></div>
+  </div>
+  <div class="grid g4" style="margin-top:auto;gap:16px">
+    <div class="card card--glass step"><span class="step__n">1</span><div class="h-s">Envieu la proposta</div><p class="body" style="margin-top:6px">Per correu: l’espai que voleu i l’import que oferiu (igual o superior al mínim).</p></div>
+    <div class="card card--glass step"><span class="step__n">2</span><div class="h-s">Termini</div><p class="body" style="margin-top:6px">Fins al <b data-mm="terminis.candidatures"></b>. Les ofertes són confidencials.</p></div>
+    <div class="card card--glass step"><span class="step__n">3</span><div class="h-s">Adjudicació</div><p class="body" style="margin-top:6px">El <b data-mm="terminis.adjudicacio"></b>, a l’oferta més alta. Si hi ha empat, decideix l’encaix amb la cursa i el territori.</p></div>
+    <div class="card card--glass step"><span class="step__n">4</span><div class="h-s">Conveni i logos</div><p class="body" style="margin-top:6px">Signatura del contracte i logos vectorials abans del <b data-mm="terminis.logos"></b>, per imprimir les samarretes.</p></div>
+  </div>
+  <div class="row" style="gap:16px;margin-top:16px;font-size:13px;color:rgb(255 255 255 / .7)">
+    <div>• Es pot combinar diners i producte. El producte es valora a preu de mercat i pot ser fins a la meitat de l’oferta.</div>
+    <div>• Resta de patrocinis: fins al <b style="color:#fff" data-mm="terminis.resta"></b>.</div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal-blanc.svg" alt=""><span>18</span></div>
+</section>
+
+<!-- 19 · TRANSPARÈNCIA I RETORN -->
+<section class="page page--mist">
+  <div class="row" style="gap:48px;height:100%">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div class="eyebrow">Transparència</div>
+      <h2 class="h-l">On va cada euro.</h2>
+      <p class="body" style="margin-top:10px">Pressupost estimat per a <span data-mm="event.participants"></span> participants: <b data-mm="event.pressupost"></b>. Organitza una entitat sense ànim de lucre: tot el que s’ingressa es destina a la cursa.</p>
+      <div id="budget" style="display:grid;gap:11px;margin-top:22px"></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div class="eyebrow">Després de la cursa</div>
+      <h2 class="h-l">Què rebreu.</h2>
+      <div class="card" style="margin-top:20px">
+        <ul class="ticks" style="gap:11px">
+          <li><b>Informe de retorn</b> en 30 dies: participants, abast a la web i a les xarxes, i aparicions als mitjans</li>
+          <li><b>Banc de fotos</b> amb la vostra marca, lliure per fer-ne servir</li>
+          <li><b>Certificat de patrocini</b> per a la vostra memòria de RSC</li>
+          <li><b>Factura i contracte</b> de patrocini publicitari</li>
+          <li><b>Dret de tanteig</b> per a l’edició 2027</li>
+        </ul>
+      </div>
+      <div class="card card--ink mt-a" style="display:flex;gap:18px;align-items:center">
+        <div class="hand" style="font-size:30px;color:#8fd3c4;line-height:1;flex:none">1a edició</div>
+        <p class="body">Els patrocinadors d’aquesta primera edició seran, per sempre, <b style="color:#fff">els que la van fer tornar</b>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="pfoot"><img src="assets/logos/logo-horitzontal.svg" alt=""><span>Pressupost: anàlisi de viabilitat del projecte · 19</span></div>
+</section>
+
+<!-- 20 · CONTRAPORTADA -->
+<section class="page page--grad" style="padding:72px 80px">
+  <img src="assets/logos/logo-horitzontal-blanc.svg" alt="MM Igualada" style="height:60px;width:auto;align-self:flex-start">
+  <div class="mt-a row" style="justify-content:space-between;align-items:flex-end;gap:40px">
+    <div>
+      <div class="hand" style="font-size:40px;color:#c9f2e3;line-height:1">Parlem-ne?</div>
+      <h2 class="h-xl" style="margin-top:10px;max-width:14ch">Fem tornar la cursa junts.</h2>
+      <div style="display:grid;gap:6px;margin-top:26px;font-size:19px">
+        <div><b data-mm="contacte.persona"></b> · <span data-mm="contacte.carrec"></span></div>
+        <div data-mm="contacte.email"></div>
+        <div data-mm="contacte.telefon"></div>
+        <div data-mm="contacte.web"></div>
+      </div>
+    </div>
+    <div class="card card--glass m-hide" style="max-width:340px">
+      <div class="small" style="color:rgb(255 255 255 / .7)">Fotografies: Chixoy, XèniaCastillo i Jordiferrer (Wikimedia Commons, CC BY-SA). Logo de l’exemple de logotip conjunt: marca de l’empresa destinatària. Xifres de públic i retorn: estimacions de l’organització.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="dades.js"></script>
+<script src="assets/rutes-km.js"></script>
+<script src="dossier.js"></script>
+<script>
+(function () {
+  const { esc, eur } = MMD, MM = window.MM;
+  // Mòduls fixos
+  document.getElementById('mods').innerHTML = MM.modalitats.map((m) => `<div class="card card--glass" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px"><div><div class="h-s">${m.nom}</div><div class="small" style="color:rgb(255 255 255 / .7)">Sortida ${m.hora} · ${m.edat}</div></div><div class="h-m">${m.km} km</div></div>`).join('');
+  document.getElementById('routes').innerHTML = MM.modalitats.map((m) => `<div><div style="aspect-ratio:1;background:rgb(255 255 255 / .05);border-radius:16px;padding:18px"><img src="assets/img/ruta-${m.id}.svg" alt="Traçat ${m.nom}"></div><div style="height:46px;margin-top:10px;opacity:.7"><img src="assets/img/perfil-${m.id}.svg" alt="" style="width:100%;height:100%"></div><div class="row" style="justify-content:space-between;margin-top:12px;align-items:baseline;gap:10px"><div class="h-m">${m.nom}</div><div class="h-m" style="color:#8fd3c4">${m.km} km</div></div><div class="small" style="color:rgb(255 255 255 / .65);margin-top:4px">${m.hora} h · desnivell ${m.desn} · temps màxim ${m.tall}</div></div>`).join('');
+  document.getElementById('packs').innerHTML = MM.packs.map((p, i) => `<div class="card" style="${i === 2 ? 'background:var(--ink);color:#fff;border:0' : 'background:var(--mist);border:0'}"><div class="h-m">${p.nom}</div><div class="price" style="margin-top:8px">${eur(p.preu)}<small${i === 2 ? ' style="color:rgb(255 255 255 / .6)"' : ''}>+ IVA</small></div><p class="body" style="margin-top:8px;${i === 2 ? 'color:rgb(255 255 255 / .8)' : ''}">${p.inclou}</p><div class="small" style="margin-top:8px;${i === 2 ? 'color:rgb(255 255 255 / .6)' : ''}">Per a: ${p.per}</div></div>`).join('');
+  const B = [['Samarretes i obsequi', 2800, 3500], ['Assegurances', 1500, 1800], ['Cronometratge i dorsals', 1200, 1600], ['Sanitat i seguretat', 1000, 1300], ['Avituallaments', 800, 1200], ['Lloguers i logística', 800, 1100]];
+  document.getElementById('budget').innerHTML = B.map(([n, a, b]) => `<div><div class="row" style="justify-content:space-between;font-size:13.5px;gap:10px"><span>${n}</span><b style="font-variant-numeric:tabular-nums">${a.toLocaleString('ca-ES')} – ${b.toLocaleString('ca-ES')} €</b></div><div style="height:10px;border-radius:5px;background:var(--mist-2);margin-top:5px;position:relative;overflow:hidden"><div style="position:absolute;inset:0 ${100 - b / 35}% 0 0;background:rgb(11 92 173 / .3);border-radius:5px"></div><div style="position:absolute;inset:0 ${100 - a / 35}% 0 0;background:var(--grad);border-radius:5px"></div></div></div>`).join('');
+
+  // Personalització
+  const tb = document.getElementById('tb'), q = new URLSearchParams(location.search);
+  // A la web publicada, qui rep l'enllaç veu una barra neta; l'editor només surt en local o amb ?edit
+  if (location.protocol !== 'file:' && !q.has('edit')) {
+    tb.hidden = true; const v = document.getElementById('viewer'); v.hidden = false;
+    document.getElementById('vmail').href = 'mailto:' + MM.contacte.email + '?subject=' + encodeURIComponent('Patrocini MM Igualada' + (q.get('empresa') ? ' · ' + q.get('empresa') : ''));
+    if (q.get('empresa')) document.getElementById('vtitle').textContent = 'Dossier de patrocini · preparat per a ' + q.get('empresa');
+  }
+  const sel = tb.nivell; MM.nivells.forEach((l) => sel.add(new Option(l.nom, l.id)));
+  const state = { nom: q.get('empresa') || '', contacte: q.get('contacte') || '', nivell: q.get('nivell') || '', logo: q.get('logo') || '', color: q.get('color') ? '#' + q.get('color').replace('#', '') : '' };
+  tb.empresa.value = state.nom; tb.contacte.value = state.contacte; sel.value = state.nivell; if (state.color) tb.color.value = state.color;
+
+  function apply() {
+    const brand = { nom: state.nom, logo: state.logo, color: state.color || null };
+    document.documentElement.style.setProperty('--accent', state.color || '#0b5cad');
+    document.querySelectorAll('[data-show="empresa"]').forEach((el) => (el.style.display = state.nom || state.logo ? '' : 'none'));
+    const g = document.querySelector('[data-greet]');
+    g.textContent = state.contacte ? `Benvolgut/da ${state.contacte},` : state.nom ? `Benvolgut equip de ${state.nom},` : 'Benvolgut equip,';
+    const lvl = MM.nivells.find((l) => l.id === state.nivell);
+    const pitch = document.querySelector('[data-pitch]');
+    pitch.innerHTML = lvl
+      ? `Pensant en ${esc(state.nom || 'la vostra empresa')}, creiem que l’espai que us encaixa més és <b>${esc(lvl.nom)}</b> (${esc(lvl.lema)}), a partir de ${lvl.preu ? eur(lvl.preu) : esc(lvl.preuTxt)}. A la resta del dossier trobareu totes les opcions, des d’una tanca a la recta de meta fins a posar nom a la cursa.`
+      : 'Busquem empreses que vulguin créixer amb nosaltres. En aquest dossier trobareu què és la cursa, a qui arriba i totes les maneres de formar-ne part, des d’una tanca a la recta de meta fins a posar-li el vostre nom.';
+    document.querySelectorAll('.lvl').forEach((c) => c.classList.toggle('lvl--pick', c.dataset.lvl === state.nivell));
+    document.title = state.nom ? `Dossier de patrocini MM Igualada · ${state.nom}` : 'Dossier de patrocini · MM Igualada 2026';
+    MMD.draw(brand);
+  }
+  tb.addEventListener('input', (e) => {
+    const t = e.target;
+    if (t.name === 'empresa') state.nom = t.value.trim();
+    if (t.name === 'contacte') state.contacte = t.value.trim();
+    if (t.name === 'nivell') state.nivell = t.value;
+    if (t.name === 'color') state.color = t.value;
+    if (t.name === 'logofile' && t.files[0]) { const r = new FileReader(); r.onload = () => { state.logo = r.result; apply(); }; r.readAsDataURL(t.files[0]); return; }
+    apply();
+  });
+  document.getElementById('print').onclick = () => window.print();
+  document.getElementById('copyLink').onclick = async (e) => {
+    const p = new URLSearchParams();
+    if (state.nom) p.set('empresa', state.nom); if (state.contacte) p.set('contacte', state.contacte); if (state.nivell) p.set('nivell', state.nivell);
+    if (state.color) p.set('color', state.color.replace('#', '')); if (state.logo && !state.logo.startsWith('data:')) p.set('logo', state.logo);
+    const url = MM.contacte.dossierUrl + (p.toString() ? '?' + p : '');
+    try { await navigator.clipboard.writeText(url); e.target.textContent = 'Copiat ✓'; } catch { prompt('Enllaç:', url); }
+    setTimeout(() => (e.target.textContent = 'Copia l’enllaç'), 1600);
+  };
+
+  MMD.fillData(); MMD.renderLevels(); MMD.routeMap(); MMD.fit(); apply();
+  document.fonts.ready.then(() => document.body.setAttribute('data-ready', ''));
+})();
+</script>
+<style>
+  .tl { display: grid; grid-template-columns: 130px 1fr; column-gap: 26px; padding: 0 0 26px 0; position: relative; }
+  .tl::before { content: ''; position: absolute; left: 141px; top: 6px; bottom: -6px; width: 2px; background: var(--line); }
+  .tl:last-child::before { display: none; }
+  .tl::after { content: ''; position: absolute; left: 136px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid var(--lake); }
+  .tl--now::after { background: var(--lake); box-shadow: 0 0 0 5px rgb(11 92 173 / .18); }
+  .tl__y { grid-row: span 2; font: 600 12px/1.3 var(--f-s); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); text-align: right; padding-top: 2px; }
+  .tl > b { font: 700 21px/1.2 var(--f-d); letter-spacing: -.01em; margin-left: 12px; }
+  .tl > .body { margin-left: 12px; margin-top: 4px; font-size: 14.5px; }
+  .tl--now > b { color: var(--lake); }
+  .phase { flex: 1; padding: 6px 12px 0; border-top: 3px solid var(--c); line-height: 1.35; }
+  .zn { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: #fff; font: 700 11px var(--f-s); margin-right: 8px; }
+  .zn--hot { background: var(--gold); }
+  .legend { display: flex; gap: 14px; align-items: center; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
+  .lg { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 700 12px var(--f-s); border: 2px solid #fff; box-shadow: 0 1px 4px rgb(0 0 0 / .2); }
+  .step { position: relative; padding-top: 30px; }
+  .step__n { position: absolute; top: -16px; left: 22px; width: 36px; height: 36px; border-radius: 50%; background: var(--gold); color: var(--ink); display: grid; place-items: center; font: 800 16px var(--f-d); }
+  .guide { display: grid; gap: 6px; }
+  .compact .lvl { gap: 7px; padding: 15px 18px; } .compact .lvl__name { font-size: 18px; } .compact .lvl__que { font-size: 12.5px; line-height: 1.45; }
+  .compact .lvl__price { padding: 6px 0; } .compact .lvl__price .price { font-size: 23px; } .compact .ticks li { font-size: 12.5px; }
+  [data-summary] table.t td { padding: 5px 8px; } [data-summary] table.t tr.grp td { padding-top: 10px; }
+  .cat-head { margin-bottom: 16px; } .cat-head .h-l { font-size: 38px; } .cat-head .eyebrow { margin-bottom: 12px; }
+  .lvl--hero .ticks { gap: 4px; } .lvl--hero .ticks li { font-size: 12.5px; }
+  .guide__b { font: 800 26px/1 var(--f-d); letter-spacing: -.02em; color: var(--lake); }
+  .lockup--sm .lockup__mm { height: 56px; } .lockup--sm .lockup__by { font-size: 32px; }
+  .lvl--pick { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .lvl--pick .lvl__name::after { content: '★ Recomanat per a vosaltres'; display: block; font: 600 11px var(--f-s); letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
+  @media screen and (max-width: 760px) { .tl { grid-template-columns: 1fr; } .tl::before, .tl::after { display: none; } .tl__y { text-align: left; grid-row: auto; } .tl > b, .tl > .body { margin-left: 0; } }
+</style>
+</body>
+</html>

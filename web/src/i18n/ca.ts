@@ -96,7 +96,7 @@ export const ca = {
   sponsors: {
     title: 'Ens acompanyen', lead: 'Empreses i comerços que fan possible la MM Igualada.',
     tiers: ['Patrocinador principal', 'Col·laboradors', 'Comerços locals'], name: 'Patrocinador', place: 'Logotip provisional',
-    becomeTitle: 'Vols ser-ne part?', becomeText: 'Posa la teva marca a la sortida, a la meta i als canals de la cursa.', becomeCta: 'Parlem-ne',
+    becomeTitle: 'Vols ser-ne part?', becomeText: 'Posa la teva marca a la sortida, a la meta i als canals de la cursa.', becomeCta: 'Parlem-ne', dossierCta: 'Dossier de patrocini',
   },
   thanks: {
     title: 'Gràcies', lead: 'Sense elles i ells, la cursa no seria possible.',

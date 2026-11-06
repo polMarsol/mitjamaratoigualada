@@ -1,0 +1,157 @@
+/* Dossier de patrocini · MM Igualada — estils compartits
+   Pàgines de 1280×720 (16:9). Pantalla: s'escalen a l'amplada. Mòbil (<760px): es reorganitzen. PDF: mida exacta. */
+@font-face { font-family: 'Bricolage'; src: url(assets/fonts/bricolage-grotesque-latin-wght-normal.woff2) format('woff2'); font-weight: 200 800; font-display: block; }
+@font-face { font-family: 'Instrument'; src: url(assets/fonts/instrument-sans-latin-wght-normal.woff2) format('woff2'); font-weight: 400 700; font-display: block; }
+@font-face { font-family: 'Caveat'; src: url(assets/fonts/caveat-latin-wght-normal.woff2) format('woff2'); font-weight: 400 700; font-display: block; }
+
+:root {
+  --lake: #0b5cad; --teal: #0e7f8c; --moss: #1a7a50; --ink: #0d2233; --ink-2: #3b5162; --ink-3: #6b7f8e;
+  --mist: #eef3f4; --mist-2: #e0e9eb; --paper: #fbfcfc; --line: #d3dee2; --gold: #c9a227;
+  --grad: linear-gradient(135deg, #0b5cad 0%, #0e7f8c 55%, #1a7a50 100%);
+  --accent: var(--lake); /* el dossier personalitzat el canvia pel color de la marca */
+  --f-d: 'Bricolage', system-ui, sans-serif; --f-s: 'Instrument', system-ui, sans-serif; --f-h: 'Caveat', cursive;
+  color-scheme: light;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { background: #c9d5da; font-family: var(--f-s); color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+img { display: block; max-width: 100%; }
+
+/* ── Pàgina ─────────────────────────────────────────── */
+.deck { display: flex; flex-direction: column; align-items: center; gap: 28px; padding: 28px 0 80px; }
+.page { position: relative; width: 1280px; height: 720px; overflow: hidden; background: var(--paper); padding: 64px 72px; display: flex; flex-direction: column;
+  box-shadow: 0 1px 2px rgb(13 34 51 / .08), 0 12px 40px -12px rgb(13 34 51 / .35); zoom: var(--z, 1); flex: none; }
+.page--mist { background: var(--mist); }
+.page--ink { background: var(--ink); color: #fff; }
+.page--grad { background: var(--grad); color: #fff; }
+.page--photo { color: #fff; background: var(--ink); }
+.page--photo > .bgimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.page--photo > .shade { position: absolute; inset: 0; background: linear-gradient(100deg, rgb(8 19 28 / .92) 0%, rgb(8 19 28 / .7) 45%, rgb(8 19 28 / .15) 100%); }
+.page > * { position: relative; }
+.pfoot { position: absolute !important; left: 72px; right: 72px; bottom: 26px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.page--ink .pfoot, .page--grad .pfoot, .page--photo .pfoot { color: rgb(255 255 255 / .6); }
+.pfoot img { height: 18px; }
+
+/* ── Tipografia ─────────────────────────────────────── */
+.eyebrow { font: 600 13px/1 var(--f-s); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.eyebrow::before { content: ''; width: 28px; height: 2px; background: currentColor; }
+.page--ink .eyebrow, .page--grad .eyebrow, .page--photo .eyebrow { color: #8fd3c4; }
+.h-xxl { font: 800 96px/.92 var(--f-d); letter-spacing: -.035em; }
+.h-xl { font: 750 64px/.98 var(--f-d); letter-spacing: -.03em; }
+.h-l { font: 700 44px/1.02 var(--f-d); letter-spacing: -.025em; text-wrap: balance; }
+.h-m { font: 700 26px/1.1 var(--f-d); letter-spacing: -.015em; }
+.h-s { font: 650 18px/1.2 var(--f-d); letter-spacing: -.01em; }
+.lead { font-size: 20px; line-height: 1.5; color: var(--ink-2); max-width: 46ch; text-wrap: pretty; }
+.page--ink .lead, .page--grad .lead, .page--photo .lead { color: rgb(255 255 255 / .82); }
+.body { font-size: 15px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
+.page--ink .body, .page--grad .body, .page--photo .body { color: rgb(255 255 255 / .78); }
+.hand { font-family: var(--f-h); font-weight: 600; }
+.small { font-size: 12.5px; line-height: 1.45; color: var(--ink-3); }
+.num { font: 800 64px/1 var(--f-d); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+b, strong { font-weight: 650; color: inherit; }
+.mt-a { margin-top: auto; }
+
+/* ── Components ─────────────────────────────────────── */
+.row { display: flex; gap: 32px; }
+.grid { display: grid; gap: 20px; }
+.g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; }
+.page--mist .card { border-color: transparent; box-shadow: 0 1px 2px rgb(13 34 51 / .06); }
+.card--ink { background: var(--ink); color: #fff; border: 0 !important; }
+.card--ink .body, .card--ink .small { color: rgb(255 255 255 / .8); }
+.card--glass { background: rgb(255 255 255 / .08); border: 1px solid rgb(255 255 255 / .16); color: #fff; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 99px; font: 600 12px/1 var(--f-s); letter-spacing: .02em; background: var(--mist-2); color: var(--ink-2); white-space: nowrap; }
+.chip--cand { background: #fdf3d7; color: #7a5b00; }
+.chip--ordre { background: #dcefe6; color: #14593b; }
+.chip--especie { background: #e3ecf7; color: #0b4a8c; }
+.chip--nou { background: var(--ink); color: #fff; }
+.price { font: 800 30px/1 var(--f-d); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.price small { font: 500 13px var(--f-s); letter-spacing: 0; color: var(--ink-3); margin-left: 4px; }
+.ticks { list-style: none; display: grid; gap: 7px; }
+.ticks li { position: relative; padding-left: 20px; font-size: 13.5px; line-height: 1.4; color: var(--ink-2); }
+.ticks li::before { content: ''; position: absolute; left: 2px; top: 6px; width: 9px; height: 5px; border-left: 2px solid var(--moss); border-bottom: 2px solid var(--moss); transform: rotate(-45deg); }
+.page--ink .ticks li, .page--grad .ticks li { color: rgb(255 255 255 / .85); }
+.page--ink .ticks li::before, .page--grad .ticks li::before { border-color: #8fd3c4; }
+.divider { height: 1px; background: var(--line); margin: 14px 0; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+
+/* Fitxa de catàleg */
+.lvl { display: flex; flex-direction: column; gap: 9px; padding: 18px 20px; }
+.lvl__price { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.lvl__price .price { font-size: 26px; }
+.price .pre { margin: 0 5px 0 0; }
+.price--txt { font-size: 17px !important; letter-spacing: -.01em; line-height: 1.15; }
+.lvl__extra { font-size: 12px; color: var(--ink-3); margin-top: -3px; }
+.lvl--hero .lvl__price { border-color: rgb(255 255 255 / .16); }
+.lvl--hero .lvl__extra { color: rgb(255 255 255 / .6); }
+.lvl__name { font: 700 20px/1.1 var(--f-d); letter-spacing: -.015em; }
+.lvl__lema { font-size: 13px; color: var(--ink-3); margin-top: 3px; }
+.lvl__que { font-size: 13px; line-height: 1.48; color: var(--ink-2); }
+.lvl__meta { display: flex; gap: 6px; flex-wrap: wrap; }
+.lvl__ideal { font-size: 12px; line-height: 1.4; color: var(--ink-3); border-top: 1px dashed var(--line); padding-top: 8px; margin-top: auto; }
+.lvl__ideal b { color: var(--ink-2); }
+.lvl--hero { background: var(--ink); color: #fff; border: 0; }
+.lvl--hero .lvl__lema, .lvl--hero .lvl__ideal { color: rgb(255 255 255 / .6); }
+.lvl--hero .lvl__que { color: rgb(255 255 255 / .82); }
+.lvl--hero .lvl__ideal { border-color: rgb(255 255 255 / .18); }
+.lvl--hero .lvl__ideal b { color: #fff; }
+.lvl--hero .price small { color: rgb(255 255 255 / .6); }
+.lvl--hero .ticks li { color: rgb(255 255 255 / .85); }
+.lvl--hero .ticks li::before { border-color: #8fd3c4; }
+
+/* Taula */
+table.t { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.t th { text-align: left; font: 600 11px/1 var(--f-s); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding: 0 10px 10px; border-bottom: 2px solid var(--ink); }
+table.t td { padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+table.t td.r, table.t th.r { text-align: right; font-variant-numeric: tabular-nums; }
+table.t tr.grp td { font: 700 12px var(--f-s); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); padding-top: 14px; border-bottom: 0; }
+
+/* Lockup "MM Igualada by X" */
+.lockup { display: flex; align-items: center; gap: 22px; }
+.lockup__mm { height: 74px; width: auto; }
+.lockup__by { font: 600 40px/1 var(--f-h); color: var(--ink-3); transform: translateY(4px); }
+.lockup__brand { font: 800 44px/1 var(--f-d); letter-spacing: -.03em; color: var(--accent); white-space: nowrap; }
+.lockup__brand img { height: 64px; width: auto; max-width: 300px; object-fit: contain; }
+.lockup--white .lockup__by { color: rgb(255 255 255 / .7); }
+.lockup--white .lockup__brand { color: #fff; }
+
+/* Barra d'edició (només pantalla) */
+.toolbar { position: sticky; top: 0; z-index: 10; width: 100%; background: rgb(13 34 51 / .94); backdrop-filter: blur(8px); color: #fff; padding: 10px 20px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; font-size: 13px; }
+.toolbar strong { font: 700 14px var(--f-d); margin-right: 6px; }
+.toolbar label { display: flex; align-items: center; gap: 6px; color: rgb(255 255 255 / .7); }
+.toolbar input, .toolbar select { font: inherit; color: #fff; background: rgb(255 255 255 / .1); border: 1px solid rgb(255 255 255 / .2); border-radius: 8px; padding: 6px 10px; min-width: 0; }
+.toolbar input[type=text] { width: 170px; }
+.toolbar select option { color: var(--ink); }
+.toolbar button, .toolbar a.btn { font: 600 13px var(--f-s); border: 0; border-radius: 8px; padding: 8px 14px; background: #fff; color: var(--ink); cursor: pointer; text-decoration: none; transition: transform .12s ease, background .15s ease; }
+.toolbar button:active { transform: scale(.97); }
+.toolbar button.ghost { background: transparent; color: #fff; border: 1px solid rgb(255 255 255 / .3); }
+.toolbar .sp { flex: 1; }
+.toolbar[hidden] { display: none; }
+
+/* ── Impressió / PDF ───────────────────────────────── */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  body { background: none; }
+  .toolbar, .noprint { display: none !important; }
+  .deck { display: block; padding: 0; }
+  .page { zoom: 1 !important; box-shadow: none; break-after: page; page-break-after: always; }
+}
+
+/* ── Mòbil: reorganització ─────────────────────────── */
+@media screen and (max-width: 760px) {
+  .deck { gap: 14px; padding: 14px 0 60px; }
+  .page { zoom: 1 !important; width: calc(100vw - 20px); height: auto; min-height: 0; padding: 36px 20px 56px !important; border-radius: 12px; }
+  .page > [data-show] { margin-top: 24px; text-align: left !important; }
+  .pfoot { left: 20px; right: 20px; bottom: 16px; }
+  .h-xxl { font-size: 54px; } .h-xl { font-size: 40px; } .h-l { font-size: 30px; } .h-m { font-size: 22px; }
+  .lead { font-size: 17px; } .num { font-size: 44px; } .price { font-size: 26px; }
+  .row { flex-direction: column; gap: 20px; }
+  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  .m-g2 { grid-template-columns: 1fr 1fr !important; }
+  .m-hide { display: none !important; }
+  .m-static { position: relative !important; inset: auto !important; transform: none !important; width: auto !important; height: auto !important; }
+  .lockup { flex-wrap: wrap; gap: 10px 14px; } .lockup__mm { height: 48px; } .lockup__by { font-size: 28px; } .lockup__brand { font-size: 30px; } .lockup__brand img { height: 44px; }
+  table.t { font-size: 12.5px; } table.t td, table.t th { padding-left: 4px; padding-right: 4px; }
+  .toolbar input[type=text] { width: 130px; }
+}

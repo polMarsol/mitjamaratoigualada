@@ -97,7 +97,7 @@ export const es: Dict = {
   sponsors: {
     title: 'Nos acompañan', lead: 'Empresas y comercios que hacen posible la MM Igualada.',
     tiers: ['Patrocinador principal', 'Colaboradores', 'Comercios locales'], name: 'Patrocinador', place: 'Logotipo provisional',
-    becomeTitle: '¿Quieres ser parte?', becomeText: 'Pon tu marca en la salida, en la meta y en los canales de la carrera.', becomeCta: 'Hablemos',
+    becomeTitle: '¿Quieres ser parte?', becomeText: 'Pon tu marca en la salida, en la meta y en los canales de la carrera.', becomeCta: 'Hablemos', dossierCta: 'Dossier de patrocinio',
   },
   thanks: {
     title: 'Gracias', lead: 'Sin ellas y ellos, la carrera no sería posible.',

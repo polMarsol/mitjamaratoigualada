@@ -8,3 +8,8 @@ web/.astro/
 # temporals
 *.log
 .DS_Store
+
+# Dossier de patrocini: el de Coca-Cola és confidencial i no es publica; els PDF es generen
+dossier/coca-cola.html
+dossier/assets/logos/coca-cola*.svg
+dossier/pdf/
