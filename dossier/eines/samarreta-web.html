@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<title>Composició samarreta web</title>
+<!-- Compon les fotos de la samarreta de la web (web/public/shirt) a partir de les versions netes de _build/.
+     Patrocinadors: els de prova de web/src/data/sponsors.ts. Cada marca surt UN sol cop.
+     Ús: eines/samarreta-web.sh (fa una captura amb fons transparent de ?side=front i ?side=back). -->
+<style>
+  @font-face { font-family: 'Bricolage'; src: url(../assets/fonts/bricolage-grotesque-latin-wght-normal.woff2) format('woff2'); font-weight: 200 800; }
+  @font-face { font-family: 'Instrument'; src: url(../assets/fonts/instrument-sans-latin-wght-normal.woff2) format('woff2'); font-weight: 400 700; }
+  html, body { margin: 0; background: transparent; overflow: hidden; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script>
+  const side = new URLSearchParams(location.search).get('side') || 'front';
+  const SIZE = { front: [957, 1200], back: [947, 1200] }[side];
+  // Patrocinadors de prova de la web (src/data/sponsors.ts): principal, partners i comerços locals
+  const MAIN = { l1: 'Anoia', l2: 'Sport' };
+  const PARTNERS = [['Vinyes', 'del Camí'], ['Nova', 'Tèxtil'], ['Volt', 'Anoia'], ['Clínica', 'Fisio+']];
+  const LOCAL = [['Cal', 'Forner'], ['Llibreria', 'Nova'], ['Bikes', 'Montbui'], ['Òptica', 'Vista'], ['Fruites', 'Pere'], ['Taller', 'Garriga']];
+  // Cap marca repetida
+  const all = [MAIN.l1 + ' ' + MAIN.l2, ...PARTNERS.map((p) => p.join(' ')), ...LOCAL.map((p) => p.join(' '))];
+  if (new Set(all).size !== all.length) throw new Error('Hi ha una marca repetida a la samarreta');
+
+  const T = (x, y, txt, fs, w = 800, f = 'Bricolage', a = 'middle', op = 1) =>
+    `<text x="${x}" y="${y}" text-anchor="${a}" font-family="${f}, sans-serif" font-weight="${w}" font-size="${fs}" fill="#fff" opacity="${op}">${txt}</text>`;
+  const mountain = (x, y, s) => `<path d="M${x} ${y + s * 0.62} L${x + s * 0.32} ${y} L${x + s * 0.52} ${y + s * 0.3} L${x + s * 0.66} ${y + s * 0.12} L${x + s} ${y + s * 0.62} Z" fill="#fff"/>`;
+  const two = (cx, y, [a, b], fs) => T(cx, y, a, fs, 700) + T(cx, y + fs * 1.02, b, fs, 700);
+
+  let c = '';
+  if (side === 'front') {
+    c += `<image href="../assets/logos/logo-mono-blanc.svg" x="304" y="234" width="128" height="129"/>`;   // pit dret: MMI
+    c += mountain(568, 262, 78) + T(656, 290, MAIN.l1, 40, 800, 'Bricolage', 'start') + T(656, 334, MAIN.l2, 40, 800, 'Bricolage', 'start'); // pit esquerre: principal
+  } else {
+    const cx = 473;
+    c += T(cx, 222, 'MM, 10K I CAMINADA', 46) + T(cx, 276, 'IGUALADA 2028', 46);
+    c += mountain(cx - 210, 352, 150) + T(cx - 40, 410, MAIN.l1, 72, 800, 'Bricolage', 'start') + T(cx - 40, 480, MAIN.l2, 72, 800, 'Bricolage', 'start');
+    PARTNERS.forEach((p, i) => { c += two(305 + i * 112, 590, p, 26); });
+    LOCAL.forEach((p, i) => { c += two(353 + (i % 3) * 120, 700 + Math.floor(i / 3) * 92, p, 22); });
+  }
+  const img = side === 'front' ? '_build/front.png' : '_build/back.png';
+  document.getElementById('out').innerHTML = `<svg width="${SIZE[0]}" height="${SIZE[1]}" viewBox="0 0 ${SIZE[0]} ${SIZE[1]}" xmlns="http://www.w3.org/2000/svg">
+    <image href="${img}" width="${SIZE[0]}" height="${SIZE[1]}"/><g opacity=".96">${c}</g></svg>`;
+</script>
+</body>
+</html>

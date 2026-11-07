@@ -22,78 +22,74 @@
       return `<image href="${esc(src)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"${f}/>`;
     }
     const name = brand.nom || 'LA VOSTRA MARCA';
+    const tx = anchor === 'middle' ? x + w / 2 : x, fill = white ? '#fff' : (brand.color || '#0b5cad');
+    const t = (str, yy, f) => `<text x="${tx}" y="${yy}" text-anchor="${anchor}" dominant-baseline="central" font-family="Bricolage, sans-serif" font-weight="800" font-size="${f.toFixed(1)}" letter-spacing="-0.5" fill="${fill}">${esc(str)}</text>`;
     const fs = Math.min(h * 0.62, (w / Math.max(name.length, 4)) * 1.75);
-    const tx = anchor === 'middle' ? x + w / 2 : x;
-    return `<text x="${tx}" y="${y + h / 2}" text-anchor="${anchor}" dominant-baseline="central" font-family="Bricolage, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" letter-spacing="-0.5" fill="${white ? '#fff' : (brand.color || '#0b5cad')}">${esc(name)}</text>`;
+    const words = name.split(' ');
+    if (fs < h * 0.34 && words.length > 1) { // nom llarg en una caixa alta: dues línies
+      let best = 1, diff = 1e9;
+      for (let i = 1; i < words.length; i++) { const d = Math.abs(words.slice(0, i).join(' ').length - words.slice(i).join(' ').length); if (d < diff) { diff = d; best = i; } }
+      const l1 = words.slice(0, best).join(' '), l2 = words.slice(best).join(' ');
+      const f2 = Math.min(h * 0.4, (w / Math.max(l1.length, l2.length, 4)) * 1.75);
+      return t(l1, y + h / 2 - f2 * 0.52, f2) + t(l2, y + h / 2 + f2 * 0.52, f2);
+    }
+    return t(name, y + h / 2, fs);
   }
   const toWhite = '<filter id="toWhite"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>';
 
-  /* ── Samarreta (SVG) ──────────────────────────────────────── */
-  let uid = 0;
-  function rand(seed) { let s = seed; return () => ((s = (s * 16807) % 2147483647) / 2147483647); }
-  function mosaic(id, w, h, cell, seed) {
-    const r = rand(seed); let out = '';
-    for (let y = 0; y < h; y += cell) for (let x = 0; x < w; x += cell) {
-      const v = r(); if (v < 0.45) continue;
-      out += `<rect x="${x}" y="${y}" width="${cell - 1}" height="${cell - 1}" fill="${v > 0.8 ? '#5fd6a0' : v > 0.62 ? '#4da3ff' : '#ffffff'}" opacity="${(0.05 + (v - 0.45) * 0.28).toFixed(2)}"/>`;
-    }
-    return out;
-  }
-  const BODY = {
-    front: 'M140 22 C165 54 235 54 260 22 L322 44 L394 112 L352 164 L318 138 L318 404 C240 416 160 416 82 404 L82 138 L48 164 L6 112 L78 44 Z',
-    back: 'M140 22 C168 36 232 36 260 22 L322 44 L394 112 L352 164 L318 138 L318 404 C240 416 160 416 82 404 L82 138 L48 164 L6 112 L78 44 Z',
+  /* ── Samarreta oficial (foto de la web, netejada) + logos a sobre ──────────────
+     Coordenades en píxels de la foto original (davant 957×1200, darrere 947×1200).
+     Davant: MMI al pit dret (esquerra de qui mira) i la marca al pit esquerre, una mica més gran.
+     Darrere: títol, “by” + marca, fila de 6 logos (sense repetir cap marca) i institucions.        */
+  const SHIRT = { front: { w: 957, h: 1200, img: 'assets/img/samarreta-front.webp' }, back: { w: 947, h: 1200, img: 'assets/img/samarreta-back.webp' } };
+  const uniq = (list, skip = []) => {
+    const seen = new Set(skip.filter(Boolean).map((b) => (b.nom || '').toLowerCase()));
+    return (list || []).filter((b) => { const k = (b && b.nom || '').toLowerCase(); if (!b || !k || seen.has(k)) return false; seen.add(k); return true; });
   };
-  const SLEEVE_L = 'M78 44 L6 112 L48 164 L82 138 L92 70 Z';
-  const SLEEVE_R = 'M322 44 L394 112 L352 164 L318 138 L308 70 Z';
-
-  /* opts: { side:'front'|'back', zones:bool, naming:brand|null, partners:[brand,brand], row:[brand×6], title:'' } */
+  /* opts: { side:'front'|'back', zones:bool, naming:brand|null, partners:[brand,brand], row:[brand×6] } */
   function shirt(opts = {}) {
-    const id = 'sh' + (++uid), side = opts.side || 'front', front = side === 'front';
-    const n = opts.naming, z = opts.zones;
+    const side = opts.side || 'front', front = side === 'front', S = SHIRT[side], z = opts.zones, n = opts.naming;
+    const partners = uniq(opts.partners, [n]).slice(0, 2), row = uniq(opts.row, [n, ...partners]).slice(0, 6);
     const zone = (x, y, w, h, num, label, hot) => `
-      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${hot ? 'rgb(255 255 255 / .22)' : 'rgb(255 255 255 / .1)'}" stroke="#fff" stroke-width="1.6" stroke-dasharray="5 4"/>
-      <circle cx="${x}" cy="${y}" r="11" fill="${hot ? '#c9a227' : '#0d2233'}" stroke="#fff" stroke-width="1.5"/>
-      <text x="${x}" y="${y + 0.5}" text-anchor="middle" dominant-baseline="central" font-family="Instrument, sans-serif" font-weight="700" font-size="11" fill="#fff">${num}</text>
-      ${label ? `<text x="${x + w / 2}" y="${y + h / 2}" text-anchor="middle" dominant-baseline="central" font-family="Instrument, sans-serif" font-weight="600" font-size="10" fill="#fff" opacity=".95">${label}</text>` : ''}`;
-    let content = '';
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="${hot ? 'rgb(255 255 255 / .2)' : 'rgb(255 255 255 / .1)'}" stroke="#fff" stroke-width="3.5" stroke-dasharray="12 9"/>
+      <circle cx="${x}" cy="${y}" r="26" fill="${hot ? '#c9a227' : '#0d2233'}" stroke="#fff" stroke-width="3.5"/>
+      <text x="${x}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="Instrument, sans-serif" font-weight="700" font-size="26" fill="#fff">${num}</text>
+      ${label ? `<text x="${x + w / 2}" y="${y + h / 2}" text-anchor="middle" dominant-baseline="central" font-family="Instrument, sans-serif" font-weight="700" font-size="24" fill="#fff">${label}</text>` : ''}`;
+    let c = '';
     if (front) {
-      content += z ? zone(104, 92, 80, 58, 2, 'Escut MM') : `<image href="${L}logo-mono-blanc.svg" x="112" y="84" width="66" height="66"/>`;
-      content += z ? zone(214, 92, 84, 58, 1, 'Principal', true) : (n ? svgBrand(n, 214, 98, 86, 44) : '');
-      const pl = opts.partners || [];
-      content += z ? zone(22, 104, 52, 28, 3, '') : (pl[0] ? `<g transform="rotate(-42 48 118)">${svgBrand(pl[0], 24, 108, 50, 20)}</g>` : '');
-      content += z ? zone(326, 104, 52, 28, 4, '') : (pl[1] ? `<g transform="rotate(42 352 118)">${svgBrand(pl[1], 326, 108, 50, 20)}</g>` : '');
+      // Pit dret (esquerra de qui mira): MMI · pit esquerre: marca, ~15% més gran
+      c += z ? zone(290, 222, 150, 150, 2, 'MMI') : `<image href="${L}logo-mono-blanc.svg" x="304" y="234" width="128" height="129"/>`;
+      c += z ? zone(570, 215, 180, 165, 1, 'Principal', true) : (n ? svgBrand(n, 556, 224, 210, 142) : '');
+      c += z ? zone(30, 288, 80, 80, 3, '') : (partners[0] ? `<g transform="rotate(-8 58 330)">${svgBrand(partners[0], 16, 308, 86, 44)}</g>` : '');
+      c += z ? zone(846, 292, 80, 80, 4, '') : (partners[1] ? `<g transform="rotate(8 898 334)">${svgBrand(partners[1], 856, 312, 86, 44)}</g>` : '');
     } else {
-      content += `<rect x="189" y="44" width="22" height="15" rx="2" fill="#fff" opacity=".9"/><path d="M189 51.5h22M200 44v15" stroke="#c8102e" stroke-width="3"/>`;
-      content += `<text x="200" y="${z ? 88 : 86}" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="800" font-size="17" letter-spacing=".5" fill="#fff">MM, 10K I CAMINADA · 2026</text>`;
+      const cx = 473;
       if (z) {
-        content += zone(110, 104, 180, 62, 5, 'Principal · “by”', true);
-        content += zone(100, 188, 200, 96, 6, '6 logos · esquena');
-        content += zone(130, 300, 140, 30, 7, 'Institucions');
+        c += zone(250, 172, 446, 300, 5, 'Títol + “by” principal', true);
+        c += zone(285, 530, 376, 250, 6, '6 logos (un per marca)');
+        c += zone(270, 870, 406, 80, 7, 'Institucions');
       } else {
-        if (n) content += `<text x="200" y="118" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="20" fill="#fff" opacity=".9">by</text>` + svgBrand(n, 105, 124, 190, 48);
-        const row = opts.row || [];
-        row.slice(0, 6).forEach((b, i) => { const cx = 112 + (i % 3) * 62, cy = 196 + Math.floor(i / 3) * 44; content += b ? svgBrand(b, cx, cy, 54, 30) : `<rect x="${cx}" y="${cy + 4}" width="54" height="22" rx="4" fill="#fff" opacity=".16"/>`; });
-        content += `<text x="200" y="306" text-anchor="middle" font-family="Instrument, sans-serif" font-weight="600" font-size="7" letter-spacing="1" fill="#fff" opacity=".75">AJUNTAMENTS D’IGUALADA I VILANOVA · CAI</text>`;
+        // Amb patrocinador principal el títol es redueix perquè mani el “by MARCA”
+        const t = n ? 38 : 46;
+        c += `<text x="${cx}" y="${n ? 208 : 222}" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="800" font-size="${t}" letter-spacing="1" fill="#fff">MM, 10K I CAMINADA</text>`;
+        c += `<text x="${cx}" y="${n ? 254 : 276}" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="800" font-size="${t}" letter-spacing="1" fill="#fff">IGUALADA 2028</text>`;
+        if (n) {
+          c += `<text x="${cx}" y="318" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="56" fill="#fff">by</text>`;
+          c += svgBrand(n, cx - 210, 334, 420, 128);
+        }
+        for (let i = 0; i < 6; i++) {
+          const x = 300 + (i % 3) * 120, y = 560 + Math.floor(i / 3) * 100, b = row[i];
+          c += b ? svgBrand(b, x, y, 106, 64) : `<rect x="${x}" y="${y + 6}" width="106" height="52" rx="10" fill="#fff" opacity=".13"/>`;
+        }
+        c += `<rect x="262" y="880" width="422" height="64" rx="12" fill="#0d2233" opacity=".18"/>`;
+        c += `<text x="${cx}" y="902" text-anchor="middle" font-family="Instrument, sans-serif" font-weight="700" font-size="17" letter-spacing="2" fill="#fff" opacity=".9">AMB EL SUPORT DE</text>`;
+        c += `<text x="${cx}" y="930" text-anchor="middle" font-family="Instrument, sans-serif" font-weight="600" font-size="20" fill="#fff" opacity=".9">Aj. d’Igualada · Aj. de Vilanova del Camí · CAI</text>`;
       }
     }
-    return `<svg viewBox="0 0 400 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Samarreta oficial, ${front ? 'davant' : 'darrere'}">
-      <defs>${toWhite}
-        <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b5cad"/><stop offset=".55" stop-color="#0e7f8c"/><stop offset="1" stop-color="#1a7a50"/></linearGradient>
-        <clipPath id="${id}c"><path d="${BODY[side]}"/></clipPath>
-        <filter id="${id}s" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0d2233" flood-opacity=".28"/></filter>
-      </defs>
-      <g filter="url(#${id}s)"><path d="${BODY[side]}" fill="url(#${id}g)"/></g>
-      <g clip-path="url(#${id}c)">
-        ${mosaic(id, 400, 430, 14, front ? 7 : 11)}
-        <path d="${front ? SLEEVE_L : SLEEVE_R}" fill="#1a7a50"/><path d="${front ? SLEEVE_R : SLEEVE_L}" fill="#0b4f96"/>
-        <path d="M232 40 L214 120 L246 190 L210 260 L238 330 L214 430" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 5" opacity=".55"/>
-        <path d="M60 372 q15 -10 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V430 H60Z" fill="#4da3ff" opacity=".35"/>
-        <path d="M60 388 q15 -10 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V430 H60Z" fill="#7fd8ff" opacity=".35"/>
-        <path d="M60 372 q15 -10 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" fill="none" stroke="#fff" stroke-width="1.5" opacity=".6"/>
-      </g>
-      <path d="${front ? 'M140 22 C165 54 235 54 260 22' : 'M140 22 C168 36 232 36 260 22'}" fill="none" stroke="#0d2a4a" stroke-width="9" stroke-linecap="round"/>
-      <path d="M92 70 L82 138 M308 70 L318 138" stroke="#0d2a4a" stroke-width="1.2" opacity=".5"/>
-      ${content}
+    return `<svg viewBox="0 0 ${S.w} ${S.h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Samarreta oficial, ${front ? 'davant' : 'darrere'}">
+      <defs>${toWhite}<filter id="shs${side}" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0d2233" flood-opacity=".25"/></filter></defs>
+      <image href="${S.img}" x="0" y="0" width="${S.w}" height="${S.h}" filter="url(#shs${side})"/>
+      <g opacity=".96">${c}</g>
     </svg>`;
   }
 
@@ -108,7 +104,7 @@
       ${naming ? `<text x="${naming.logo ? 300 : 296}" y="46" text-anchor="end" dominant-baseline="central" font-family="Caveat, cursive" font-weight="700" font-size="24" fill="#fff" opacity=".85">by</text>${svgBrand(naming, 306, 24, 150, 44, { white: true })}` : ''}
       <text x="240" y="186" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="800" font-size="118" letter-spacing="-4" fill="#0d2233">${num}</text>
       <rect x="10" y="230" width="460" height="30" fill="${color}" opacity=".12"/>
-      <text x="240" y="245" text-anchor="middle" dominant-baseline="central" font-family="Instrument, sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="${color}">${mod} · 13.12.2026</text>
+      <text x="240" y="245" text-anchor="middle" dominant-baseline="central" font-family="Instrument, sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="${color}">${mod} · 01.04.2028</text>
       ${partner ? svgBrand(partner, 150, 272, 180, 34, { white: false }) : `<text x="240" y="290" text-anchor="middle" font-family="Instrument, sans-serif" font-size="12" fill="#6b7f8e" letter-spacing="2">FRANJA PARTNER</text>`}
       <circle cx="34" cy="106" r="6" fill="#e0e9eb"/><circle cx="446" cy="106" r="6" fill="#e0e9eb"/><circle cx="34" cy="296" r="6" fill="#e0e9eb"/><circle cx="446" cy="296" r="6" fill="#e0e9eb"/>
     </svg>`;
@@ -131,7 +127,6 @@
       ${naming ? `<text x="420" y="62" text-anchor="middle" dominant-baseline="central" font-family="Caveat, cursive" font-weight="700" font-size="28" fill="#6b7f8e">by</text>${svgBrand(naming, 436, 30, 120, 64, { white: false })}` : ''}
       <text x="110" y="270" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="800" font-size="34" fill="#fff" transform="rotate(-90 110 270)" letter-spacing="6">${label}</text>
       <text x="690" y="270" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="800" font-size="34" fill="#fff" transform="rotate(90 690 270)" letter-spacing="6">${label}</text>
-      ${naming ? `<g>${svgBrand(naming, 82, 300, 56, 56)}</g><g>${svgBrand(naming, 662, 300, 56, 56)}</g>` : ''}
       <rect x="330" y="200" width="140" height="44" rx="6" fill="#0d2233"/>
       <text x="400" y="223" text-anchor="middle" dominant-baseline="central" font-family="Bricolage, sans-serif" font-weight="700" font-size="26" fill="#5fd6a0" letter-spacing="2">1:24:37</text>
     </svg>`;

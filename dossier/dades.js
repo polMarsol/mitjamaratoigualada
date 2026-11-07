@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════════════
-   DADES DEL DOSSIER DE PATROCINI · MM Igualada 2026
+   DADES DEL DOSSIER DE PATROCINI · MM Igualada 2028
    Font única per als dos dossiers i el generador de correus.
    Canvia aquí preus, dates o contacte i es reflecteix a tot arreu.
    ⚠ = PLACEHOLDER, cal confirmar-ho abans d'enviar res.
@@ -8,10 +8,10 @@ window.MM = {
   event: {
     nom: 'MM Igualada',
     nomLlarg: "1a Mitja Marató d'Igualada",
-    edicio: '2026',
-    data: 'Diumenge 13 de desembre de 2026', // ⚠ mateixa data provisional que la web
-    dataCurta: '13.12.2026',
-    fira: 'Dissabte 12 · Fira del Corredor',
+    edicio: '2028',
+    data: 'Dissabte 1 d’abril de 2028', // ⚠ mateixa data provisional que la web
+    dataCurta: '01.04.2028',
+    fira: 'Divendres 31 de març · Fira del Corredor',
     lloc: 'Parc Central · Igualada i Vilanova del Camí',
     participants: 800, // objectiu (pressupost base de les notes)
     record: 900, // màxim històric de la MM de l'Anoia (entrevista CAI)
@@ -29,10 +29,10 @@ window.MM = {
     dossierUrl: 'https://mitjamaratoigualada.vercel.app/patrocini/', // versió web del dossier general
   },
   terminis: {
-    candidatures: '20 de novembre de 2026', // ⚠ tancament de candidatures (grans patrocinis)
-    adjudicacio: '23 de novembre de 2026',
-    logos: '25 de novembre de 2026', // data límit per rebre logos vectorials (impressió de samarretes)
-    resta: '4 de desembre de 2026', // data límit per a la resta de patrocinis
+    candidatures: '15 de gener de 2028', // ⚠ tancament de candidatures (grans patrocinis)
+    adjudicacio: '22 de gener de 2028',
+    logos: '15 de febrer de 2028', // data límit per rebre logos vectorials (impressió de samarretes)
+    resta: '10 de març de 2028', // data límit per a la resta de patrocinis
   },
   modalitats: [
     { id: '21k', nom: 'Mitja Marató', km: '21,097', hora: '08:30', desn: '+180 m', edat: '+18 anys', tall: '3 h', color: '#0b5cad' },
@@ -59,11 +59,10 @@ window.MM = {
       inclou: [
         'Nom oficial “MM Igualada by [Marca]” a web, cartells, xarxes, premsa i plataforma d’inscripcions',
         'Logotip fusionat dissenyat a mida i lliurat en tots els formats',
-        'Samarreta: pit central davant i franja superior de l’esquena, la posició més gran',
+        'Samarreta: pit esquerre (al costat del MMI, una mica més gran) i “by [Marca]” a l’esquena',
         'Capçalera del dorsal de les tres modalitats',
-        'Arc de sortida i meta, i photocall de meta',
+        'Arc de sortida i meta i photocall de meta (en exclusiva)',
         'Estand de 6×3 m a la Fira del Corredor i a la zona de meta',
-        'Lliurament dels trofeus absoluts a l’escenari',
         'Mencions de l’speaker cada 15 minuts i 4 publicacions dedicades a xarxes',
         '10 inscripcions gratuïtes per a l’equip',
         'Exclusivitat total del sector i dret de tanteig per a l’edició 2027',
@@ -78,8 +77,7 @@ window.MM = {
       inclou: [
         'Un espai gran exclusiu: màniga dreta, màniga esquerra o franja del dorsal',
         'Estand de 3×3 m a la Fira del Corredor',
-        'Lona a la recta de meta',
-        'Logo destacat a la web, al cartell oficial i al photocall',
+        'Logo destacat a la web i al cartell oficial',
         'Mencions de l’speaker i 2 publicacions a xarxes',
         '4 inscripcions gratuïtes',
       ],
@@ -92,8 +90,7 @@ window.MM = {
       inclou: [
         'Nom de la modalitat a la web, al reglament i a les inscripcions',
         'Logo a la pancarta de sortida de la modalitat',
-        'Lliurament de trofeus de la modalitat',
-        'Lona a la zona de meta',
+        'Mencions de l’speaker a la sortida de la modalitat',
         '2 inscripcions gratuïtes',
       ],
       ideal: 'Supermercats, alimentació, assegurances i salut familiar.',
@@ -102,14 +99,14 @@ window.MM = {
       id: 'meta', grup: 'moments', nom: 'Recta de meta', lema: 'Els últims 200 metres',
       places: 1, preu: 700, adj: 'cand',
       que: 'El tram més mirat i fotografiat del dia, on hi ha el públic, la pantalla amb els noms i l’speaker. Les tanques laterals es vesteixen amb la marca.',
-      inclou: ['Tanques de la recta vestides amb lones de la marca', 'Logo a la pantalla de meta, amb el nom i el temps de cada corredor', '“Zona de recuperació by [Marca]” al postmeta', 'Mencions de l’speaker'],
+      inclou: ['Tanques de la recta vestides amb lones de la marca (en exclusiva)', 'Logo a la pantalla de meta, amb el nom i el temps de cada corredor', 'Mencions de l’speaker'],
       ideal: 'Concessionaris, entitats financeres i marques que volen estar a la foto final.',
     },
     {
-      id: 'avituallament', grup: 'moments', nom: 'Avituallament', lema: 'Km 5 · km 10 · km 15 · postmeta',
-      places: 4, preu: 400, adj: 'ordre', alt: 'o producte equivalent',
+      id: 'avituallament', grup: 'moments', nom: 'Avituallament', lema: 'Km 5 · km 10 · km 15',
+      places: 3, preu: 400, adj: 'ordre', alt: 'o producte equivalent',
       que: 'Cada punt d’avituallament porta el nom d’una marca. Hi passen tots els corredors, normalment a peu i mirant la taula.',
-      inclou: ['“Avituallament km X by [Marca]” al mapa, a la web i al llibre de ruta', 'Banderola i taula vestida amb la marca', 'Possibilitat de servir-hi el vostre producte', 'Voluntaris amb peto de la marca (opcional)'],
+      inclou: ['“Avituallament km X by [Marca]” al mapa, a la web i al llibre de ruta', 'Banderola i taula vestida amb la marca', 'Possibilitat de servir-hi el vostre producte'],
       ideal: 'Begudes, aigua, fruita, supermercats i nutrició esportiva.',
     },
     {
@@ -123,7 +120,7 @@ window.MM = {
       id: 'trofeus', grup: 'moments', nom: 'Trofeus i premis', lema: 'El pòdium porta el vostre nom',
       places: 1, preu: 600, preuTxt: '600 € · per categoria 150 €', adj: 'ordre',
       que: 'Patrocini de tots els trofeus: absoluts masculí i femení, categories Sènior, Màster 35, 45 i 55+, i categories inclusives d’esport adaptat. També es pot patrocinar una sola categoria, en diners o amb material de premi.',
-      inclou: ['Logo als trofeus', 'Presència a l’escenari durant la cerimònia', 'Fons del pòdium amb la marca, a totes les fotos de premis', 'Possibilitat de premi en material (val de botiga, producte)'],
+      inclou: ['Logo als trofeus', 'Lliurament dels trofeus a l’escenari (tots, en exclusiva)', 'Fons del pòdium amb la marca, a totes les fotos de premis', 'Possibilitat de premi en material (val de botiga, producte)'],
       ideal: 'Botigues d’esports, joieries, òptiques i marques que vulguin associar-se a l’èxit.',
     },
     {
@@ -141,16 +138,16 @@ window.MM = {
       ideal: 'Alimentació (brou, barretes, fruita seca), cosmètica esportiva, farmàcies. Perfil Caldos Aneto.',
     },
     {
-      id: 'calent', grup: 'moments', nom: 'Punt calent de meta', lema: 'Brou i xocolata al desembre',
-      places: 1, preu: 0, preuTxt: 'Producte + 200 €', adj: 'especie', alt: '≈800 racions de brou o xocolata',
-      que: 'Al desembre, a les 11 del matí, el que més s’agraeix en arribar és alguna cosa calenta. Proposem un punt amb la marca que serveixi brou o xocolata desfeta a corredors i públic.',
-      inclou: ['Carpa “Punt calent by [Marca]” al postmeta', 'Producte servit per voluntaris', 'Menció de l’speaker i publicació a xarxes'],
-      ideal: 'Brous i sopes (Aneto), xocolates, cafès.',
+      id: 'calent', grup: 'moments', nom: 'Punt de recuperació', lema: 'Brou, fruita i aigua fresca a meta',
+      places: 1, preu: 0, preuTxt: 'Producte + 200 €', adj: 'especie', alt: '≈800 racions de brou',
+      que: 'Després de 21 km, el que més s’agraeix en arribar és recuperar sals. Proposem un punt amb la marca al postmeta que serveixi brou tebi, fruita i aigua fresca a corredors i públic.',
+      inclou: ['Carpa “Punt de recuperació by [Marca]” al postmeta', 'Producte servit per voluntaris', 'Menció de l’speaker i publicació a xarxes'],
+      ideal: 'Brous i sopes (Aneto), fruita, begudes de recuperació.',
     },
     {
-      id: 'fotos', grup: 'moments', nom: 'Fotografia oficial', lema: 'Photocall i marc de les fotos',
+      id: 'fotos', grup: 'moments', nom: 'Fotografia oficial', lema: 'El marc de totes les fotos',
       places: 1, preu: 350, adj: 'ordre',
-      que: 'Totes les fotos oficials de la cursa, que es descarreguen i es comparteixen, porten un marc discret amb la marca. Inclou el photocall de meta i un punt de fotògraf patrocinat al recorregut.',
+      que: 'Totes les fotos oficials de la cursa, que es descarreguen i es comparteixen, porten un marc discret amb la marca. Inclou un punt de fotògraf patrocinat al recorregut.',
       inclou: ['Marc amb el logo a totes les fotos oficials', 'Punt de fotografia “by [Marca]” al recorregut', 'Logo a la galeria de la web'],
       ideal: 'Òptiques, estudis de fotografia, telecomunicacions.',
     },
@@ -198,9 +195,9 @@ window.MM = {
     },
     {
       id: 'tanques', grup: 'visibilitat', nom: 'Tanques publicitàries', lema: 'Les “vallas”',
-      places: 20, preu: 120, preuTxt: 'Recorregut 120 € · recta de meta 180 € · pack de 3: 300 €', adj: 'ordre',
-      que: 'Lona de 2×1 m en una tanca, a la zona de sortida i meta o en un tram del recorregut. És el format clàssic i el més assequible. Referència del CAI: unes 300 € l’any per pancarta.',
-      inclou: ['Lona de 2×1 m (la imprimeix l’organització)', 'Ubicació escollida segons l’ordre de confirmació'],
+      places: 20, preu: 120, preuTxt: 'Recorregut 120 € · zona de sortida 180 € · pack de 3: 300 €', adj: 'ordre',
+      que: 'Lona de 2×1 m en una tanca, a la zona de sortida o en un tram del recorregut (la recta de meta és un patrocini propi). És el format clàssic i el més assequible. Referència del CAI: unes 300 € l’any per pancarta.',
+      inclou: ['Lona de 2×1 m (la imprimeix l’organització)', 'Cada tanca és d’una sola marca, ubicació per ordre de confirmació'],
       ideal: 'Qualsevol comerç o empresa local.',
     },
     {
@@ -211,10 +208,10 @@ window.MM = {
       ideal: 'Empreses de l’Anoia que vulguin presència duradora.',
     },
     {
-      id: 'speaker', grup: 'visibilitat', nom: 'Speaker i pantalla', lema: 'Mencions en directe',
+      id: 'speaker', grup: 'visibilitat', nom: 'Speaker i vídeo', lema: 'Mencions en directe',
       places: 6, preu: 150, adj: 'ordre',
-      que: 'Mencions de l’speaker durant tot el matí i el logo en rotació a la pantalla de meta.',
-      inclou: ['10 mencions de l’speaker', 'Logo en rotació a la pantalla'],
+      que: 'Mencions de l’speaker durant tot el matí i el logo al vídeo resum de la cursa.',
+      inclou: ['10 mencions de l’speaker', 'Logo al vídeo resum'],
       ideal: 'Restauració, comerç, serveis.',
     },
     {
@@ -240,8 +237,8 @@ window.MM = {
     },
   ],
   packs: [
-    { nom: 'Pack Comerç', preu: 250, inclou: 'Tanca al recorregut + col·laborador web + producte a la bossa', per: 'Botigues i restauració' },
-    { nom: 'Pack Empresa Anoia', preu: 550, inclou: 'Quilòmetre patrocinat + logo a l’esquena + tanca a meta', per: 'Pimes de la comarca' },
+    { nom: 'Pack Comerç', preu: 250, inclou: 'Tanca al recorregut + col·laborador web + lot al sorteig', per: 'Botigues i restauració' },
+    { nom: 'Pack Empresa Anoia', preu: 550, inclou: 'Quilòmetre patrocinat + logo a l’esquena + tanca a la sortida', per: 'Pimes de la comarca' },
     { nom: 'Pack Dia de Cursa', preu: 900, inclou: 'Avituallament + km clau + speaker + 2 tanques', per: 'Marques que volen ser al recorregut' },
   ],
 };

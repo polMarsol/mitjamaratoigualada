@@ -9,14 +9,14 @@
       ca: 'Busquem una marca que vulgui posar nom a la primera edició d’una nova etapa. El patrocinador principal forma part del nom oficial (“MM Igualada by…”), del logotip, de la samarreta i de tota la comunicació.',
       es: 'Buscamos una marca que quiera dar nombre a la primera edición de una nueva etapa. El patrocinador principal forma parte del nombre oficial («MM Igualada by…»), del logotipo, de la camiseta y de toda la comunicación.' } },
     { id: 'cocacola', nom: 'Coca-Cola', empresa: 'Coca-Cola Europacific Partners', marca: 'Coca-Cola', nivell: 'naming', adjunt: 'cocacola', motiu: {
-      ca: 'La cursa necessita hidratació a quatre avituallaments i al postmeta, i la vostra cartera ja hi és present amb Aquarius i Powerade. A més, és una cursa de desembre, en plena il·luminació de Nadal. Us proposem que la primera edició es digui MM Igualada by Coca-Cola: us adjunto una proposta feta a mida.',
-      es: 'La carrera necesita hidratación en cuatro avituallamientos y en la postmeta, y vuestra cartera ya está presente con Aquarius y Powerade. Además, es una carrera de diciembre, en plena iluminación navideña. Os proponemos que la primera edición se llame MM Igualada by Coca-Cola: os adjunto una propuesta hecha a medida.' } },
+      ca: 'La cursa necessita hidratació a quatre avituallaments i al postmeta, i la vostra cartera ja hi és present amb Aquarius i Powerade. A més, és una cursa de primavera, quan la calor fa que beure sigui imprescindible. Us proposem que la primera edició es digui MM Igualada by Coca-Cola: us adjunto una proposta feta a mida.',
+      es: 'La carrera necesita hidratación en cuatro avituallamientos y en la postmeta, y vuestra cartera ya está presente con Aquarius y Powerade. Además, es una carrera de primavera, cuando el calor hace que beber sea imprescindible. Os proponemos que la primera edición se llame MM Igualada by Coca-Cola: os adjunto una propuesta hecha a medida.' } },
     { id: 'aneto', nom: 'Caldos Aneto', empresa: 'Caldos Aneto', nivell: 'bossa', motiu: {
-      ca: 'Al desembre, a les 11 del matí, el que més s’agraeix en creuar la meta és un brou calent. Us proposem la bossa del corredor (800 bosses amb el vostre producte) i un punt calent a meta amb el vostre brou, per a corredors i públic.',
-      es: 'En diciembre, a las 11 de la mañana, lo que más se agradece al cruzar la meta es un caldo caliente. Os proponemos la bolsa del corredor (800 bolsas con vuestro producto) y un punto caliente en meta con vuestro caldo, para corredores y público.' } },
+      ca: 'Després de 21 km, el que més s’agraeix en creuar la meta és recuperar sals amb un bon brou. Us proposem la bossa del corredor (800 bosses amb el vostre producte) i un punt de recuperació a meta amb el vostre brou, per a corredors i públic.',
+      es: 'Después de 21 km, lo que más se agradece al cruzar la meta es recuperar sales con un buen caldo. Os proponemos la bolsa del corredor (800 bolsas con vuestro producto) y un punto de recuperación en meta con vuestro caldo, para corredores y público.' } },
     { id: 'begudes', nom: 'Begudes / aigua', nivell: 'avituallament', motiu: {
-      ca: 'Els quatre avituallaments (km 5, 10 i 15, i el postmeta) necessiten aigua i isotònic per a 800 persones. Hi passen tots els corredors, a peu i mirant la taula: és el lloc natural per a la vostra marca.',
-      es: 'Los cuatro avituallamientos (km 5, 10 y 15, y la postmeta) necesitan agua e isotónico para 800 personas. Pasan todos los corredores, a pie y mirando la mesa: es el lugar natural para vuestra marca.' } },
+      ca: 'Els avituallaments dels km 5, 10 i 15 necessiten aigua i isotònic per a 800 persones. Hi passen tots els corredors, a peu i mirant la taula: és el lloc natural per a la vostra marca.',
+      es: 'Los avituallamientos de los km 5, 10 y 15 necesitan agua e isotónico para 800 personas. Pasan todos los corredores, a pie y mirando la mesa: es el lugar natural para vuestra marca.' } },
     { id: 'super', nom: 'Supermercat', nivell: 'modalitat', motiu: {
       ca: 'La Caminada Popular és la modalitat més familiar: oberta a totes les edats, i la que concentra més públic local. Creiem que “Caminada Popular by …” encaixa amb una marca de proximitat com la vostra.',
       es: 'La Caminada Popular es la modalidad más familiar: abierta a todas las edades, y la que concentra más público local. Creemos que «Caminada Popular by…» encaja con una marca de proximidad como la vuestra.' } },
@@ -24,8 +24,8 @@
       ca: 'Els nostres participants són corredors que entrenen tot l’any i compren material. Una màniga de la samarreta oficial, un estand a la Fira del Corredor i l’exclusivitat de sector us posen davant de tots ells.',
       es: 'Nuestros participantes son corredores que entrenan todo el año y compran material. Una manga de la camiseta oficial, un stand en la Feria del Corredor y la exclusividad de sector os ponen delante de todos ellos.' } },
     { id: 'local', nom: 'Comerç local', nivell: 'tanques', motiu: {
-      ca: 'Volem que el comerç d’Igualada i Vilanova sigui a la cursa. Una tanca a la recta de meta o al recorregut és la manera més directa i assequible de ser-hi, i la podeu combinar amb el Pack Comerç.',
-      es: 'Queremos que el comercio de Igualada y Vilanova esté en la carrera. Una valla en la recta de meta o en el recorrido es la forma más directa y asequible de estar, y podéis combinarla con el Pack Comerç.' } },
+      ca: 'Volem que el comerç d’Igualada i Vilanova sigui a la cursa. Una tanca a la zona de sortida o al recorregut és la manera més directa i assequible de ser-hi, i la podeu combinar amb el Pack Comerç.',
+      es: 'Queremos que el comercio de Igualada y Vilanova esté en la carrera. Una valla en la zona de salida o en el recorrido es la forma más directa y asequible de estar, y podéis combinarla con el Pack Comerç.' } },
     { id: 'pime', nom: 'Empresa de l’Anoia', nivell: 'km', motiu: {
       ca: 'Cada un dels 21 quilòmetres porta el nom d’una empresa de la comarca. És una manera assequible i molt visual de formar part de la cursa, i surt al mapa interactiu de la web.',
       es: 'Cada uno de los 21 kilómetros lleva el nombre de una empresa de la comarca. Es una forma asequible y muy visual de formar parte de la carrera, y aparece en el mapa interactivo de la web.' } },
@@ -39,11 +39,11 @@
 
   const TX = {
     ca: {
-      pre: (e) => `Recuperem la Mitja Marató de l’Anoia: 800 corredors el 13 de desembre al Parc Central. Proposta de patrocini per a ${e}.`,
-      eyebrow: 'Dossier de patrocini 2026',
+      pre: (e) => `Recuperem la Mitja Marató de l’Anoia: 800 corredors l’1 d’abril al Parc Central. Proposta de patrocini per a ${e}.`,
+      eyebrow: 'Dossier de patrocini 2028',
       h1: 'Torna la Mitja d’Igualada.',
       hola: (c, e) => (c ? `Hola, ${c}:` : e ? `Bon dia, equip de ${e}:` : 'Bon dia:'),
-      p1: (r) => `${r ? `Em dic ${r} i formo` : 'Formo'} part del comitè organitzador de la <b>MM Igualada</b>, la mitja marató que recupera l’antiga Mitja Marató de l’Anoia, que va arribar a reunir prop de 900 corredors. El <b>diumenge 13 de desembre</b> esperem 800 participants entre la 21K, la 10K i la caminada popular, amb sortida i meta al Parc Central.`,
+      p1: (r) => `${r ? `Em dic ${r} i formo` : 'Formo'} part del comitè organitzador de la <b>MM Igualada</b>, la mitja marató que recupera l’antiga Mitja Marató de l’Anoia, que va arribar a reunir prop de 900 corredors. El <b>dissabte 1 d’abril de 2028</b> esperem 800 participants entre la 21K, la 10K i la caminada popular, amb sortida i meta al Parc Central.`,
       boxLbl: (e) => `La nostra proposta per a ${e || 'vosaltres'}`,
       des: 'des de', iva: '+ IVA',
       p3: (adj) => adj === 'cap' ? 'Al dossier hi trobareu totes les opcions, des de 100 €, i també la podeu veure en línia:' : 'Us adjunto el dossier amb totes les opcions de patrocini, des de 100 €. També el podeu veure en línia:',
@@ -51,20 +51,20 @@
       dead: (d) => `Els espais únics (patrocinador principal, partners, modalitats) s’adjudiquen per candidatura a l’oferta més alta fins al <b>${d}</b>.`,
       p4: 'Us va bé que en parlem 15 minuts aquesta setmana? Us puc trucar o passar a veure-us.',
       bye: 'Moltes gràcies,',
-      facts: [['13.12.2026', 'Parc Central'], ['800', 'participants'], ['21K · 10K', 'i Caminada']],
+      facts: [['01.04.2028', 'Parc Central'], ['800', 'participants'], ['21K · 10K', 'i Caminada']],
       foot: 'MM Igualada · 1a Mitja Marató d’Igualada · Igualada i Vilanova del Camí',
       subj: (e) => [
         `${e || 'La vostra empresa'} i la MM Igualada: us proposem ser-hi des del primer dia`,
-        `Patrocini de la 1a MM Igualada (13/12) · proposta per a ${e || 'la vostra empresa'}`,
+        `Patrocini de la 1a MM Igualada (1/4/2028) · proposta per a ${e || 'la vostra empresa'}`,
         'Torna la Mitja d’Igualada. Ens hi acompanyeu?',
       ],
     },
     es: {
-      pre: (e) => `Recuperamos la Mitja Marató de l’Anoia: 800 corredores el 13 de diciembre en el Parc Central. Propuesta de patrocinio para ${e}.`,
-      eyebrow: 'Dossier de patrocinio 2026',
+      pre: (e) => `Recuperamos la Mitja Marató de l’Anoia: 800 corredores el 1 de abril en el Parc Central. Propuesta de patrocinio para ${e}.`,
+      eyebrow: 'Dossier de patrocinio 2028',
       h1: 'Vuelve la Media de Igualada.',
       hola: (c, e) => (c ? `Hola, ${c}:` : e ? `Buenos días, equipo de ${e}:` : 'Buenos días:'),
-      p1: (r) => `${r ? `Me llamo ${r} y formo` : 'Formo'} parte del comité organizador de la <b>MM Igualada</b>, la media maratón que recupera la antigua Mitja Marató de l’Anoia, que llegó a reunir cerca de 900 corredores. El <b>domingo 13 de diciembre</b> esperamos 800 participantes entre la 21K, la 10K y la caminata popular, con salida y meta en el Parc Central.`,
+      p1: (r) => `${r ? `Me llamo ${r} y formo` : 'Formo'} parte del comité organizador de la <b>MM Igualada</b>, la media maratón que recupera la antigua Mitja Marató de l’Anoia, que llegó a reunir cerca de 900 corredores. El <b>sábado 1 de abril de 2028</b> esperamos 800 participantes entre la 21K, la 10K y la caminata popular, con salida y meta en el Parc Central.`,
       boxLbl: (e) => `Nuestra propuesta para ${e || 'vosotros'}`,
       des: 'desde', iva: '+ IVA',
       p3: (adj) => adj === 'cap' ? 'En el dossier encontraréis todas las opciones, desde 100 €, y también podéis verlo en línea:' : 'Os adjunto el dossier con todas las opciones de patrocinio, desde 100 €. También podéis verlo en línea:',
@@ -72,18 +72,18 @@
       dead: (d) => `Los espacios únicos (patrocinador principal, partners, modalidades) se adjudican por candidatura a la oferta más alta hasta el <b>${d}</b>.`,
       p4: '¿Os va bien que lo hablemos 15 minutos esta semana? Puedo llamaros o pasar a veros.',
       bye: 'Muchas gracias,',
-      facts: [['13.12.2026', 'Parc Central'], ['800', 'participantes'], ['21K · 10K', 'y Caminata']],
+      facts: [['01.04.2028', 'Parc Central'], ['800', 'participantes'], ['21K · 10K', 'y Caminata']],
       foot: 'MM Igualada · 1ª Media Maratón de Igualada · Igualada y Vilanova del Camí',
       subj: (e) => [
         `${e || 'Vuestra empresa'} y la MM Igualada: os proponemos estar desde el primer día`,
-        `Patrocinio de la 1ª MM Igualada (13/12) · propuesta para ${e || 'vuestra empresa'}`,
+        `Patrocinio de la 1ª MM Igualada (1/4/2028) · propuesta para ${e || 'vuestra empresa'}`,
         'Vuelve la Media de Igualada. ¿Nos acompañáis?',
       ],
     },
   };
   // Els noms dels nivells i els textos del catàleg estan en català (dades.js). En castellà es tradueixen els més usats.
-  const ES_LVL = { naming: ['Patrocinador principal', '«MM Igualada by [vuestra marca]»'], partner: ['Partner oficial', 'Manga derecha · manga izquierda · dorsal'], modalitat: ['Patrocinador de modalidad', '«Cursa 10K by…» · «Caminada Popular by…»'], meta: ['Recta de meta', 'Los últimos 200 metros'], avituallament: ['Avituallamiento', 'Km 5 · km 10 · km 15 · postmeta'], km: ['Kilómetro patrocinado', '«Tu km»'], trofeus: ['Trofeos y premios', 'El podio lleva vuestro nombre'], medalla: ['Medalla finisher', 'La pieza que todos cuelgan en casa'], bossa: ['Bolsa del corredor', 'Welcome pack'], calent: ['Punto caliente de meta', 'Caldo y chocolate en diciembre'], fotos: ['Fotografía oficial', 'Photocall y marco de las fotos'], festa: ['Fiesta y Botifarrada Solidaria', '100% benéfica'], animacio: ['Punto de animación', 'Batucada · gigantes · castellers'], llebres: ['Liebres', 'Los marcadores de ritmo'], voluntaris: ['Voluntariado', '40 chalecos durante todo el día'], eco: ['Carrera limpia', 'Sostenibilidad en el Parc Fluvial'], resultats: ['Resultados y diploma', 'El tiempo de cada corredor'], tanques: ['Vallas publicitarias', 'Recta de meta y recorrido'], esquena: ['Espalda de la camiseta', 'Fila de logos'], speaker: ['Speaker y pantalla', 'Menciones en directo'], web: ['Colaborador web y redes', 'Presencia digital'], sorteig: ['Sorteo y descuentos', 'Producto a cambio de visibilidad'], mitjans: ['Medio colaborador', 'Radio, televisión y prensa'] };
-  const ES_INC = { naming: ['Nombre oficial «MM Igualada by [Marca]» en web, carteles, redes, prensa e inscripciones', 'Camiseta (pecho y espalda), dorsal, arco de salida y meta', 'Exclusividad de sector y derecho de tanteo para 2027'], partner: ['Un gran espacio exclusivo: una manga o la franja del dorsal', 'Stand de 3×3 m en la Feria del Corredor', 'Lona en la recta de meta y logo destacado en la web'], avituallament: ['«Avituallamiento km X by [Marca]» en el mapa y la web', 'Banderola y mesa vestida con la marca', 'Posibilidad de servir vuestro producto'], bossa: ['Logo en las 800 bolsas', 'Producto o muestra en todas las bolsas', 'Espacio de muestreo en la Feria del Corredor'], modalitat: ['Nombre de la modalidad en web, reglamento e inscripciones', 'Logo en la pancarta de salida de la modalidad', 'Entrega de trofeos de la modalidad'], meta: ['Vallas de la recta vestidas con vuestra marca', 'Logo en la pantalla de meta', '«Zona de recuperación by [Marca]»'], km: ['Cartel kilométrico de 1×1,5 m con «Km X by [Marca]»', 'Logo en el mapa interactivo de la web', 'Publicación conjunta en redes'], tanques: ['Lona de 2×1 m (la imprime la organización)', 'Recta de meta o recorrido', 'Pack de 3 vallas: 300 €'], llebres: ['Banderolas y camisetas de las liebres con la marca', 'Logo en la página de liebres de la web'] };
+  const ES_LVL = { naming: ['Patrocinador principal', '«MM Igualada by [vuestra marca]»'], partner: ['Partner oficial', 'Manga derecha · manga izquierda · dorsal'], modalitat: ['Patrocinador de modalidad', '«Cursa 10K by…» · «Caminada Popular by…»'], meta: ['Recta de meta', 'Los últimos 200 metros'], avituallament: ['Avituallamiento', 'Km 5 · km 10 · km 15'], km: ['Kilómetro patrocinado', '«Tu km»'], trofeus: ['Trofeos y premios', 'El podio lleva vuestro nombre'], medalla: ['Medalla finisher', 'La pieza que todos cuelgan en casa'], bossa: ['Bolsa del corredor', 'Welcome pack'], calent: ['Punto de recuperación', 'Caldo, fruta y agua fresca en meta'], fotos: ['Fotografía oficial', 'El marco de todas las fotos'], festa: ['Fiesta y Botifarrada Solidaria', '100% benéfica'], animacio: ['Punto de animación', 'Batucada · gigantes · castellers'], llebres: ['Liebres', 'Los marcadores de ritmo'], voluntaris: ['Voluntariado', '40 chalecos durante todo el día'], eco: ['Carrera limpia', 'Sostenibilidad en el Parc Fluvial'], resultats: ['Resultados y diploma', 'El tiempo de cada corredor'], tanques: ['Vallas publicitarias', 'Salida y recorrido'], esquena: ['Espalda de la camiseta', 'Fila de logos'], speaker: ['Speaker y vídeo', 'Menciones en directo'], web: ['Colaborador web y redes', 'Presencia digital'], sorteig: ['Sorteo y descuentos', 'Producto a cambio de visibilidad'], mitjans: ['Medio colaborador', 'Radio, televisión y prensa'] };
+  const ES_INC = { naming: ['Nombre oficial «MM Igualada by [Marca]» en web, carteles, redes, prensa e inscripciones', 'Camiseta (pecho y espalda), dorsal, arco de salida y meta', 'Exclusividad de sector y derecho de tanteo para 2027'], partner: ['Un gran espacio exclusivo: una manga o la franja del dorsal', 'Stand de 3×3 m en la Feria del Corredor', 'Logo destacado en la web y en el cartel oficial'], avituallament: ['«Avituallamiento km X by [Marca]» en el mapa y la web', 'Banderola y mesa vestida con la marca', 'Posibilidad de servir vuestro producto'], bossa: ['Logo en las 800 bolsas', 'Producto o muestra en todas las bolsas', 'Espacio de muestreo en la Feria del Corredor'], modalitat: ['Nombre de la modalidad en web, reglamento e inscripciones', 'Logo en la pancarta de salida de la modalidad', 'Menciones del speaker en la salida de la modalidad'], meta: ['Vallas de la recta vestidas con vuestra marca (en exclusiva)', 'Logo en la pantalla de meta', 'Menciones del speaker'], km: ['Cartel kilométrico de 1×1,5 m con «Km X by [Marca]»', 'Logo en el mapa interactivo de la web', 'Publicación conjunta en redes'], tanques: ['Lona de 2×1 m (la imprime la organización)', 'Zona de salida o recorrido', 'Pack de 3 vallas: 300 €'], llebres: ['Banderolas y camisetas de las liebres con la marca', 'Logo en la página de liebres de la web'] };
 
   function subjects(d) { return TX[d.lang || 'ca'].subj((d.empresa || '').trim()); }
 
@@ -97,7 +97,7 @@
     const price = lvl.preu ? `${lvl.adj === 'cand' ? t.des + ' ' : ''}${lvl.preu.toLocaleString('ca-ES')} € <span style="font-size:13px;font-weight:400;color:${C.mint}">${t.iva}</span>` : esc(lvl.preuTxt);
     const q = new URLSearchParams(); if (e) q.set('empresa', (d.marca || '').trim() || e); if (c) q.set('contacte', c); if (lvl) q.set('nivell', lvl.id); if (d.logo) q.set('logo', d.logo);
     const link = MM.contacte.dossierUrl + (q.toString() ? '?' + q : '');
-    const deadline = L === 'es' ? MM.terminis.candidatures.replace('de novembre', 'de noviembre').replace('de desembre', 'de diciembre') : MM.terminis.candidatures;
+    const deadline = L === 'es' ? MM.terminis.candidatures.replace('de gener', 'de enero').replace('de febrer', 'de febrero').replace('de març', 'de marzo').replace('d’abril', 'de abril') : MM.terminis.candidatures;
     const motiu = esc((d.motiu || '').trim()).replace(/\n/g, '<br>');
     const P = (html, extra = '') => `<p style="margin:0 0 16px;font-family:${FONT};font-size:15.5px;line-height:1.6;color:${C.ink2};${extra}">${html}</p>`;
 

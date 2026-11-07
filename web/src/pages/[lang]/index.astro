@@ -30,13 +30,13 @@ const jsonld = [
   { '@context': 'https://schema.org', '@type': 'Organization', name: LEGAL.entity, url: site, logo: `${site}/icon-512.png`, email: EVENT.email },
   {
     '@context': 'https://schema.org', '@type': 'SportsEvent', name: t.meta.title.split(' · ')[0] + ' · ' + t.hero.title1 + ' ' + t.hero.title2,
-    description: t.meta.description, startDate: `${EVENT.date}T08:30:00+01:00`, endDate: `${EVENT.date}T11:45:00+01:00`,
+    description: t.meta.description, startDate: `${EVENT.date}T08:30:00+02:00`, endDate: `${EVENT.date}T11:45:00+02:00`,
     eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     image: [`${site}/og.jpg`], url,
     location: { '@type': 'Place', name: 'Igualada · Vilanova del Camí', address: { '@type': 'PostalAddress', addressLocality: 'Igualada', addressRegion: 'Barcelona', addressCountry: 'ES' } },
     organizer: { '@type': 'Organization', name: LEGAL.entity, url: site },
     offers: MODALITIES.map((m) => ({ '@type': 'Offer', name: t.modalities.items[m.id].name, price: m.fees[0], priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: `${url}#inscripcions`, validFrom: OPENS, priceValidUntil: TIERS[0] })),
-    subEvent: MODALITIES.map((m) => ({ '@type': 'SportsEvent', name: t.modalities.items[m.id].name, startDate: `${EVENT.date}T${m.start}:00+01:00` })),
+    subEvent: MODALITIES.map((m) => ({ '@type': 'SportsEvent', name: t.modalities.items[m.id].name, startDate: `${EVENT.date}T${m.start}:00+02:00` })),
   },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: t.faq.items.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) },
 ];

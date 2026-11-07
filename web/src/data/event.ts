@@ -1,7 +1,7 @@
 // Dades de l'esdeveniment. ⚠ Valors marcats PLACEHOLDER: substituir quan l'organització els confirmi.
 export const EVENT = {
   name: 'MM Igualada',
-  date: '2026-12-13', // PLACEHOLDER: el reglament no fixa la data
+  date: '2028-04-01', // PLACEHOLDER: el reglament no fixa la data
   place: { ca: 'Igualada · Vilanova del Camí', en: 'Igualada · Vilanova del Camí', es: 'Igualada · Vilanova del Camí' },
   registrationsOpen: true, // PLACEHOLDER
   email: 'info@mmigualada.example', // PLACEHOLDER
@@ -17,8 +17,8 @@ export const MODALITIES = [
 ] as const;
 
 // Cada tram acaba (inclosa) a la data indicada. El primer comença quan s'obren les inscripcions.
-export const TIERS = ['2026-10-31', '2026-11-15', '2026-11-30', '2026-12-08', '2026-12-12'] as const;
-export const OPENS = '2026-09-25';
+export const TIERS = ['2027-12-31', '2028-01-31', '2028-02-29', '2028-03-20', '2028-03-30'] as const;
+export const OPENS = '2027-10-01';
 export const UDL_DISCOUNT = 20; // % de descompte a estudiants UdL (inscripció i merchandising). PLACEHOLDER
 export const ANALYTICS_ID = ''; // PLACEHOLDER: ID de GA4 (G-XXXXXXXXXX). Buit = analítica desactivada
 export const LEGAL = {

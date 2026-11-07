@@ -26,6 +26,6 @@ if [[ $# -ge 1 ]]; then
   slug=$(python3 -c 'import sys,re,unicodedata;s=unicodedata.normalize("NFKD",sys.argv[1]).encode("ascii","ignore").decode();print(re.sub(r"[^A-Za-z0-9]+","-",s).strip("-"))' "$1")
   render "general.html?$q" "pdf/Dossier-Patrocini-MM-Igualada-$slug.pdf"
 else
-  render general.html "pdf/Dossier-Patrocini-MM-Igualada-2026.pdf"
+  render general.html "pdf/Dossier-Patrocini-MM-Igualada-2028.pdf"
   if [[ -f coca-cola.html ]]; then render coca-cola.html "pdf/Dossier-MM-Igualada-by-Coca-Cola.pdf"; fi
 fi

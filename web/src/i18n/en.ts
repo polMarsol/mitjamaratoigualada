@@ -2,7 +2,7 @@ import type { Dict } from './index';
 export const en: Dict = {
   htmlLang: 'en',
   meta: {
-    title: 'MM Igualada 2026 · 1st Igualada Half Marathon, 10K & Walk',
+    title: 'MM Igualada 2028 · 1st Igualada Half Marathon, 10K & Walk',
     description: 'Register for the 1st Igualada Half Marathon: 21K with electronic timing, 10K and a popular walk through Igualada and Vilanova del Camí. Routes, schedules and prices.',
   },
   skip: 'Skip to content',
@@ -13,7 +13,7 @@ export const en: Dict = {
     title1: 'Igualada',
     title2: 'Half Marathon',
     lead: 'From downtown Igualada through the River Park to Vilanova del Camí. Three ways to take part: 21K, 10K or the Popular Walk.',
-    date: 'December 13, 2026',
+    date: 'April 1, 2028',
     dateNote: 'Provisional date',
     countdown: { d: 'days', h: 'hours', m: 'min', s: 'sec' },
     chip: 'Chip timing',
@@ -84,7 +84,7 @@ export const en: Dict = {
   faq: {
     title: 'Frequently asked questions', lead: 'Can’t find it? Write to us and we’ll answer.',
     items: [
-      { q: 'Where and when is the race?', a: 'In Igualada and Vilanova del Camí. The final date will be confirmed on the website (provisional prototype date: December 13, 2026).' },
+      { q: 'Where and when is the race?', a: 'In Igualada and Vilanova del Camí. The final date will be confirmed on the website (provisional prototype date: Saturday, April 1, 2028).' },
       { q: 'Where do I pick up my bib?', a: 'At the Expo Zone the day before and, exceptionally, on race morning up to 45 minutes before your start.' },
       { q: 'Will I get a shirt?', a: 'Yes, if you register within the tiers and deadlines that include it. Late registrations do not guarantee availability or size.' },
       { q: 'Are there bag drop and showers?', a: 'Yes, in the finish area, subject to venue hours and capacity.' },
@@ -97,7 +97,7 @@ export const en: Dict = {
   sponsors: {
     title: 'Backed by', lead: 'Companies and shops that make MM Igualada possible.',
     tiers: ['Main sponsor', 'Partners', 'Local businesses'], name: 'Sponsor', place: 'Placeholder logo',
-    becomeTitle: 'Want to be part of it?', becomeText: 'Put your brand at the start, the finish and across the race channels.', becomeCta: 'Let’s talk',
+    becomeTitle: 'Want to be part of it?', becomeText: 'Put your brand at the start, the finish and across the race channels.', becomeCta: 'Let’s talk', dossierCta: 'Sponsorship deck',
   },
   thanks: {
     title: 'Thank you', lead: 'Without them, the race would not be possible.',
@@ -241,9 +241,9 @@ export const en: Dict = {
     items: [
       { t: 'White with squares', d: 'A white base with the squares of the Plaça de Cal Font paving, dissolving from the cut and towards the hem, in blues, turquoise and greens.' },
       { t: 'The zig-zag cut', d: 'A big-toothed line from the top right to the bottom left. The Cal Font scissors have already opened the cut at the top; the rest, marked with dots, is still to be cut.' },
-      { t: 'Front', d: 'On the left, like a crest, the coat of arms of Igualada; on the right, the MM logo. The centre is left free for the bib.' },
+      { t: 'Front', d: 'On the right chest, the MMI logo; on the left chest, the main sponsor, slightly larger. The centre is left free for the bib.' },
       { t: 'Collar and sleeves', d: 'The collar with the paving squares. A blue sleeve with the partner organisation and a green one with Vilanova del Camí Town Hall, fading into the body.' },
-      { t: 'Back', d: 'At the nape, the Igualada flag at 7 × 5 cm; in the background, the silhouette of the Cal Font chimney; at the bottom, the sponsors and the Anoia river in horizontal waves.' },
+      { t: 'Back', d: 'At the nape, the Igualada flag at 7 × 5 cm; in the background, the silhouette of the Cal Font chimney; below the title “MM, 10K i Caminada · Igualada 2028”, the main sponsor and the other sponsors (each brand only once), and the Anoia river in horizontal waves.' },
     ],
     variantLabel: 'Pick a prototype',
     variants: {
@@ -255,7 +255,7 @@ export const en: Dict = {
     swatches: 'Palette', cta: 'I want my shirt', see: 'See t-shirt in 3D',
   },
   logistics: {
-    kicker: 'Mitja Marató d’Igualada · 13 Dec 2026 (provisional) · operations plan',
+    kicker: 'Mitja Marató d’Igualada · 1 Apr 2028 (provisional) · operations plan',
     races: { '21k': 'Half 21K', '10k': '10K', cam: 'Walk' },
     raceNames: { '21k': 'Half Marathon 21K', '10k': '10K Race', cam: 'Popular Walk' },
     words: { turn: 'Turn', cross: 'Junction', finish: 'Finish', maps: 'Google Maps', see: 'View', proposal: 'Proposal', people: 'ppl' },
@@ -304,21 +304,21 @@ export const en: Dict = {
         A1: { what: 'Water + isotonic (compostable paper cups). For the Walk: water refill point with your own cup or bottle.', why: 'A single point serves all three races in time slots that barely overlap (21K ≈08:50–09:25 · 10K ≈09:10–09:30 · Walk ≈09:35–10:30). Wide tarmac, away from green areas, next to the Estadi Atlètic (mains water and toilets).', theme: 'Stadium Point: the Club Atlètic Igualada speaker calling out bib numbers, with a drum band on the straight.' },
         A2: { what: 'Water + isotonic. Tables on both sides of the road to separate the 21K and 10K flows.', why: 'It is exactly km 5 of the 10K and sits between km 10 and 12 of the Half. A paved urban street before entering the river path: cups are collected here and never reach the Parc Fluvial.', theme: 'Rec Point: a cheering tunnel from the neighbourhood schools and live music in front of the old tanneries.' },
         A3: { what: 'Water + isotonic + fruit (locally sourced orange and banana, cut up). Gels optional only and in bulk.', why: 'Right after leaving the Parc Fluvial: no waste inside the Anoia river corridor. A wide road with van access and municipal bins nearby.', theme: 'Vilanova Point: grallers and giants from Vilanova del Camí; the oranges are handed out by the town’s associations.' },
-        M: { what: 'Water, isotonic, fruit, packaged gluten-free products and a recovery area. Charity botifarrada next to it.', why: 'Shared start and finish area. Water in 20 L tanks (no 33 cl bottles) and a recycling point with organic waste (peel and compostable cups), packaging and general waste.', theme: 'Winter finish: hot broth and thick hot chocolate to warm up in December.' },
+        M: { what: 'Water, isotonic, fruit, packaged gluten-free products and a recovery area. Charity botifarrada next to it.', why: 'Shared start and finish area. Water in 20 L tanks (no 33 cl bottles) and a recycling point with organic waste (peel and compostable cups), packaging and general waste.', theme: 'Spring finish: warm broth, fruit and cool water to recover after the effort.' },
       },
       susTitle: 'Sustainability criteria applied',
       sus: [
         'No aid station inside the Parc Fluvial: cups are handed out and collected on tarmac, away from the Anoia river.',
         'A 100–150 m drop zone after each table, with an organic bin (compostable cups and peel) and a packaging bin; a volunteer sweeps as the sweep vehicle passes.',
         'Water in 20 L tanks or from the mains; no individual bottles. Isotonic powder mixed on site.',
-        'Seasonal, local fruit (December: orange); gels optional only.',
+        'Seasonal, local fruit (April: strawberries and oranges); gels optional only.',
         'One point serves two or three races thanks to the staggered starts (08:30 / 09:00 / 09:15).',
       ],
       ideasTitle: 'Our own ideas for this race', ideasLead: 'Proposals from the organising team, still to be validated. Designed so the aid station is part of the party too.',
       ideas: [
-        { t: 'Bring your cup', d: 'Anyone running with their own foldable cup enters the draw for 2027 bibs. Fewer cups, shorter queues.' },
+        { t: 'Bring your cup', d: 'Anyone running with their own foldable cup enters the draw for 2029 bibs. Fewer cups, shorter queues.' },
         { t: 'Cup target', d: 'Bins with a bullseye at the end of the drop zone: scoring with your cup is part of the game and leaves the street clean.' },
-        { t: 'Hot broth at the finish', d: 'In December a broth beats a cold drink: flasks of broth and hot chocolate next to the fruit.' },
+        { t: 'Recovery at the finish', d: 'In April, mid-morning, what you want most is to replace salts: warm broth, seasonal fruit and cool water.' },
         { t: 'Cheered by name', d: 'The bib shows your name in large print: the volunteers at each table cheer every person by name.' },
         { t: 'Waste traffic light', d: 'The waste from each point is weighed and published with the results. The cleanest point wins the volunteer trophy.' },
         { t: 'Igualada water', d: 'Mobile fountains connected to the mains next to the stadium and at the finish to refill bottles before and after the race.' },

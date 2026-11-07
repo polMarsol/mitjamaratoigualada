@@ -1,7 +1,7 @@
 export const ca = {
   htmlLang: 'ca',
   meta: {
-    title: 'MM Igualada 2026 · 1a Mitja Marató d’Igualada, 10K i Caminada',
+    title: 'MM Igualada 2028 · 1a Mitja Marató d’Igualada, 10K i Caminada',
     description: 'Inscriu-te a la 1a Mitja Marató d’Igualada: 21K amb cronometratge electrònic, 10K i Caminada Popular per Igualada i Vilanova del Camí. Recorreguts, horaris i preus.',
   },
   skip: 'Salta al contingut',
@@ -12,7 +12,7 @@ export const ca = {
     title1: 'Mitja Marató',
     title2: 'd’Igualada',
     lead: 'Del centre d’Igualada al Parc Fluvial i a Vilanova del Camí. Tres maneres de viure-ho: 21K, 10K o Caminada Popular.',
-    date: '13 de desembre de 2026',
+    date: '1 d’abril de 2028',
     dateNote: 'Data provisional',
     countdown: { d: 'dies', h: 'hores', m: 'min', s: 'seg' },
     chip: 'Cronometratge amb xip',
@@ -83,7 +83,7 @@ export const ca = {
   faq: {
     title: 'Preguntes freqüents', lead: 'No ho trobes? Escriu-nos i et responem.',
     items: [
-      { q: 'On i quan és la cursa?', a: 'A Igualada i Vilanova del Camí. La data definitiva es confirmarà a la web (data provisional del prototip: 13 de desembre de 2026).' },
+      { q: 'On i quan és la cursa?', a: 'A Igualada i Vilanova del Camí. La data definitiva es confirmarà a la web (data provisional del prototip: dissabte 1 d’abril de 2028).' },
       { q: 'On recullo el dorsal?', a: 'A la Zona Expo / Fira del Corredor el dia abans i, excepcionalment, el mateix matí fins a 45 minuts abans de la teva sortida.' },
       { q: 'Tindré samarreta?', a: 'Sí, si t’inscrius dins dels terminis i trams amb obsequi. Les inscripcions d’última hora no en garanteixen la disponibilitat ni la talla.' },
       { q: 'Hi ha guarda-roba i dutxes?', a: 'Sí, a la zona d’arribada, subjecte a horaris i aforament dels recintes.' },
@@ -240,9 +240,9 @@ export const ca = {
     items: [
       { t: 'Blanca de quadrats', d: 'Un fons blanc amb els quadrats del paviment de la plaça de Cal Font, que es desfan des del tall i cap al baix de la samarreta, en blaus, turquesa i verds.' },
       { t: 'El tall en zig-zag', d: 'Una línia de dents grans de dalt a la dreta cap a baix a l’esquerra. Les tisores de Cal Font ja han obert el tall dalt; la resta, marcada amb punts, encara està per tallar.' },
-      { t: 'Davant', d: 'A l’esquerra, com un escut, l’escut d’Igualada; a la dreta, el logo MM. El centre queda lliure per al dorsal.' },
+      { t: 'Davant', d: 'Al pit dret, el logo MMI; al pit esquerre, el patrocinador principal, una mica més gran. El centre queda lliure per al dorsal.' },
       { t: 'Coll i mànigues', d: 'El coll amb els quadrats del paviment. Una màniga blava amb l’entitat col·laboradora i una de verda amb l’Ajuntament de Vilanova del Camí, difuminades cap al cos.' },
-      { t: 'Darrere', d: 'A la nuca, la bandera d’Igualada de 7 × 5 cm; al fons, la silueta de la xemeneia de Cal Font; a la part baixa, els patrocinadors i el riu Anoia en ones horitzontals.' },
+      { t: 'Darrere', d: 'A la nuca, la bandera d’Igualada de 7 × 5 cm; al fons, la silueta de la xemeneia de Cal Font; sota el títol «MM, 10K i Caminada · Igualada 2028», el patrocinador principal i la resta de patrocinadors (cada marca un sol cop), i el riu Anoia en ones horitzontals.' },
     ],
     variantLabel: 'Tria un prototip',
     variants: {
@@ -254,7 +254,7 @@ export const ca = {
     swatches: 'Paleta', cta: 'Vull la meva samarreta', see: 'Veure la samarreta en 3D',
   },
   logistics: {
-    kicker: 'Mitja Marató d’Igualada · 13 des 2026 (provisional) · pla operatiu',
+    kicker: 'Mitja Marató d’Igualada · 1 abr 2028 (provisional) · pla operatiu',
     races: { '21k': 'Mitja 21K', '10k': '10K', cam: 'Caminada' },
     raceNames: { '21k': 'Mitja Marató 21K', '10k': 'Cursa 10K', cam: 'Caminada Popular' },
     words: { turn: 'Gir', cross: 'Cruïlla', finish: 'Meta', maps: 'Google Maps', see: 'Veure', proposal: 'Proposta', people: 'pers.' },
@@ -303,21 +303,21 @@ export const ca = {
         A1: { what: 'Aigua + isotònic (gots de cartró compostables). Per a la Caminada: punt de recàrrega d’aigua amb got o ampolla propis.', why: 'Un sol punt serveix les tres proves en franges que gairebé no se solapen (21K ≈08:50–09:25 · 10K ≈09:10–09:30 · Caminada ≈09:35–10:30). Asfalt ample, fora de zones verdes, al costat de l’Estadi Atlètic (aigua de xarxa i lavabos).', theme: 'Punt Estadi: speaker del Club Atlètic Igualada cantant dorsals i batucada a la recta.' },
         A2: { what: 'Aigua + isotònic. Taules a banda i banda de la calçada per separar el flux de 21K i 10K.', why: 'És el km 5 exacte de la 10K i queda entre el km 10 i el 12 de la Mitja. Carrer urbà pavimentat abans d’entrar al camí del riu: els gots es recullen aquí i no arriben al Parc Fluvial.', theme: 'Punt del Rec: túnel d’ànims de les escoles del barri i música en directe davant les antigues adoberies.' },
         A3: { what: 'Aigua + isotònic + fruita (taronja i plàtan trossejats, de proximitat). Gels només opcionals i a granel.', why: 'Just després de sortir del Parc Fluvial: cap residu dins del corredor del riu Anoia. Via ampla amb accés per a furgoneta i contenidors municipals a prop.', theme: 'Punt Vilanova: grallers i gegants de Vilanova del Camí; la taronja la reparteixen les entitats del poble.' },
-        M: { what: 'Aigua, isotònic, fruita, productes sense gluten envasats i zona de recuperació. Botifarrada solidària al costat.', why: 'Zona comuna de sortida i arribada. Aigua en dipòsits de 20 L (sense ampolles de 33 cl) i punt net amb orgànica (peles i gots compostables), envasos i resta.', theme: 'Meta d’hivern: brou calent i xocolata desfeta per entrar en calor al desembre.' },
+        M: { what: 'Aigua, isotònic, fruita, productes sense gluten envasats i zona de recuperació. Botifarrada solidària al costat.', why: 'Zona comuna de sortida i arribada. Aigua en dipòsits de 20 L (sense ampolles de 33 cl) i punt net amb orgànica (peles i gots compostables), envasos i resta.', theme: 'Meta de primavera: brou tebi, fruita i aigua fresca per recuperar després de l’esforç.' },
       },
       susTitle: 'Criteris de sostenibilitat aplicats',
       sus: [
         'Cap avituallament dins del Parc Fluvial: els gots es reparteixen i es recullen en asfalt, lluny del riu Anoia.',
         'Zona de descart de 100–150 m després de cada taula, amb contenidor d’orgànica (gots compostables i peles) i d’envasos; un voluntari escombra al pas de l’escombra.',
         'Aigua en dipòsits de 20 L o de xarxa; res d’ampolles individuals. Isotònic en pols preparat in situ.',
-        'Fruita de temporada i de proximitat (desembre: taronja); gels només opcionals.',
+        'Fruita de temporada i de proximitat (abril: maduixa i taronja); gels només opcionals.',
         'Un mateix punt dona servei a dues o tres proves gràcies a les sortides esglaonades (08:30 / 09:00 / 09:15).',
       ],
       ideasTitle: 'Idees pròpies per a aquesta cursa', ideasLead: 'Propostes de l’equip organitzador, encara per validar. Pensades perquè l’avituallament també sigui part de la festa.',
       ideas: [
-        { t: 'Porta el teu got', d: 'Qui corre amb got plegable propi entra al sorteig de dorsals per al 2027. Menys gots, menys cues.' },
+        { t: 'Porta el teu got', d: 'Qui corre amb got plegable propi entra al sorteig de dorsals per al 2029. Menys gots, menys cues.' },
         { t: 'Diana de gots', d: 'Contenidors amb diana al final de la zona de descart: encistellar el got és part del joc i deixa el carrer net.' },
-        { t: 'Brou calent a meta', d: 'Al desembre ve més de gust un brou que una beguda freda: termos de brou i xocolata al costat de la fruita.' },
+        { t: 'Recuperació a meta', d: 'A l’abril, a mig matí, el que més ve de gust és recuperar sals: brou tebi, fruita de temporada i aigua fresca.' },
         { t: 'T’animen pel teu nom', d: 'El dorsal porta el nom ben gran: els voluntaris de cada taula animen cada persona pel seu nom.' },
         { t: 'Semàfor de residus', d: 'Es pesa el residu de cada punt i es publica amb els resultats. El punt més net guanya el trofeu de voluntariat.' },
         { t: 'Aigua d’Igualada', d: 'Fonts mòbils connectades a la xarxa al costat de l’Estadi i a meta per reomplir ampolles abans i després de la prova.' },

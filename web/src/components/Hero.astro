@@ -40,7 +40,7 @@ const d = routeD('21k', W, H, 40);
           <div class="font-display text-xl font-bold">{t.hero.date}</div>
           <div class="text-sm" style="color:var(--muted)">{EVENT.place[lang]} · {t.hero.dateNote}</div>
         </div>
-        <div id="countdown" data-date={`${EVENT.date}T08:30:00+01:00`} class="flex gap-2" role="timer" aria-live="off">
+        <div id="countdown" data-date={`${EVENT.date}T08:30:00+02:00`} class="flex gap-2" role="timer" aria-live="off">
           {(['d', 'h', 'm', 's'] as const).map((u) => (
             <div class="neo min-w-16 !rounded-2xl px-3 py-2 text-center">
               <div class="font-display text-2xl font-extrabold tabular-nums" data-unit={u}>--</div>

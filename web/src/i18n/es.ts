@@ -2,7 +2,7 @@ import type { Dict } from './index';
 export const es: Dict = {
   htmlLang: 'es',
   meta: {
-    title: 'MM Igualada 2026 · 1.ª Media Maratón de Igualada, 10K y Caminata',
+    title: 'MM Igualada 2028 · 1.ª Media Maratón de Igualada, 10K y Caminata',
     description: 'Inscríbete en la 1.ª Media Maratón de Igualada: 21K con cronometraje electrónico, 10K y Caminata Popular por Igualada y Vilanova del Camí. Recorridos, horarios y precios.',
   },
   skip: 'Saltar al contenido',
@@ -13,7 +13,7 @@ export const es: Dict = {
     title1: 'Media Maratón',
     title2: 'de Igualada',
     lead: 'Del centro de Igualada al Parque Fluvial y a Vilanova del Camí. Tres formas de vivirlo: 21K, 10K o Caminata Popular.',
-    date: '13 de diciembre de 2026',
+    date: '1 de abril de 2028',
     dateNote: 'Fecha provisional',
     countdown: { d: 'días', h: 'horas', m: 'min', s: 'seg' },
     chip: 'Cronometraje con chip',
@@ -84,7 +84,7 @@ export const es: Dict = {
   faq: {
     title: 'Preguntas frecuentes', lead: '¿No lo encuentras? Escríbenos y te respondemos.',
     items: [
-      { q: '¿Dónde y cuándo es la carrera?', a: 'En Igualada y Vilanova del Camí. La fecha definitiva se confirmará en la web (fecha provisional del prototipo: 13 de diciembre de 2026).' },
+      { q: '¿Dónde y cuándo es la carrera?', a: 'En Igualada y Vilanova del Camí. La fecha definitiva se confirmará en la web (fecha provisional del prototipo: sábado 1 de abril de 2028).' },
       { q: '¿Dónde recojo el dorsal?', a: 'En la Zona Expo / Feria del Corredor el día antes y, excepcionalmente, la misma mañana hasta 45 minutos antes de tu salida.' },
       { q: '¿Tendré camiseta?', a: 'Sí, si te inscribes dentro de los plazos y tramos con obsequio. Las inscripciones de última hora no garantizan disponibilidad ni talla.' },
       { q: '¿Hay guardarropa y duchas?', a: 'Sí, en la zona de llegada, sujeto a horarios y aforo de los recintos.' },
@@ -241,9 +241,9 @@ export const es: Dict = {
     items: [
       { t: 'Blanca de cuadrados', d: 'Un fondo blanco con los cuadrados del pavimento de la plaza de Cal Font, que se deshacen desde el corte y hacia el bajo de la camiseta, en azules, turquesa y verdes.' },
       { t: 'El corte en zigzag', d: 'Una línea de dientes grandes de arriba a la derecha hacia abajo a la izquierda. Las tijeras de Cal Font ya han abierto el corte arriba; el resto, marcado con puntos, está por cortar.' },
-      { t: 'Delante', d: 'A la izquierda, como un escudo, el escudo de Igualada; a la derecha, el logo MM. El centro queda libre para el dorsal.' },
+      { t: 'Delante', d: 'En el pecho derecho, el logo MMI; en el pecho izquierdo, el patrocinador principal, algo más grande. El centro queda libre para el dorsal.' },
       { t: 'Cuello y mangas', d: 'El cuello con los cuadrados del pavimento. Una manga azul con la entidad colaboradora y otra verde con el Ayuntamiento de Vilanova del Camí, difuminadas hacia el cuerpo.' },
-      { t: 'Detrás', d: 'En la nuca, la bandera de Igualada de 7 × 5 cm; al fondo, la silueta de la chimenea de Cal Font; en la parte baja, los patrocinadores y el río Anoia en ondas horizontales.' },
+      { t: 'Detrás', d: 'En la nuca, la bandera de Igualada de 7 × 5 cm; al fondo, la silueta de la chimenea de Cal Font; bajo el título «MM, 10K i Caminada · Igualada 2028», el patrocinador principal y el resto de patrocinadores (cada marca una sola vez), y el río Anoia en ondas horizontales.' },
     ],
     variantLabel: 'Elige un prototipo',
     variants: {
@@ -255,7 +255,7 @@ export const es: Dict = {
     swatches: 'Paleta', cta: 'Quiero mi camiseta', see: 'Ver la camiseta en 3D',
   },
   logistics: {
-    kicker: 'Mitja Marató d’Igualada · 13 dic 2026 (provisional) · plan operativo',
+    kicker: 'Mitja Marató d’Igualada · 1 abr 2028 (provisional) · plan operativo',
     races: { '21k': 'Mitja 21K', '10k': '10K', cam: 'Caminada' },
     raceNames: { '21k': 'Mitja Marató 21K', '10k': 'Cursa 10K', cam: 'Caminada Popular' },
     words: { turn: 'Giro', cross: 'Cruce', finish: 'Meta', maps: 'Google Maps', see: 'Ver', proposal: 'Propuesta', people: 'pers.' },
@@ -304,21 +304,21 @@ export const es: Dict = {
         A1: { what: 'Agua + isotónico (vasos de cartón compostables). Para la Caminada: punto de recarga de agua con vaso o botella propios.', why: 'Un solo punto sirve a las tres pruebas en franjas que apenas se solapan (21K ≈08:50–09:25 · 10K ≈09:10–09:30 · Caminada ≈09:35–10:30). Asfalto ancho, fuera de zonas verdes, junto al Estadi Atlètic (agua de red y lavabos).', theme: 'Punto Estadi: speaker del Club Atlètic Igualada cantando dorsales y batucada en la recta.' },
         A2: { what: 'Agua + isotónico. Mesas a ambos lados de la calzada para separar el flujo de 21K y 10K.', why: 'Es el km 5 exacto de la 10K y queda entre el km 10 y el 12 de la Mitja. Calle urbana pavimentada antes de entrar al camino del río: los vasos se recogen aquí y no llegan al Parc Fluvial.', theme: 'Punto del Rec: túnel de ánimos de las escuelas del barrio y música en directo ante las antiguas curtidurías.' },
         A3: { what: 'Agua + isotónico + fruta (naranja y plátano troceados, de proximidad). Geles solo opcionales y a granel.', why: 'Justo después de salir del Parc Fluvial: ningún residuo dentro del corredor del río Anoia. Vía ancha con acceso para furgoneta y contenedores municipales cerca.', theme: 'Punto Vilanova: grallers y gegants de Vilanova del Camí; la naranja la reparten las entidades del pueblo.' },
-        M: { what: 'Agua, isotónico, fruta, productos sin gluten envasados y zona de recuperación. Botifarrada solidaria al lado.', why: 'Zona común de salida y llegada. Agua en depósitos de 20 L (sin botellas de 33 cl) y punto limpio con orgánica (pieles y vasos compostables), envases y resto.', theme: 'Meta de invierno: caldo caliente y chocolate deshecho para entrar en calor en diciembre.' },
+        M: { what: 'Agua, isotónico, fruta, productos sin gluten envasados y zona de recuperación. Botifarrada solidaria al lado.', why: 'Zona común de salida y llegada. Agua en depósitos de 20 L (sin botellas de 33 cl) y punto limpio con orgánica (pieles y vasos compostables), envases y resto.', theme: 'Meta de primavera: caldo tibio, fruta y agua fresca para recuperar después del esfuerzo.' },
       },
       susTitle: 'Criterios de sostenibilidad aplicados',
       sus: [
         'Ningún avituallamiento dentro del Parc Fluvial: los vasos se reparten y recogen en asfalto, lejos del río Anoia.',
         'Zona de descarte de 100–150 m después de cada mesa, con contenedor de orgánica (vasos compostables y pieles) y de envases; un voluntario barre al paso del escoba.',
         'Agua en depósitos de 20 L o de red; nada de botellas individuales. Isotónico en polvo preparado in situ.',
-        'Fruta de temporada y de proximidad (diciembre: naranja); geles solo opcionales.',
+        'Fruta de temporada y de proximidad (abril: fresa y naranja); geles solo opcionales.',
         'Un mismo punto da servicio a dos o tres pruebas gracias a las salidas escalonadas (08:30 / 09:00 / 09:15).',
       ],
       ideasTitle: 'Ideas propias para esta carrera', ideasLead: 'Propuestas del equipo organizador, todavía por validar. Pensadas para que el avituallamiento sea también parte de la fiesta.',
       ideas: [
-        { t: 'Trae tu vaso', d: 'Quien corre con vaso plegable propio entra en el sorteo de dorsales para 2027. Menos vasos, menos colas.' },
+        { t: 'Trae tu vaso', d: 'Quien corre con vaso plegable propio entra en el sorteo de dorsales para 2029. Menos vasos, menos colas.' },
         { t: 'Diana de vasos', d: 'Contenedores con diana al final de la zona de descarte: encestar el vaso es parte del juego y deja la calle limpia.' },
-        { t: 'Caldo caliente en meta', d: 'En diciembre apetece más un caldo que una bebida fría: termos de caldo y chocolate junto a la fruta.' },
+        { t: 'Recuperación en meta', d: 'En abril, a media mañana, lo que más apetece es recuperar sales: caldo tibio, fruta de temporada y agua fresca.' },
         { t: 'Te animan por tu nombre', d: 'El dorsal lleva el nombre grande: los voluntarios de cada mesa animan a cada persona por su nombre.' },
         { t: 'Semáforo de residuos', d: 'Se pesa el residuo de cada punto y se publica con los resultados. El punto más limpio gana el trofeo de voluntariado.' },
         { t: 'Agua de Igualada', d: 'Fuentes móviles conectadas a la red junto al Estadi y en meta para rellenar botellas antes y después de la prueba.' },

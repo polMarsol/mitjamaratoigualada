@@ -1,4 +1,4 @@
-# Dossier de patrocini · MM Igualada 2026
+# Dossier de patrocini · MM Igualada 2028
 
 | Fitxer | Què és |
 |---|---|

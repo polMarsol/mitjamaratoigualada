@@ -151,7 +151,7 @@
     state.subj = Math.min(state.subj, subjects.length - 1);
     current = { ...out, subject: subjects[state.subj] };
     document.getElementById('subj').innerHTML = '<b>Assumpte</b>' + subjects.map((s, i) => `<label class="row" style="font-weight:400;display:flex"><input type="radio" name="s" ${i === state.subj ? 'checked' : ''} data-i="${i}"> ${escapeHtml(s)}</label>`).join('');
-    document.getElementById('meta').innerHTML = `<div><b>Per a:</b> ${escapeHtml(d.contacte || '—')} ${d.to ? '&lt;' + escapeHtml(d.to) + '&gt;' : ''}</div><div><b>Assumpte:</b> ${escapeHtml(current.subject)}</div><div><b>Adjunt:</b> ${d.adjunt === 'cap' ? '—' : d.adjunt === 'cocacola' ? 'Dossier-MM-Igualada-by-Coca-Cola.pdf' : 'Dossier-Patrocini-MM-Igualada-2026.pdf'}</div>`;
+    document.getElementById('meta').innerHTML = `<div><b>Per a:</b> ${escapeHtml(d.contacte || '—')} ${d.to ? '&lt;' + escapeHtml(d.to) + '&gt;' : ''}</div><div><b>Assumpte:</b> ${escapeHtml(current.subject)}</div><div><b>Adjunt:</b> ${d.adjunt === 'cap' ? '—' : d.adjunt === 'cocacola' ? 'Dossier-MM-Igualada-by-Coca-Cola.pdf' : 'Dossier-Patrocini-MM-Igualada-2028.pdf'}</div>`;
     // Previsualització amb imatges locals si la web encara no està publicada
     const local = current.html.split(d.base + 'email/').join('../../web/public/patrocini/email/');
     document.getElementById('pv').srcdoc = local;

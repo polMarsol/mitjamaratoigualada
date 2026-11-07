@@ -28,7 +28,7 @@ const SIGHTS = [
   { lat: 41.57802, lon: 1.62442, t: ['Mercat de la Masuca', 'Mercado de la Masuca'], d: ['Producte de proximitat de l’Anoia. Dissabte al matí, tast per a corredors.', 'Producto de proximidad de la Anoia. Sábado por la mañana, degustación para corredores.'], c: 't' },
   { ...START, t: ['Parc Central · Fira del Corredor', 'Parc Central · Feria del Corredor'], d: ['Recollida de dorsals, sortida i meta.', 'Recogida de dorsales, salida y meta.'], c: 's' },
 ];
-const EXPO = [{ ...START, t: ['Fira del Corredor · Parc Central', 'Feria del Corredor · Parc Central'], d: ['Dissabte 12, de 10:00 a 20:00 · carpa de dorsals, expositors i xerrades', 'Sábado 12, de 10:00 a 20:00 · carpa de dorsales, expositores y charlas'], c: 's' }, PARK[0], PARK[1], PARK[6]];
+const EXPO = [{ ...START, t: ['Fira del Corredor · Parc Central', 'Feria del Corredor · Parc Central'], d: ['Divendres 31 de març, de 10:00 a 20:00 · carpa de dorsals, expositors i xerrades', 'Viernes 31 de marzo, de 10:00 a 20:00 · carpa de dorsales, expositores y charlas'], c: 's' }, PARK[0], PARK[1], PARK[6]];
 // Punts d'animació: sortida/meta + els tres avituallaments del pla operatiu (km reals del pla)
 export const SPOTS = [
   { id: 'S', ...START, km: { '21k': 0.3, '10k': 0.3, cam: 0.3 }, t: ['Recta de sortida · Parc Central', 'Recta de salida · Parc Central'], d: ['Speaker, arc de sortida i les tres sortides en 45 minuts.', 'Speaker, arco de salida y las tres salidas en 45 minutos.'] },
@@ -53,10 +53,10 @@ export const PROTO: Proto[] = [
       { k: 'cards', title: P('Tria com vens', 'Elige cómo vienes'), cols: 3, items: [
         { t: P('En cotxe', 'En coche'), d: P('A-2, sortides 555 i 557. Segueix els cartells «P Cursa». Des de la sortida 557 no travesses cap carrer tallat.', 'A-2, salidas 555 y 557. Sigue los carteles «P Carrera». Desde la salida 557 no atraviesas ninguna calle cortada.') },
         { t: P('En autobús', 'En autobús'), d: P('Hispano Igualadina des de Barcelona (Sants i Maria Cristina). Servei especial amb sortida a les 06:15 i tornada a les 13:30.', 'Hispano Igualadina desde Barcelona (Sants y Maria Cristina). Servicio especial con salida a las 06:15 y vuelta a las 13:30.') },
-        { t: P('En tren', 'En tren'), d: P('FGC línia R6 des de Barcelona-Pl. Espanya. El primer tren del diumenge arriba a les 07:38; 15 minuts a peu fins a la sortida.', 'FGC línea R6 desde Barcelona-Pl. Espanya. El primer tren del domingo llega a las 07:38; 15 minutos a pie hasta la salida.') },
+        { t: P('En tren', 'En tren'), d: P('FGC línia R6 des de Barcelona-Pl. Espanya. El primer tren del dissabte arriba a les 07:38; 15 minuts a peu fins a la sortida.', 'FGC línea R6 desde Barcelona-Pl. Espanya. El primer tren del sábado llega a las 07:38; 15 minutos a pie hasta la salida.') },
         { t: P('En bicicleta', 'En bicicleta'), d: P('Aparcabicis vigilat de 300 places al costat del guarda-roba. Porta el teu cadenat.', 'Aparcabicis vigilado de 300 plazas junto al guardarropa. Trae tu candado.') },
         { t: P('Cotxe compartit', 'Coche compartido'), d: P('Tauler per trobar o oferir seient des de la teva població. Tres o més dorsals al cotxe: plaça reservada al P1.', 'Tablón para encontrar u ofrecer asiento desde tu población. Tres o más dorsales en el coche: plaza reservada en el P1.'), tag: P('Idea', 'Idea') },
-        { t: P('Mobilitat reduïda', 'Movilidad reducida'), d: P('20 places reservades a 80 m de la sortida amb acreditació. Sol·licita-la fins al 6 de desembre.', '20 plazas reservadas a 80 m de la salida con acreditación. Solicítala hasta el 6 de diciembre.') },
+        { t: P('Mobilitat reduïda', 'Movilidad reducida'), d: P('20 places reservades a 80 m de la sortida amb acreditació. Sol·licita-la fins al 25 de març.', '20 plazas reservadas a 80 m de la salida con acreditación. Solicítala hasta el 25 de marzo.') },
       ] },
       { k: 'table', title: P('Bus llançadora', 'Bus lanzadera'), cols: [P('Línia', 'Línea'), P('Recorregut', 'Recorrido'), P('Anada', 'Ida'), P('Tornada', 'Vuelta')], rows: [
         ['L1', P('P3 Hospital → P4 Comarca → Sortida', 'P3 Hospital → P4 Comarca → Salida'), '07:00–08:20', '10:30–13:30'],
@@ -73,9 +73,9 @@ export const PROTO: Proto[] = [
   {
     slug: 'bib-pickup', group: 2, icon: 'M5 4h14v16H5zM9 9h6M9 13h6M8 4v3M16 4v3',
     title: P('Recollida de dorsals i Fira del Corredor', 'Recogida de dorsales y Feria del Corredor'), kicker: P('Dia de la cursa', 'Día de la carrera'),
-    lead: P('Dissabte 12 de desembre, de 10:00 a 20:00, al Parc Central. Vine amb el codi QR de la inscripció i emporta’t el dorsal, el xip, la samarreta i la bossa.', 'Sábado 12 de diciembre, de 10:00 a 20:00, en el Parc Central. Ven con el código QR de la inscripción y llévate el dorsal, el chip, la camiseta y la bolsa.'),
+    lead: P('Divendres 31 de març, de 10:00 a 20:00, al Parc Central. Vine amb el codi QR de la inscripció i emporta’t el dorsal, el xip, la samarreta i la bossa.', 'Viernes 31 de marzo, de 10:00 a 20:00, en el Parc Central. Ven con el código QR de la inscripción y llévate el dorsal, el chip, la camiseta y la bolsa.'),
     blocks: [
-      { k: 'stats', items: [['10–20 h', P('dissabte 12 de desembre', 'sábado 12 de diciembre')], ['06:45', P('obertura excepcional diumenge', 'apertura excepcional el domingo')], ['45 min', P('abans de cada sortida tanca la recollida', 'antes de cada salida cierra la recogida')], ['24', P('expositors a la fira', 'expositores en la feria')]] },
+      { k: 'stats', items: [['10–20 h', P('divendres 31 de març', 'viernes 31 de marzo')], ['06:45', P('obertura excepcional dissabte', 'apertura excepcional el sábado')], ['45 min', P('abans de cada sortida tanca la recollida', 'antes de cada salida cierra la recogida')], ['24', P('expositors a la fira', 'expositores en la feria')]] },
       { k: 'steps', title: P('Com funciona, en quatre passos', 'Cómo funciona, en cuatro pasos'), items: [
         ['1', P('Ensenya el QR', 'Enseña el QR'), P('El trobaràs al correu de confirmació i a «La meva inscripció». Amb el DNI també et trobem.', 'Lo encontrarás en el correo de confirmación y en «Mi inscripción». Con el DNI también te encontramos.')],
         ['2', P('Recull el sobre', 'Recoge el sobre'), P('Dorsal amb el xip enganxat, quatre imperdibles i l’adhesiu del guarda-roba. Comprova nom i calaix.', 'Dorsal con el chip pegado, cuatro imperdibles y el adhesivo del guardarropa. Comprueba nombre y cajón.')],
@@ -93,7 +93,7 @@ export const PROTO: Proto[] = [
         ['19:00', P('Sopar de pasta solidari (8 €)', 'Cena de pasta solidaria (8 €)'), P('Carpa 2', 'Carpa 2')],
       ] },
       { k: 'faq', title: P('Preguntes', 'Preguntas'), items: [
-        [P('No puc venir dissabte. Què faig?', 'No puedo ir el sábado. ¿Qué hago?'), P('Diumenge obrim de 06:45 fins a 45 minuts abans de la teva sortida, només per a qui ve de fora de l’Anoia. O autoritza algú.', 'El domingo abrimos de 06:45 hasta 45 minutos antes de tu salida, solo para quien viene de fuera de la Anoia. O autoriza a alguien.')],
+        [P('No puc venir divendres. Què faig?', 'No puedo ir el viernes. ¿Qué hago?'), P('Dissabte obrim de 06:45 fins a 45 minuts abans de la teva sortida, només per a qui ve de fora de l’Anoia. O autoritza algú.', 'El sábado abrimos de 06:45 hasta 45 minutos antes de tu salida, solo para quien viene de fuera de la Anoia. O autoriza a alguien.')],
         [P('Puc canviar la talla de la samarreta?', '¿Puedo cambiar la talla de la camiseta?'), P('Sí, a partir de les 18:00 de dissabte i segons estoc.', 'Sí, a partir de las 18:00 del sábado y según stock.')],
       ] },
     ],
@@ -111,7 +111,7 @@ export const PROTO: Proto[] = [
         ['08:20', P('Entra al teu calaix', 'Entra en tu cajón'), P('El color del dorsal indica per on entres. Pots endarrerir-te de calaix, mai avançar-te.', 'El color del dorsal indica por dónde entras. Puedes retrasarte de cajón, nunca adelantarte.')],
         ['08:30', P('Sortida de la Mitja', 'Salida de la Media'), P('10K a les 09:00 i Caminada a les 09:15.', '10K a las 09:00 y Caminada a las 09:15.')],
       ] },
-      { k: 'table', title: P('Calaixos de sortida', 'Cajones de salida'), lead: P('S’assignen pel temps que declares en inscriure’t. Canvis fins al 6 de desembre.', 'Se asignan por el tiempo que declaras al inscribirte. Cambios hasta el 6 de diciembre.'), cols: [P('Calaix', 'Cajón'), '21K', '10K', P('Entrada', 'Entrada')], rows: [
+      { k: 'table', title: P('Calaixos de sortida', 'Cajones de salida'), lead: P('S’assignen pel temps que declares en inscriure’t. Canvis fins al 25 de març.', 'Se asignan por el tiempo que declaras al inscribirte. Cambios hasta el 25 de marzo.'), cols: [P('Calaix', 'Cajón'), '21K', '10K', P('Entrada', 'Entrada')], rows: [
         [P('● Vermell', '● Rojo'), P('menys d’1 h 30', 'menos de 1 h 30'), P('menys de 40 min', 'menos de 40 min'), P('Porta A', 'Puerta A')],
         [P('● Blau', '● Azul'), '1 h 30 – 1 h 45', '40–48 min', P('Porta A', 'Puerta A')],
         [P('● Verd', '● Verde'), '1 h 45 – 2 h 00', '48–55 min', P('Porta B', 'Puerta B')],
@@ -130,7 +130,7 @@ export const PROTO: Proto[] = [
         { t: P('Medalla i gravat', 'Medalla y grabado'), d: P('Grava el teu temps a la medalla mentre esperes la botifarra: 3 € solidaris.', 'Graba tu tiempo en la medalla mientras esperas la butifarra: 3 € solidarios.'), tag: P('Idea', 'Idea') },
         { t: P('Punt de trobada', 'Punto de encuentro'), d: P('Lletres gegants A–Z a la gespa de meta: queda amb els teus a la inicial del teu cognom.', 'Letras gigantes A–Z en el césped de meta: queda con los tuyos en la inicial de tu apellido.'), tag: P('Idea', 'Idea') },
       ] },
-      { k: 'check', id: 'kit', title: P('Prepara la bossa', 'Prepara la bolsa'), items: [P('Dorsal amb xip, posat al pit', 'Dorsal con chip, puesto en el pecho'), P('Sabatilles ja rodades (res d’estrenar)', 'Zapatillas ya rodadas (nada de estrenar)'), P('Roba d’abric per a abans i després: al desembre som a 3–8 °C', 'Ropa de abrigo para antes y después: en diciembre estamos a 3–8 °C'), P('Guants i buff per als primers quilòmetres', 'Guantes y buff para los primeros kilómetros'), P('Got plegable', 'Vaso plegable'), P('Vaselina o pegats', 'Vaselina o parches'), P('Telèfon d’emergència escrit al revers del dorsal', 'Teléfono de emergencia escrito en el reverso del dorsal')] },
+      { k: 'check', id: 'kit', title: P('Prepara la bossa', 'Prepara la bolsa'), items: [P('Dorsal amb xip, posat al pit', 'Dorsal con chip, puesto en el pecho'), P('Sabatilles ja rodades (res d’estrenar)', 'Zapatillas ya rodadas (nada de estrenar)'), P('Una capa per a abans i després: a l’abril, a primera hora, som a 8–12 °C', 'Una capa para antes y después: en abril, a primera hora, estamos a 8–12 °C'), P('Gorra i crema solar per al tram final', 'Gorra y crema solar para el tramo final'), P('Got plegable', 'Vaso plegable'), P('Vaselina o pegats', 'Vaselina o parches'), P('Telèfon d’emergència escrit al revers del dorsal', 'Teléfono de emergencia escrito en el reverso del dorsal')] },
       { k: 'note', title: P('Si et trobes malament', 'Si te encuentras mal'), items: [P('Para i avisa el voluntari més proper: tots porten ràdio i són a menys de 400 m.', 'Para y avisa al voluntario más cercano: todos llevan radio y están a menos de 400 m.'), P('Telèfon de cursa: imprès al dorsal. Emergències: 112.', 'Teléfono de carrera: impreso en el dorsal. Emergencias: 112.'), P('Si et retires, lliura el dorsal al control: el cotxe escombra et porta a meta.', 'Si te retiras, entrega el dorsal en el control: el coche escoba te lleva a meta.'), P('Omple la fitxa mèdica del revers del dorsal: al·lèrgies, medicació i contacte.', 'Rellena la ficha médica del reverso del dorsal: alergias, medicación y contacto.')] },
     ],
   },
@@ -144,7 +144,7 @@ export const PROTO: Proto[] = [
       { k: 'cards', title: P('Anima com un professional', 'Anima como un profesional'), cols: 3, items: [
         { t: P('Crida el nom', 'Grita el nombre'), d: P('Tots els dorsals porten el nom ben gran. Un «Vinga, Laia!» val per dos gels.', 'Todos los dorsales llevan el nombre bien grande. Un «¡Vamos, Laia!» vale por dos geles.') },
         { t: P('Dos punts amb un passeig', 'Dos puntos con un paseo'), d: P('Del Punt del Rec a la meta hi ha 18 minuts a peu: veus el teu corredor al km 12 i arribes a temps a l’arribada.', 'Del Punto del Rec a la meta hay 18 minutos a pie: ves a tu corredor en el km 12 y llegas a tiempo a la llegada.') },
-        { t: P('Concurs de pancartes', 'Concurso de pancartas'), d: P('Puja la foto amb #MMIgualada: la més votada guanya dos dorsals per al 2027.', 'Sube la foto con #MMIgualada: la más votada gana dos dorsales para 2027.'), tag: P('Idea', 'Idea') },
+        { t: P('Concurs de pancartes', 'Concurso de pancartas'), d: P('Puja la foto amb #MMIgualada: la més votada guanya dos dorsals per al 2029.', 'Sube la foto con #MMIgualada: la más votada gana dos dorsales para 2029.'), tag: P('Idea', 'Idea') },
         { t: P('Esmorzar de forquilla', 'Desayuno de tenedor'), d: P('Bars del recorregut amb menú d’animador des de les 08:00. Busca l’adhesiu a la porta.', 'Bares del recorrido con menú de animador desde las 08:00. Busca la pegatina en la puerta.'), tag: P('Idea', 'Idea') },
         { t: P('No creuis davant dels corredors', 'No cruces delante de los corredores'), d: P('Fes-ho pels passos amb voluntari. Gossos, sempre lligats i lluny de la calçada.', 'Hazlo por los pasos con voluntario. Perros, siempre atados y lejos de la calzada.') },
         { t: P('Amb criatures', 'Con criaturas'), d: P('Zona infantil a meta amb inflables i tallers de 09:30 a 13:00.', 'Zona infantil en meta con hinchables y talleres de 09:30 a 13:00.') },
@@ -168,16 +168,16 @@ export const PROTO: Proto[] = [
   {
     slug: 'my-entry', group: 1, icon: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
     title: P('La meva inscripció', 'Mi inscripción'), kicker: P('Inscripcions', 'Inscripciones'),
-    lead: P('Consulta la teva inscripció, canvia de distància, cedeix el dorsal o demana la devolució. Tot en línia fins al 6 de desembre.', 'Consulta tu inscripción, cambia de distancia, cede el dorsal o pide la devolución. Todo en línea hasta el 6 de diciembre.'),
+    lead: P('Consulta la teva inscripció, canvia de distància, cedeix el dorsal o demana la devolució. Tot en línia fins al 25 de març.', 'Consulta tu inscripción, cambia de distancia, cede el dorsal o pide la devolución. Todo en línea hasta el 25 de marzo.'),
     blocks: [
       { k: 'lookup' },
       { k: 'table', title: P('Què pots canviar i fins quan', 'Qué puedes cambiar y hasta cuándo'), cols: [P('Tràmit', 'Trámite'), P('Fins al', 'Hasta el'), P('Cost', 'Coste')], rows: [
-        [P('Dades personals, talla o temps previst', 'Datos personales, talla o tiempo previsto'), P('6 de desembre', '6 de diciembre'), P('Gratuït', 'Gratuito')],
+        [P('Dades personals, talla o temps previst', 'Datos personales, talla o tiempo previsto'), P('25 de març', '25 de marzo'), P('Gratuït', 'Gratuito')],
         [P('Canvi de distància (si queden places)', 'Cambio de distancia (si quedan plazas)'), P('30 de novembre', '30 de noviembre'), P('La diferència de preu', 'La diferencia de precio')],
-        [P('Cessió del dorsal a una altra persona', 'Cesión del dorsal a otra persona'), P('6 de desembre', '6 de diciembre'), '3 €'],
+        [P('Cessió del dorsal a una altra persona', 'Cesión del dorsal a otra persona'), P('25 de març', '25 de marzo'), '3 €'],
         [P('Devolució del 80 %', 'Devolución del 80 %'), P('15 de novembre', '15 de noviembre'), P('20 % de gestió', '20 % de gestión')],
-        [P('Devolució del 50 % amb justificant mèdic', 'Devolución del 50 % con justificante médico'), P('6 de desembre', '6 de diciembre'), '—'],
-        [P('Guardar la plaça per al 2027', 'Guardar la plaza para 2027'), P('6 de desembre', '6 de diciembre'), '5 €'],
+        [P('Devolució del 50 % amb justificant mèdic', 'Devolución del 50 % con justificante médico'), P('25 de març', '25 de marzo'), '—'],
+        [P('Guardar la plaça per al 2029', 'Guardar la plaza para 2029'), P('25 de març', '25 de marzo'), '5 €'],
       ], note: P('Terminis i imports proposats: cal contrastar-los amb l’article de cancel·lacions del reglament abans de publicar.', 'Plazos e importes propuestos: hay que contrastarlos con el artículo de cancelaciones del reglamento antes de publicar.') },
       { k: 'startlist' },
       { k: 'faq', title: P('Preguntes', 'Preguntas'), items: [
@@ -189,7 +189,7 @@ export const PROTO: Proto[] = [
   {
     slug: 'training', group: 1, icon: 'M4 18l5-6 4 3 7-9M15 6h5v5',
     title: P('Entrenament', 'Entrenamiento'), kicker: P('Inscripcions', 'Inscripciones'),
-    lead: P('Plans de vuit setmanes per arribar al 13 de desembre, calculadora de ritmes i sortides en grup pel recorregut cada diumenge.', 'Planes de ocho semanas para llegar al 13 de diciembre, calculadora de ritmos y salidas en grupo por el recorrido cada domingo.'),
+    lead: P('Plans de vuit setmanes per arribar a l’1 d’abril, calculadora de ritmes i sortides en grup pel recorregut cada diumenge.', 'Planes de ocho semanas para llegar al 1 de abril, calculadora de ritmos y salidas en grupo por el recorrido cada domingo.'),
     blocks: [
       { k: 'pace' },
       { k: 'plan' },
@@ -200,7 +200,7 @@ export const PROTO: Proto[] = [
         [P('Dg. 29 nov', 'Dom. 29 nov'), P('Els últims 5 km a ritme de cursa', 'Los últimos 5 km a ritmo de carrera'), '10 km', 'UdL Running'],
         [P('Ds. 12 des', 'Sáb. 12 dic'), P('Rodatge de la fira amb les llebres', 'Rodaje de la feria con las liebres'), '4 km', P('Tothom', 'Todo el mundo')],
       ] },
-      { k: 'cards', title: P('Tres consells per a una mitja al desembre', 'Tres consejos para una media en diciembre'), cols: 3, items: [
+      { k: 'cards', title: P('Tres consells per a una mitja a l’abril', 'Tres consejos para una media en abril'), cols: 3, items: [
         { t: P('Surt abrigat, corre lleuger', 'Sal abrigado, corre ligero'), d: P('Una samarreta vella per llençar al km 1: les recollim i les donem a Càritas.', 'Una camiseta vieja para tirar en el km 1: las recogemos y las donamos a Cáritas.') },
         { t: P('El km 12 enganya', 'El km 12 engaña'), d: P('Després del Rec ve el tram més planer i és fàcil accelerar. Guarda-ho per a Vilanova.', 'Después del Rec viene el tramo más llano y es fácil acelerar. Guárdalo para Vilanova.') },
         { t: P('Assaja l’avituallament', 'Ensaya el avituallamiento'), d: P('Beure d’un got corrent té tècnica: doblega la vora i fes glops curts.', 'Beber de un vaso corriendo tiene técnica: dobla el borde y da tragos cortos.') },
@@ -238,7 +238,7 @@ export const PROTO: Proto[] = [
         { t: P('Club més nombrós', 'Club más numeroso'), d: P('Un pernil i la foto a l’escenari per al club amb més arribats a meta.', 'Un jamón y la foto en el escenario para el club con más llegados a meta.'), tag: P('Idea', 'Idea') },
         { t: P('Veterà i veterana d’honor', 'Veterano y veterana de honor'), d: P('Reconeixement a la persona de més edat que acaba cada distància.', 'Reconocimiento a la persona de más edad que acaba cada distancia.'), tag: P('Idea', 'Idea') },
         { t: P('Fanalet vermell', 'Farolillo rojo'), d: P('L’últim finisher creua la meta amb tota la grada dreta i s’endú el seu pes en botifarra.', 'El último finisher cruza la meta con toda la grada en pie y se lleva su peso en butifarra.'), tag: P('Idea', 'Idea') },
-        { t: P('Primera mitja', 'Primera media'), d: P('Sorteig de deu dorsals per al 2027 entre qui debuta en la distància.', 'Sorteo de diez dorsales para 2027 entre quien debuta en la distancia.'), tag: P('Idea', 'Idea') },
+        { t: P('Primera mitja', 'Primera media'), d: P('Sorteig de deu dorsals per al 2029 entre qui debuta en la distància.', 'Sorteo de diez dorsales para 2029 entre quien debuta en la distancia.'), tag: P('Idea', 'Idea') },
         { t: P('Millor disfressa', 'Mejor disfraz'), d: P('A la Caminada: lot de productes de l’Anoia per a la colla més original.', 'En la Caminada: lote de productos de la Anoia para la peña más original.'), tag: P('Idea', 'Idea') },
       ] },
       { k: 'note', title: P('Reclamacions', 'Reclamaciones'), items: [P('Classificacions provisionals a la web en creuar la meta; definitives a les 14:00.', 'Clasificaciones provisionales en la web al cruzar la meta; definitivas a las 14:00.'), P('Reclamacions per escrit al jutge àrbitre fins a 30 minuts després de publicar-se els resultats.', 'Reclamaciones por escrito al juez árbitro hasta 30 minutos después de publicarse los resultados.'), P('Els trofeus no recollits a la cerimònia es guarden a l’Ajuntament durant un mes.', 'Los trofeos no recogidos en la ceremonia se guardan en el Ayuntamiento durante un mes.')] },
@@ -271,7 +271,7 @@ export const PROTO: Proto[] = [
     title: P('Mini Mitja', 'Mini Mitja'), kicker: P('La cursa', 'La carrera'),
     lead: P('Les curses infantils del dissabte a la tarda al Parc Central. De 0 a 13 anys, sense cronòmetre, amb dorsal, medalla i berenar per a tothom.', 'Las carreras infantiles del sábado por la tarde en el Parc Central. De 0 a 13 años, sin cronómetro, con dorsal, medalla y merienda para todos.'),
     blocks: [
-      { k: 'stats', items: [['17:00', P('dissabte 12 de desembre', 'sábado 12 de diciembre')], ['0–13', P('anys', 'años')], ['2 €', P('íntegres per a la causa solidària', 'íntegros para la causa solidaria')], ['400', P('places', 'plazas')]] },
+      { k: 'stats', items: [['17:00', P('divendres 31 de març', 'viernes 31 de marzo')], ['0–13', P('anys', 'años')], ['2 €', P('íntegres per a la causa solidària', 'íntegros para la causa solidaria')], ['400', P('places', 'plazas')]] },
       { k: 'table', title: P('Distàncies per edat', 'Distancias por edad'), cols: [P('Cursa', 'Carrera'), P('Edat', 'Edad'), P('Distància', 'Distancia'), P('Hora', 'Hora')], rows: [
         [P('Gatejadors', 'Gateadores'), P('0–3 anys, amb un adult', '0–3 años, con un adulto'), '50 m', '17:00'], [P('Esquirols', 'Ardillas'), '4–5', '200 m', '17:10'], [P('Llebres', 'Liebres'), '6–8', '500 m', '17:25'], [P('Guineus', 'Zorros'), '9–11', '1.000 m', '17:40'], [P('Falcons', 'Halcones'), '12–13', '1.500 m', '18:00'],
       ] },
@@ -288,13 +288,13 @@ export const PROTO: Proto[] = [
     title: P('Sostenibilitat', 'Sostenibilidad'), kicker: P('La cursa', 'La carrera'),
     lead: P('El recorregut passa pel Parc Fluvial i l’Anella Verda. El compromís és senzill: que dilluns ningú noti que hi hem passat.', 'El recorrido pasa por el Parc Fluvial y la Anella Verda. El compromiso es sencillo: que el lunes nadie note que hemos pasado.'),
     blocks: [
-      { k: 'meters', title: P('Objectius 2026', 'Objetivos 2026'), items: [[90, P('del residu separat i valoritzat', 'del residuo separado y valorizado')], [0, P('ampolles de plàstic d’un sol ús', 'botellas de plástico de un solo uso'), '0'], [60, P('dels participants arriben sense cotxe o compartint-lo', 'de los participantes llegan sin coche o compartiéndolo')], [75, P('de les compres a proveïdors de l’Anoia', 'de las compras a proveedores de la Anoia')]] },
+      { k: 'meters', title: P('Objectius 2028', 'Objetivos 2028'), items: [[90, P('del residu separat i valoritzat', 'del residuo separado y valorizado')], [0, P('ampolles de plàstic d’un sol ús', 'botellas de plástico de un solo uso'), '0'], [60, P('dels participants arriben sense cotxe o compartint-lo', 'de los participantes llegan sin coche o compartiéndolo')], [75, P('de les compres a proveïdors de l’Anoia', 'de las compras a proveedores de la Anoia')]] },
       { k: 'cards', title: P('Què fem', 'Qué hacemos'), cols: 3, items: [
         { t: P('Residu zero', 'Residuo cero'), d: P('Gots compostables, aigua en dipòsits de 20 L i cap avituallament dins del Parc Fluvial.', 'Vasos compostables, agua en depósitos de 20 L y ningún avituallamiento dentro del Parc Fluvial.') },
         { t: P('Samarreta opcional', 'Camiseta opcional'), d: P('Si no la vols, el seu cost va a replantar ribera a l’Anoia. Menys armaris plens.', 'Si no la quieres, su coste va a replantar ribera en el Anoia. Menos armarios llenos.'), tag: P('Idea', 'Idea') },
         { t: P('Medalla de fusta', 'Medalla de madera'), d: P('De pi certificat i cinta de cotó, feta per un taller ocupacional de la comarca.', 'De pino certificado y cinta de algodón, hecha por un taller ocupacional de la comarca.'), tag: P('Idea', 'Idea') },
         { t: P('Senyalització reutilitzable', 'Señalización reutilizable'), d: P('Sense any imprès: els arcs, les tanques i els cartells serveixen per a totes les edicions.', 'Sin año impreso: los arcos, las vallas y los carteles sirven para todas las ediciones.') },
-        { t: P('Aliments que no es llencen', 'Alimentos que no se tiran'), d: P('La fruita i el pa sobrers van al Banc d’Aliments el mateix diumenge.', 'La fruta y el pan sobrantes van al Banco de Alimentos el mismo domingo.') },
+        { t: P('Aliments que no es llencen', 'Alimentos que no se tiran'), d: P('La fruita i el pa sobrers van al Banc d’Aliments el mateix dissabte.', 'La fruta y el pan sobrantes van al Banco de Alimentos el mismo sábado.') },
         { t: P('Brigada verda', 'Brigada verde'), d: P('30 voluntaris recorren el circuit darrere del cotxe escombra i publiquen el pes recollit.', '30 voluntarios recorren el circuito detrás del coche escoba y publican el peso recogido.') },
       ] },
       { k: 'table', title: P('Petjada estimada de la primera edició', 'Huella estimada de la primera edición'), cols: [P('Font', 'Fuente'), 'kg CO₂e', P('Com la reduïm', 'Cómo la reducimos')], rows: [
@@ -307,7 +307,7 @@ export const PROTO: Proto[] = [
   {
     slug: 'news', group: 3, icon: 'M4 5h13v14H6a2 2 0 0 1-2-2zM17 9h3v8a2 2 0 0 1-2 2M8 9h5M8 13h5',
     title: P('Notícies', 'Noticias'), kicker: P('Actualitat', 'Actualidad'),
-    lead: P('El que va passant fins al 13 de desembre: obertura de trams, entrenaments, patrocinadors i històries de qui es prepara.', 'Lo que va pasando hasta el 13 de diciembre: apertura de tramos, entrenamientos, patrocinadores e historias de quien se prepara.'),
+    lead: P('El que va passant fins a l’1 d’abril: obertura de trams, entrenaments, patrocinadors i històries de qui es prepara.', 'Lo que va pasando hasta el 1 de abril: apertura de tramos, entrenamientos, patrocinadores e historias de quien se prepara.'),
     blocks: [
       { k: 'news', items: [
         { date: P('9 oct 2026', '9 oct 2026'), cat: P('Recorregut', 'Recorrido'), photo: 'parc-fluvial', t: P('Publicat el pla de talls de trànsit carrer a carrer', 'Publicado el plan de cortes de tráfico calle a calle'), d: P('42 carrers, 61 punts de control i un simulador per saber a quina hora podràs passar.', '42 calles, 61 puntos de control y un simulador para saber a qué hora podrás pasar.') },
@@ -328,14 +328,14 @@ export const PROTO: Proto[] = [
     blocks: [
       { k: 'photos', items: [['pell-museu', P('Museu de la Pell', 'Museu de la Pell')], ['basilica', P('Basílica de Santa Maria', 'Basílica de Santa Maria')], ['cal-font', P('Plaça de Cal Font', 'Plaza de Cal Font')], ['parc-fluvial', P('Parc Fluvial', 'Parc Fluvial')]] },
       { k: 'map', title: P('Què veure a prop del recorregut', 'Qué ver cerca del recorrido'), points: SIGHTS },
-      { k: 'table', title: P('On dormir', 'Dónde dormir'), lead: P('Tarifa de cursa amb el codi MMI26, vàlida de divendres a diumenge.', 'Tarifa de carrera con el código MMI26, válida de viernes a domingo.'), cols: [P('Allotjament', 'Alojamiento'), P('A la sortida', 'A la salida'), P('Des de', 'Desde'), P('Per a corredors', 'Para corredores')], rows: [
+      { k: 'table', title: P('On dormir', 'Dónde dormir'), lead: P('Tarifa de cursa amb el codi MMI28, vàlida de divendres a diumenge.', 'Tarifa de carrera con el código MMI28, válida de viernes a domingo.'), cols: [P('Allotjament', 'Alojamiento'), P('A la sortida', 'A la salida'), P('Des de', 'Desde'), P('Per a corredors', 'Para corredores')], rows: [
         [P('Hotel col·laborador · centre', 'Hotel colaborador · centro'), P('10 min a peu', '10 min a pie'), '68 €', P('Esmorzar a les 06:00 i sortida a les 15:00', 'Desayuno a las 06:00 y salida a las 15:00')],
         [P('Hotel col·laborador · avinguda', 'Hotel colaborador · avenida'), P('5 min a peu', '5 min a pie'), '82 €', P('Dutxa postcursa encara que ja hagis deixat l’habitació', 'Ducha poscarrera aunque ya hayas dejado la habitación')],
         [P('Alberg i residència d’estudiants', 'Albergue y residencia de estudiantes'), P('15 min a peu', '15 min a pie'), '24 €', P('Habitacions de 2 i 4; ideal per a clubs', 'Habitaciones de 2 y 4; ideal para clubes')],
         [P('Cases rurals de l’Anoia', 'Casas rurales de la Anoia'), P('10–20 min en cotxe', '10–20 min en coche'), '45 €', P('Per a famílies i colles', 'Para familias y peñas')],
       ], note: P('Establiments i preus per concretar: encara no hi ha acords signats.', 'Establecimientos y precios por concretar: todavía no hay acuerdos firmados.') },
       { k: 'cards', title: P('El teu dorsal val més', 'Tu dorsal vale más'), cols: 3, items: [
-        { t: P('Menú del corredor', 'Menú del corredor'), d: P('Dissabte, plat de pasta a 12 € als restaurants adherits. Diumenge, vermut de finisher.', 'El sábado, plato de pasta a 12 € en los restaurantes adheridos. El domingo, vermut de finisher.'), tag: P('Idea', 'Idea') },
+        { t: P('Menú del corredor', 'Menú del corredor'), d: P('Divendres, plat de pasta a 12 € als restaurants adherits. Dissabte, vermut de finisher.', 'El viernes, plato de pasta a 12 € en los restaurantes adheridos. El sábado, vermut de finisher.'), tag: P('Idea', 'Idea') },
         { t: P('Museus gratis', 'Museos gratis'), d: P('Museu de la Pell i Museu del Traginer, de divendres a diumenge.', 'Museu de la Pell y Museu del Traginer, de viernes a domingo.'), tag: P('Idea', 'Idea') },
         { t: P('Montserrat a 30 minuts', 'Montserrat a 30 minutos'), d: P('Excursió de dilluns per estirar les cames: autocar a les 10:00 des del Parc Central.', 'Excursión del lunes para estirar las piernas: autocar a las 10:00 desde el Parc Central.'), tag: P('Idea', 'Idea') },
       ] },
@@ -347,9 +347,9 @@ export const PROTO: Proto[] = [
     lead: P('La samarreta de Cal Font i la resta de la col·lecció. Recollida gratuïta a la Fira del Corredor; un euro de cada peça va a la causa solidària.', 'La camiseta de Cal Font y el resto de la colección. Recogida gratuita en la Feria del Corredor; un euro de cada pieza va a la causa solidaria.'),
     blocks: [
       { k: 'shop', items: [
-        { id: 'tee', img: '/shirt/front.webp', t: P('Samarreta oficial 2026', 'Camiseta oficial 2026'), d: P('Tècnica, polièster reciclat. Tall home i dona.', 'Técnica, poliéster reciclado. Corte hombre y mujer.'), price: 22, sizes: ['XS', 'S', 'M', 'L', 'XL'], tag: P('Més venuda', 'Más vendida') },
-        { id: 'buff', img: '/shop/buff.svg', t: P('Buff d’hivern', 'Buff de invierno'), d: P('Per als 5 °C de la sortida. Estampat de rajoles.', 'Para los 5 °C de la salida. Estampado de baldosas.'), price: 9 },
-        { id: 'cup', img: '/shop/cup.svg', t: P('Got plegable', 'Vaso plegable'), d: P('150 ml, es penja del cinturó. Amb ell entres al sorteig del 2027.', '150 ml, se cuelga del cinturón. Con él entras en el sorteo de 2027.'), price: 6 },
+        { id: 'tee', img: '/shirt/front.webp', t: P('Samarreta oficial 2028', 'Camiseta oficial 2028'), d: P('Tècnica, polièster reciclat. Tall home i dona.', 'Técnica, poliéster reciclado. Corte hombre y mujer.'), price: 22, sizes: ['XS', 'S', 'M', 'L', 'XL'], tag: P('Més venuda', 'Más vendida') },
+        { id: 'buff', img: '/shop/buff.svg', t: P('Buff de la cursa', 'Buff de la carrera'), d: P('Per a la fresca de la sortida i el sol del final. Estampat de rajoles.', 'Para el fresco de la salida y el sol del final. Estampado de baldosas.'), price: 9 },
+        { id: 'cup', img: '/shop/cup.svg', t: P('Got plegable', 'Vaso plegable'), d: P('150 ml, es penja del cinturó. Amb ell entres al sorteig del 2029.', '150 ml, se cuelga del cinturón. Con él entras en el sorteo de 2029.'), price: 6 },
         { id: 'cap', img: '/shop/cap.svg', t: P('Gorra lleugera', 'Gorra ligera'), d: P('Visera tova i reixeta lateral.', 'Visera blanda y rejilla lateral.'), price: 14 },
         { id: 'socks', img: '/shop/socks.svg', t: P('Mitjons de cursa', 'Calcetines de carrera'), d: P('Canya mitjana amb el zig-zag de la marca.', 'Caña media con el zigzag de la marca.'), price: 11, sizes: ['36–39', '40–43', '44–47'] },
         { id: 'hoodie', img: '/shop/hoodie.svg', t: P('Dessuadora finisher', 'Sudadera finisher'), d: P('Només per a qui creua la meta: es desbloqueja amb el teu dorsal.', 'Solo para quien cruza la meta: se desbloquea con tu dorsal.'), price: 39, sizes: ['S', 'M', 'L', 'XL'], tag: P('Exclusiva', 'Exclusiva') },
@@ -379,7 +379,7 @@ export const PROTO: Proto[] = [
         { t: P('Sostenibilitat', 'Sostenibilidad'), d: P('Residu zero, Parc Fluvial i memòria ambiental.', 'Residuo cero, Parc Fluvial y memoria ambiental.') },
       ] },
       { k: 'files', title: P('Kit de premsa', 'Kit de prensa'), items: [['/brand/logo-principal.svg', P('Logotip principal', 'Logotipo principal'), 'SVG'], ['/brand/logo-horitzontal.svg', P('Logotip horitzontal', 'Logotipo horizontal'), 'SVG'], ['/brand/logo-mono-blanc.svg', P('Logotip en negatiu', 'Logotipo en negativo'), 'SVG'], ['/gpx/21k.gpx', P('Recorregut 21K', 'Recorrido 21K'), 'GPX'], ['/gpx/10k.gpx', P('Recorregut 10K', 'Recorrido 10K'), 'GPX'], ['/og.jpg', P('Imatge de capçalera', 'Imagen de cabecera'), 'JPG']] },
-      { k: 'form', title: P('Acreditació de mitjans', 'Acreditación de medios'), lead: P('Fins al 4 de desembre. Inclou armilla, accés a la zona mixta i moto de premsa per a dos fotògrafs.', 'Hasta el 4 de diciembre. Incluye chaleco, acceso a la zona mixta y moto de prensa para dos fotógrafos.'), fields: [[P('Mitjà', 'Medio'), 'text'], [P('Nom i cognoms', 'Nombre y apellidos'), 'text'], [P('Correu electrònic', 'Correo electrónico'), 'email'], [P('Tipus', 'Tipo'), 'select', [P('Redacció', 'Redacción'), P('Fotografia', 'Fotografía'), P('Vídeo', 'Vídeo'), P('Ràdio', 'Radio')]]], submit: P('Sol·licita l’acreditació', 'Solicitar la acreditación'), ok: P('Sol·licitud rebuda. Confirmarem l’acreditació per correu.', 'Solicitud recibida. Confirmaremos la acreditación por correo.') },
+      { k: 'form', title: P('Acreditació de mitjans', 'Acreditación de medios'), lead: P('Fins al 24 de març. Inclou armilla, accés a la zona mixta i moto de premsa per a dos fotògrafs.', 'Hasta el 24 de marzo. Incluye chaleco, acceso a la zona mixta y moto de prensa para dos fotógrafos.'), fields: [[P('Mitjà', 'Medio'), 'text'], [P('Nom i cognoms', 'Nombre y apellidos'), 'text'], [P('Correu electrònic', 'Correo electrónico'), 'email'], [P('Tipus', 'Tipo'), 'select', [P('Redacció', 'Redacción'), P('Fotografia', 'Fotografía'), P('Vídeo', 'Vídeo'), P('Ràdio', 'Radio')]]], submit: P('Sol·licita l’acreditació', 'Solicitar la acreditación'), ok: P('Sol·licitud rebuda. Confirmarem l’acreditació per correu.', 'Solicitud recibida. Confirmaremos la acreditación por correo.') },
     ],
   },
 ];
