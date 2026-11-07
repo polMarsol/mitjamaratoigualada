@@ -15,7 +15,7 @@ export const es: Dict = {
     lead: 'Del centro de Igualada al Parque Fluvial y a Vilanova del Camí. Tres formas de vivirlo: 21K, 10K o Caminata Popular.',
     date: '1 de abril de 2028',
     dateNote: 'Fecha provisional',
-    countdown: { d: 'días', h: 'horas', m: 'min', s: 'seg' },
+    countdown: { y: 'año', ys: 'años', d: 'días', h: 'horas', m: 'min', s: 'seg' },
     chip: 'Cronometraje con chip',
   },
   modalities: {
