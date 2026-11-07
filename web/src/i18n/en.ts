@@ -15,7 +15,7 @@ export const en: Dict = {
     lead: 'From downtown Igualada through the River Park to Vilanova del Camí. Three ways to take part: 21K, 10K or the Popular Walk.',
     date: 'April 1, 2028',
     dateNote: 'Provisional date',
-    countdown: { d: 'days', h: 'hours', m: 'min', s: 'sec' },
+    countdown: { y: 'year', ys: 'years', d: 'days', h: 'hours', m: 'min', s: 'sec' },
     chip: 'Chip timing',
   },
   modalities: {

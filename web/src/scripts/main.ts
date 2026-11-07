@@ -42,10 +42,22 @@ ScrollTrigger.create({
 const cd = $('#countdown');
 if (cd) {
   const target = new Date(cd.dataset.date!).getTime();
+  const yearsBox = cd.querySelector<HTMLElement>('[data-years]');
+  const yearsLabel = yearsBox?.querySelector<HTMLElement>('[data-one]');
+  // Anys sencers de calendari fins a la cursa; la resta es mostra en dies, hores, minuts i segons
+  const fullYears = (from: number) => {
+    let y = 0;
+    for (;;) { const d = new Date(from); d.setFullYear(d.getFullYear() + y + 1); if (d.getTime() > target) return y; y++; }
+  };
   const tick = () => {
-    const s = Math.max(0, Math.floor((target - Date.now()) / 1000));
-    const v = { d: Math.floor(s / 86400), h: Math.floor(s / 3600) % 24, m: Math.floor(s / 60) % 60, s: s % 60 };
-    (Object.keys(v) as (keyof typeof v)[]).forEach((k) => { const el = cd.querySelector(`[data-unit=${k}]`); if (el) el.textContent = String(v[k]).padStart(2, '0'); });
+    const now = Date.now();
+    const y = now < target ? fullYears(now) : 0;
+    const from = new Date(now); from.setFullYear(from.getFullYear() + y);
+    const s = Math.max(0, Math.floor((target - from.getTime()) / 1000));
+    const v = { y, d: Math.floor(s / 86400), h: Math.floor(s / 3600) % 24, m: Math.floor(s / 60) % 60, s: s % 60 };
+    if (yearsBox) yearsBox.hidden = y === 0;
+    if (yearsLabel) yearsLabel.textContent = (y === 1 ? yearsLabel.dataset.one : yearsLabel.dataset.many) ?? '';
+    (Object.keys(v) as (keyof typeof v)[]).forEach((k) => { const el = cd.querySelector(`[data-unit=${k}]`); if (el) el.textContent = k === 'y' ? String(v[k]) : String(v[k]).padStart(2, '0'); });
   };
   tick(); setInterval(tick, 1000);
 }
