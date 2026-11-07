@@ -52,7 +52,7 @@ const icons: Record<string, string> = {
         <li><a href={`/${lang}/cookies/`} class="hover:underline">{t.legalLinks.cookies}</a></li>
         <li><button type="button" data-cookie-settings class="hover:underline">{t.legalLinks.settings}</button></li>
       </ul>
-      <p class="mt-5">© 2026 MM Igualada · {t.footer.rights}</p>
+      <p class="mt-5">© {new Date().getFullYear()} MM Igualada · {t.footer.rights}</p>
       <p class="mt-1">{t.footer.proto}</p>
     </div>
   </div>
